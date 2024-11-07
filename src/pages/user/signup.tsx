@@ -1,5 +1,10 @@
-import React from 'react';
+import SignLayout from 'components/layout/SignLayout';
+import SignupForm from 'components/users/SignupForm';
 
 export default function SignupPage() {
-    return <div>SignupPage</div>;
+    return (
+        <SignLayout>
+            <SignupForm />
+        </SignLayout>
+    );
 }
