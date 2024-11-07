@@ -1,6 +1,6 @@
-import { Route, Routes } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, RouteObject, Navigate } from 'react-router-dom';
 
-import { ROUTE_PATH } from './constants/route';
+import { ROUTE_PATH } from 'constants/route';
 import HomePage from 'pages/home';
 import PostListPage from 'pages/posts';
 import CreatePostPage from 'pages/posts/create';
@@ -15,23 +15,35 @@ import NotificationsPage from 'pages/notifications';
 import LoginPage from 'pages/user/login';
 import SignupPage from 'pages/user/signup';
 
-export default function Router() {
-    return (
-        <Routes>
-            <Route path={ROUTE_PATH.HOME} element={<HomePage />} />
-            <Route path={ROUTE_PATH.POST} element={<PostListPage />} />
-            <Route path={ROUTE_PATH.POST_CREATE} element={<CreatePostPage />} />
-            <Route path={ROUTE_PATH.POST_EDIT} element={<PostEditPage />} />
-            <Route path={ROUTE_PATH.POST_DETAIL} element={<PostDetailPage />} />
-            <Route path={ROUTE_PATH.SEARCH} element={<SearchPage />} />
-            <Route path={ROUTE_PATH.BOOKMARKS} element={<BookmarksPage />} />
-            <Route path={ROUTE_PATH.POPULAR} element={<PopularPage />} />
-            <Route path={ROUTE_PATH.PROFILE} element={<ProfilePage />} />
-            <Route path={ROUTE_PATH.PROFILE_EDIT} element={<ProfileEditPage />} />
-            <Route path={ROUTE_PATH.NOTI} element={<NotificationsPage />} />
-            <Route path={ROUTE_PATH.LOGIN} element={<LoginPage />} />
-            <Route path={ROUTE_PATH.SIGNUP} element={<SignupPage />} />
-            <Route path={ROUTE_PATH.NOT_FOUND} element={<LoginPage />} />
-        </Routes>
-    );
+interface RouterProps {
+    isAuthenticated: boolean;
+}
+
+const authenticatedRoutes: RouteObject[] = [
+    { path: ROUTE_PATH.HOME, element: <HomePage /> },
+    { path: ROUTE_PATH.POST, element: <PostListPage /> },
+    { path: ROUTE_PATH.POST_CREATE, element: <CreatePostPage /> },
+    { path: ROUTE_PATH.POST_EDIT, element: <PostEditPage /> },
+    { path: ROUTE_PATH.POST_DETAIL, element: <PostDetailPage /> },
+    { path: ROUTE_PATH.SEARCH, element: <SearchPage /> },
+    { path: ROUTE_PATH.BOOKMARKS, element: <BookmarksPage /> },
+    { path: ROUTE_PATH.POPULAR, element: <PopularPage /> },
+    { path: ROUTE_PATH.PROFILE, element: <ProfilePage /> },
+    { path: ROUTE_PATH.PROFILE_EDIT, element: <ProfileEditPage /> },
+    { path: ROUTE_PATH.NOTI, element: <NotificationsPage /> },
+];
+
+const unauthenticatedRoutes: RouteObject[] = [
+    { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
+    { path: ROUTE_PATH.SIGNUP, element: <SignupPage /> },
+    { path: '*', element: <Navigate replace to={ROUTE_PATH.LOGIN} /> },
+];
+
+const createRoutes = (isAuthenticated: boolean): RouteObject[] =>
+    isAuthenticated ? authenticatedRoutes : unauthenticatedRoutes;
+
+export default function Router({ isAuthenticated }: RouterProps) {
+    const router = createBrowserRouter(createRoutes(isAuthenticated));
+
+    return <RouterProvider router={router} />;
 }
