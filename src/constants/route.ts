@@ -1,0 +1,16 @@
+export const ROUTE_PATH = {
+    HOME: '/',
+    POST: '/posts',
+    POST_CREATE: '/posts/create',
+    POST_DETAIL: '/posts/:postId',
+    POST_EDIT: '/posts/edit',
+    SEARCH: '/search',
+    BOOKMARKS: '/bookmarks',
+    POPULAR: '/popular',
+    PROFILE: '/profile',
+    PROFILE_EDIT: '/profile/edit',
+    NOTI: '/notifications',
+    LOGIN: '/user/login',
+    SIGNUP: '/user/signup',
+    NOT_FOUND: '*',
+} as const;
