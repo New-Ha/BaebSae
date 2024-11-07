@@ -33,7 +33,7 @@ export default function OAuthLogin() {
                     Google로 로그인하기
                 </button>
             </div>
-            <div className="form__block">
+            <div className="sign__form__block">
                 <button type="button" name="github" className="sign__form__btn--github" onClick={onClickOAuthLogin}>
                     Github으로 로그인하기
                 </button>

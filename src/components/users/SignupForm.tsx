@@ -77,7 +77,7 @@ export default function SignupForm() {
 
     return (
         <form className="sign__form" onSubmit={handleSubmit}>
-            <div className="sign__form__title">Login</div>
+            <div className="sign__form__title">회원가입</div>
             <div className="sign__form__block">
                 <div className="sign__form__block-col">
                     <label htmlFor="email">이메일</label>

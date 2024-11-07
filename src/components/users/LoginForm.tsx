@@ -64,7 +64,7 @@ export default function LoginForm() {
 
     return (
         <form className="sign__form" onSubmit={handleSubmit}>
-            <div className="sign__form__title">Login</div>
+            <div className="sign__form__title">로그인</div>
             <div className="sign__form__block">
                 <div className="sign__form__block-col">
                     <label htmlFor="email">이메일</label>
@@ -93,7 +93,7 @@ export default function LoginForm() {
             </div>
             {error && error?.length > 0 && (
                 <div className="sign__form__block">
-                    <div className="form__error">{error}</div>
+                    <div className="sign__form__error">{error}</div>
                 </div>
             )}
             <div className="sign__form__block">
