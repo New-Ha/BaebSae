@@ -8,8 +8,8 @@ interface SignLayoutProps {
 
 export default function SignLayout({ children }: SignLayoutProps) {
     return (
-        <div className={styles.layout}>
-            <div className={styles.sign}>
+        <div className={styles.sign}>
+            <div className={styles.layout}>
                 <div className={styles.sign__grid}>
                     <div className={styles.sign__bapsae}>
                         <Bapsae />
