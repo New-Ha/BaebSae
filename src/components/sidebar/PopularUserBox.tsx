@@ -1,5 +1,5 @@
 import UserBox from 'components/UserBox';
-import { ReactComponent as Setting } from '../assets/setting.svg';
+import { ReactComponent as Setting } from '../../assets/setting.svg';
 
 export default function PopularUserBox() {
     const popularList = [0, 1, 2, 3, 4];

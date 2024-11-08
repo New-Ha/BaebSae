@@ -1,5 +1,5 @@
 import UserBox from 'components/UserBox';
-import { ReactComponent as Reset } from '../assets/init_arrow.svg';
+import { ReactComponent as Reset } from '../../assets/init_arrow.svg';
 
 export default function RecommendBox() {
     const recommendList = [0, 1, 2, 3, 4];
