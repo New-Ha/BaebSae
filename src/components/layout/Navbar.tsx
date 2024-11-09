@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from 'firebaseApp';
@@ -20,9 +20,11 @@ import { ReactComponent as ActiveUserCircle } from '../../assets/user_circle_act
 import { ReactComponent as More } from '../../assets/dots.svg';
 import { ROUTE_PATH } from 'constants/route';
 import styles from './Layout.module.scss';
+import AuthContext from 'context/AuthContext';
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
     const [active, setActive] = useState<string>(ROUTE_PATH.HOME);
 
     const handleClickNav = (path: string) => {
@@ -99,17 +101,21 @@ export default function Navbar() {
                     </button>
                 </nav>
             </div>
+            <button type="button" onClick={handleClickLogout}>
+                logout
+            </button>
             <button type="button" className={styles.header__footer}>
                 <div className={styles.header__footer__userInfo}>
-                    {' '}
-                    <UserCircle />
-                    {/* <img src="../../assets/user_circle.svg" alt="user avatar" /> */}
+                    {user?.photoURL ? (
+                        <img src={user.photoURL} alt="user avatar" className={styles.header__footer__profile__img} />
+                    ) : (
+                        <UserCircle />
+                    )}
                     <div className={styles.header__footer__profile}>
-                        <div className={styles.header__footer__profile__name}>user님</div>
-                        <div className={styles.header__footer__profile__email}>test@test.com</div>
+                        <div className={styles.header__footer__profile__name}>{user?.displayName || '사용자'} 님</div>
+                        <div className={styles.header__footer__profile__email}>{user?.email}</div>
                     </div>
                 </div>
-                <More />
             </button>
         </header>
     );
