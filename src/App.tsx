@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from 'firebaseApp';
-import { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Router from 'Router';
 
 function App() {
@@ -19,7 +22,12 @@ function App() {
             setInit(true);
         });
     }, [auth]);
-    return <>{init ? <Router isAuthenticated={isAuthenticated} /> : <div>loading...</div>}</>;
+    return (
+        <>
+            <ToastContainer autoClose={1500} hideProgressBar newestOnTop />
+            {init ? <Router isAuthenticated={isAuthenticated} /> : <div>loading...</div>}
+        </>
+    );
 }
 
 export default App;
