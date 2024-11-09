@@ -1,4 +1,6 @@
 import { initializeApp, FirebaseApp, getApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // 매 호출시마다 initialize 하지 않고, 처음에 initialize한게 있으면 getApp으로 가져오게 하기 위해서
 export let app: FirebaseApp;
@@ -19,5 +21,9 @@ try {
 }
 
 const firebase = initializeApp(firebaseConfig);
+
+export const db = getFirestore(app);
+
+export const storage = getStorage(app);
 
 export default firebase;
