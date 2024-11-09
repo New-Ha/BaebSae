@@ -1,8 +1,12 @@
+import { ROUTE_PATH } from 'constants/route';
 import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { app } from 'firebaseApp';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function OAuthLogin() {
+    const navigate = useNavigate();
+
     const onClickOAuthLogin = async (e: any) => {
         const {
             target: { name },
@@ -21,6 +25,7 @@ export default function OAuthLogin() {
         await signInWithPopup(auth, provider as GoogleAuthProvider | GithubAuthProvider)
             .then(result => {
                 toast.success('로그인 되었습니다.');
+                navigate(ROUTE_PATH.HOME);
             })
             .catch(error => {
                 toast.error(error.message);
