@@ -10,38 +10,16 @@ body {
 
 * {
     color: $black;
+    font-family: $font;
 }
 
 .button {
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    font-size: 1rem;
-    font-weight: 500;
     border: none;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    color: $black;
+    background: none;
     cursor: pointer;
 
     &:disabled {
         opacity: 0.5;
-    }
-}
-
-.icon__button {
-    padding: 0.2rem 0.5rem;
-    border: none;
-    border-radius: 999px;
-    background: none;
-    cursor: pointer;
-
-    svg {
-        width: 1rem;
-        height: auto;
-    }
-
-    &:hover,
-    &:focus {
-        background-color: $lightGray;
     }
 }
 
@@ -51,6 +29,14 @@ body {
     border: 1px solid $darkPrimary;
     border-radius: 0.5rem;
     font-size: 1rem;
+    outline: none;
+}
+
+.avatar_img {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 9999px;
+    object-fit: cover;
 }
 
 .sign {
@@ -203,51 +189,36 @@ body {
     }
 }
 
-// post
-.post {
-    &__header {
-        width: 100%;
-        display: flex;
-        gap: 0.5rem;
-        border-bottom: 1px solid $lightGray;
+// header
+.header {
+    width: calc(100% - 2rem);
+    padding: 0.8rem 1rem;
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid $border;
 
-        button {
-            @extend .icon__button;
-        }
-
-        &-title {
-            background-color: transparent;
-            width: 90%;
-            padding: 1rem;
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
+    button {
+        @extend .button;
     }
 
-    &__no-posts {
-        border: 1px solid $lightPrimary;
-        border-radius: 0.5rem;
-        padding: 1rem;
-        margin: 0.8rem 0.5rem;
-        font-size: 0.875rem;
-        color: $darkGray;
+    &-title {
+        background-color: transparent;
+        font-weight: 700;
+        font-size: 1.25rem;
     }
 }
 
 .post-form {
     width: 100%;
+    border-bottom: 1px solid $border;
     display: flex;
     gap: 0.5rem;
-    border-bottom: 1px solid $lightGray;
 
     &__avatar {
         padding: 1rem 0.5rem 1rem 1rem;
 
         img {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 9999px;
-            object-fit: cover;
+            @extend .avatar_img;
         }
 
         svg {
@@ -258,47 +229,38 @@ body {
 
     &__form {
         width: 100%;
-        border-bottom: 1px solid $lightGray;
-    }
-
-    &__img-view {
-        button {
-        }
     }
 
     &__textarea {
         display: block;
         padding: 1rem;
         width: calc(100% - 2rem);
-        min-height: 6rem;
+        min-height: 3rem;
         font-size: 1.25rem;
-        font-family: $font;
         border: none;
         resize: none;
         outline: none;
 
         &::placeholder {
-            font-family: $font;
-            color: $darkGray;
-            font-size: 1.25rem;
+            color: $gray;
+            font-size: 1rem;
         }
     }
 
     &__hashtag {
-        padding: 0.5rem;
-        border-bottom: 1px solid $lightGray;
+        padding: 0.25rem 0.5rem;
+        border-bottom: 1px solid $border;
 
         &-outputs {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px 1px;
+            gap: 0.5rem 0.125rem;
             align-items: center;
         }
 
         &-tag {
-            padding: 2px 8px;
-            margin-right: 6px;
-            font-size: 14px;
+            padding: 0.125rem 0.5rem;
+            font-size: 0.875rem;
             color: $primary;
             border: 1px solid $primary;
             border-radius: 1rem;
@@ -306,32 +268,45 @@ body {
 
             &:hover,
             &:focus {
-                border: 1px solid $white;
-                color: $white;
+                border: 1px solid $darkPrimary;
+                color: $darkPrimary;
+                font-weight: 500;
             }
         }
     }
 
-    &__input {
-        width: 100%;
-        font-family: $font;
+    &__hash-input {
+        @extend .input;
         margin-top: 0.5rem;
         padding: 0.5rem;
         border: none;
         resize: none;
-        outline: none;
+        font-size: 0.875rem;
+
+        &::placeholder {
+            color: $gray;
+        }
     }
 
     &__submit-area {
-        padding: 0.75rem 1rem;
+        padding: 0.25rem 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
-        .post-form__file-input {
-            width: 2rem;
+        svg {
+            padding: 0.5rem;
+            width: 1.25rem;
             height: auto;
+            fill: $darkPrimary;
+            background-color: transparent;
             cursor: pointer;
+
+            &:hover,
+            &:focus {
+                border-radius: 10rem;
+                background-color: $lightPrimary;
+            }
         }
 
         .hidden {
@@ -343,6 +318,8 @@ body {
         @extend .button;
         padding: 0.5rem 1rem;
         background-color: $primary;
+        border-radius: 1rem;
+        font-weight: 500;
 
         &:hover,
         &:focus {
@@ -352,93 +329,140 @@ body {
     }
 }
 
-.post__box {
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    gap: 1rem;
+.post {
     border-bottom: 1px solid $lightGray;
 
-    &__user-avatar {
-        padding-top: 0.5rem;
-
-        img {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 9999px;
-        }
-
-        svg {
-            width: 3rem;
-            height: auto;
-        }
-    }
-
-    &__content {
-        width: calc(100% - 5.5rem);
-        position: relative;
-
-        &__user {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.8rem;
-
-            &-name {
-                font-size: 1rem;
-                margin-right: 0.5rem;
-                font-weight: 500;
-            }
-
-            &-email {
-                font-size: 14px;
-                font-weight: 300;
-                color: $darkGray;
-            }
-        }
-
-        &__more-btn {
-            @extend .icon__button;
-
-            svg {
-                width: 1.5rem;
-                height: auto;
-            }
-        }
-    }
-
-    &__dropdown {
-        width: 100px;
-        position: absolute;
-        right: 0;
-        top: 1.5rem;
-        border: 1.5px solid $lightGray;
+    &__no-posts {
+        border: 1px solid $lightPrimary;
         border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 0.8rem 0.5rem;
+        font-size: 0.875rem;
+        color: $darkGray;
+    }
+    &__box {
+        width: 100%;
+        padding: 1rem;
         display: flex;
-        flex-direction: column;
-        background-color: white;
+        gap: 1rem;
 
-        button {
-            border: none;
-            background: none;
-            padding: 0.5rem;
-            cursor: pointer;
-            color: gray;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+        &__user-avatar {
+            padding-top: 0.5rem;
 
-            svg {
-                width: 0.8rem;
-                height: auto;
+            img {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 9999px;
             }
 
-            &:hover,
-            &:focus {
-                background-color: $lightGray;
-                color: $black;
+            svg {
+                width: 3rem;
+                height: auto;
+            }
+        }
+
+        &__content {
+            width: calc(100% - 5.5rem);
+            position: relative;
+
+            &__user {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.8rem;
+
+                &-name {
+                    font-size: 1rem;
+                    margin-right: 0.5rem;
+                    font-weight: 500;
+                }
+
+                &-email {
+                    font-size: 14px;
+                    font-weight: 300;
+                    color: $darkGray;
+                }
+            }
+
+            &__more-btn {
+                @extend .button;
+
+                svg {
+                    width: 1.5rem;
+                    height: auto;
+                }
+            }
+        }
+
+        &__dropdown {
+            width: 100px;
+            position: absolute;
+            right: 0;
+            top: 1.5rem;
+            border: 1.5px solid $lightGray;
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+
+            button {
+                border: none;
+                background: none;
+                padding: 0.5rem;
+                cursor: pointer;
+                color: gray;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+
+                svg {
+                    width: 0.8rem;
+                    height: auto;
+                }
+
+                &:hover,
+                &:focus {
+                    background-color: $lightGray;
+                    color: $black;
+                }
+            }
+        }
+
+        &__footer {
+            padding: 1rem 2rem 1rem 4rem;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+
+            &-btn {
+                display: flex;
+                align-items: center;
+
+                button {
+                    padding: 0.25rem 0.5rem;
+                    background: none;
+                    border: none;
+                    border-radius: 999px;
+                    display: flex;
+                    gap: 0.5rem;
+                    cursor: pointer;
+
+                    svg {
+                        width: 1rem;
+                        height: auto;
+                    }
+
+                    span {
+                        font-size: 0.875rem;
+                        color: $gray;
+                    }
+
+                    &:hover,
+                    &:focus {
+                        background-color: $lightPrimary;
+                    }
+                }
             }
         }
     }
