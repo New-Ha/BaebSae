@@ -1,10 +1,13 @@
 import { useContext, useState } from 'react';
+import AuthContext from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from 'firebaseApp';
 import { toast } from 'react-toastify';
+import { ROUTE_PATH } from 'constants/route';
 
-import { ReactComponent as Bapsae } from '../../assets/bapsae.svg';
+import { ReactComponent as BapsaeLogo } from '../../assets/bapsae_icon.svg';
+import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
 import { ReactComponent as Home } from '../../assets/home.svg';
 import { ReactComponent as ActiveHome } from '../../assets/home_active.svg';
 import { ReactComponent as Hash } from '../../assets/hash.svg';
@@ -17,10 +20,8 @@ import { ReactComponent as Popular } from '../../assets/popular.svg';
 import { ReactComponent as ActivePopular } from '../../assets/popular_active.svg';
 import { ReactComponent as UserCircle } from '../../assets/user_circle.svg';
 import { ReactComponent as ActiveUserCircle } from '../../assets/user_circle_active.svg';
-import { ReactComponent as More } from '../../assets/dots.svg';
-import { ROUTE_PATH } from 'constants/route';
+import { ReactComponent as Dots } from '../../assets/dots.svg';
 import styles from './Layout.module.scss';
-import AuthContext from 'context/AuthContext';
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -39,45 +40,37 @@ export default function Navbar() {
     };
 
     return (
-        <header className={styles.header}>
-            <div className={styles.header__topSection}>
-                <div className={styles.header__logo}>
-                    <Bapsae />
+        <header className={styles.nav}>
+            <div className={styles.nav__topSection}>
+                <div className={styles.nav__logo}>
+                    <BapsaeLogo />
                 </div>
-                <nav className={styles.header__flex}>
+                <nav className={styles.nav__flex}>
                     <button
                         type="button"
                         onClick={() => handleClickNav(ROUTE_PATH.HOME)}
-                        className={
-                            active === ROUTE_PATH.HOME ? styles.header__flex__btnActive : styles.header__flex__btn
-                        }>
+                        className={active === ROUTE_PATH.HOME ? styles.nav__flex__btnActive : styles.nav__flex__btn}>
                         {active === ROUTE_PATH.HOME ? <ActiveHome /> : <Home />}
                         <span className="nav__grid--text">Home</span>
                     </button>
                     <button
                         type="button"
                         onClick={() => handleClickNav(ROUTE_PATH.SEARCH)}
-                        className={
-                            active === ROUTE_PATH.SEARCH ? styles.header__flex__btnActive : styles.header__flex__btn
-                        }>
+                        className={active === ROUTE_PATH.SEARCH ? styles.nav__flex__btnActive : styles.nav__flex__btn}>
                         {active === ROUTE_PATH.SEARCH ? <ActiveHash /> : <Hash />}
-                        <span className="nav__grid--text">Explore</span>
+                        <span className="nav__grid--text">Search</span>
                     </button>
                     <button
                         type="button"
                         onClick={() => handleClickNav(ROUTE_PATH.NOTI)}
-                        className={
-                            active === ROUTE_PATH.NOTI ? styles.header__flex__btnActive : styles.header__flex__btn
-                        }>
+                        className={active === ROUTE_PATH.NOTI ? styles.nav__flex__btnActive : styles.nav__flex__btn}>
                         {active === ROUTE_PATH.NOTI ? <ActiveBell /> : <Bell />}
                         <span className="nav__grid--text">Notifications</span>
                     </button>
                     <button
                         type="button"
                         onClick={() => handleClickNav(ROUTE_PATH.POPULAR)}
-                        className={
-                            active === ROUTE_PATH.POPULAR ? styles.header__flex__btnActive : styles.header__flex__btn
-                        }>
+                        className={active === ROUTE_PATH.POPULAR ? styles.nav__flex__btnActive : styles.nav__flex__btn}>
                         {active === ROUTE_PATH.POPULAR ? <ActivePopular /> : <Popular />}
                         <span className="nav__grid--text">Popular</span>
                     </button>
@@ -85,7 +78,7 @@ export default function Navbar() {
                         type="button"
                         onClick={() => handleClickNav(ROUTE_PATH.BOOKMARKS)}
                         className={
-                            active === ROUTE_PATH.BOOKMARKS ? styles.header__flex__btnActive : styles.header__flex__btn
+                            active === ROUTE_PATH.BOOKMARKS ? styles.nav__flex__btnActive : styles.nav__flex__btn
                         }>
                         {active === ROUTE_PATH.BOOKMARKS ? <ActiveBookmark /> : <Bookmark />}
                         <span className="nav__grid--text">Bookmarks</span>
@@ -93,9 +86,7 @@ export default function Navbar() {
                     <button
                         type="button"
                         onClick={() => handleClickNav(ROUTE_PATH.PROFILE)}
-                        className={
-                            active === ROUTE_PATH.PROFILE ? styles.header__flex__btnActive : styles.header__flex__btn
-                        }>
+                        className={active === ROUTE_PATH.PROFILE ? styles.nav__flex__btnActive : styles.nav__flex__btn}>
                         {active === ROUTE_PATH.PROFILE ? <ActiveUserCircle /> : <UserCircle />}
                         <span className="nav__grid--text">Profile</span>
                     </button>
@@ -104,17 +95,20 @@ export default function Navbar() {
             <button type="button" onClick={handleClickLogout}>
                 logout
             </button>
-            <button type="button" className={styles.header__footer}>
-                <div className={styles.header__footer__userInfo}>
-                    {user?.photoURL ? (
-                        <img src={user.photoURL} alt="user avatar" className={styles.header__footer__profile__img} />
-                    ) : (
-                        <UserCircle />
-                    )}
-                    <div className={styles.header__footer__profile}>
-                        <div className={styles.header__footer__profile__name}>{user?.displayName || '사용자'} 님</div>
-                        <div className={styles.header__footer__profile__email}>{user?.email}</div>
+            <button type="button" className={styles.nav__footer}>
+                <div className={styles.nav__footer__flex}>
+                    <div className={styles.nav__footer__userInfo}>
+                        {user?.photoURL ? (
+                            <img src={user.photoURL} alt="user avatar" className={styles.nav__footer__profile__img} />
+                        ) : (
+                            <DefaultAvatar />
+                        )}
+                        <div className={styles.nav__footer__profile}>
+                            <div className={styles.nav__footer__profile__name}>{user?.displayName || '사용자'} 님</div>
+                            <div className={styles.nav__footer__profile__email}>@{user?.email?.split('@')[0]}</div>
+                        </div>
                     </div>
+                    <Dots />
                 </div>
             </button>
         </header>
