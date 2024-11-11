@@ -73,6 +73,15 @@ export default function PostBox({ post }: postBoxProps) {
                         )}
                     </div>
                     <div className="post__box__content__text">{post.content}</div>
+                    <div className="post-form__hashtags__outputs">
+                        {post.hashtags &&
+                            post.hashtags.length > 0 &&
+                            post.hashtags.map((tag, idx) => (
+                                <span className="post-form__hashtags-tag" key={idx}>
+                                    #{tag}
+                                </span>
+                            ))}
+                    </div>
                 </div>
             </div>
             <div className="post__box__footer">

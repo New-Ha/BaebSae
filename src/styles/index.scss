@@ -122,15 +122,19 @@ body {
 
 // right side
 .search {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background-color: $lightGray;
-    border-radius: 20px;
-    border: none;
-    font-size: 1rem;
+    &__bar {
+        padding: 1rem 1.5rem;
+        width: 90%;
+        border: none;
+        border-radius: 62.4375rem;
+        background-color: $bgGray;
+        outline: none;
+        font-size: 1rem;
 
-    &::placeholder {
-        color: $gray;
+        &::placeholder {
+            color: $gray;
+            font-size: 1rem;
+        }
     }
 }
 
@@ -300,30 +304,28 @@ body {
         }
     }
 
-    &__hashtag {
+    &__hashtags {
         padding: 0.25rem 0.5rem;
         border-bottom: 1px solid $border;
 
-        &-outputs {
+        &__outputs {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem 0.125rem;
             align-items: center;
+            gap: 0.25rem;
         }
 
         &-tag {
             padding: 0.125rem 0.5rem;
             font-size: 0.875rem;
-            color: $primary;
-            border: 1px solid $primary;
-            border-radius: 1rem;
+            color: $darkPrimary;
+            border: 1px solid $darkPrimary;
+            border-radius: 10rem;
             cursor: pointer;
 
             &:hover,
             &:focus {
-                border: 1px solid $darkPrimary;
-                color: $darkPrimary;
-                font-weight: 500;
+                color: $darkRed;
             }
         }
     }
@@ -432,7 +434,7 @@ body {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin-bottom: 0.8rem;
+                margin-bottom: 0.4rem;
 
                 &-name {
                     font-size: 1rem;
@@ -455,7 +457,7 @@ body {
             }
 
             &__text {
-                text-align: start;
+                margin: 0.8rem 0rem;
             }
 
             &__more-btn {
@@ -517,7 +519,7 @@ body {
         }
 
         &__footer {
-            padding: 0.5rem 2rem 0.2rem 4rem;
+            padding: 0.5rem 2rem 0.4rem 4rem;
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
 

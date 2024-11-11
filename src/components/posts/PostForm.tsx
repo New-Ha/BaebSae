@@ -27,23 +27,23 @@ export default function PostForm() {
         hashtags: undefined,
         imageUrl: undefined,
     });
+    // 현재 입력하는 태그값
     const [tag, setTag] = useState<string>('');
     const [imgFile, setImgFile] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const isEdit = !!params.postId;
 
     const handleChangeTag = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTag(e.target.value);
+        setTag(e.target.value.trim());
     };
 
     const handleKeyUpTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'enter' && tag.trim() !== '') {
+        if (e.keyCode === 32 && tag.trim() !== '') {
             if (post.hashtags?.includes(tag)) {
                 toast.error('같은 태그가 존재합니다.');
             } else {
-                setPost(prev => ({ ...prev, hashtags: [...(prev.hashtags ?? []), e.currentTarget.value] }));
+                setPost(prev => ({ ...prev, hashtags: [...(prev.hashtags ?? []), tag] }));
             }
-
             setTag('');
         }
     };
@@ -88,6 +88,7 @@ export default function PostForm() {
                 const postRef = doc(db, 'posts', post.id);
                 await updateDoc(postRef, {
                     content: post.content,
+                    hashtags: post.hashtags || [],
                     createdAt: new Date()?.toLocaleDateString('ko', {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -173,12 +174,15 @@ export default function PostForm() {
                     required
                 />
 
-                <div className="post-form__hashtag">
-                    <div className="post-form__hashtag__outputs">
+                <div className="post-form__hashtags">
+                    <div className="post-form__hashtags__outputs">
                         {post.hashtags &&
                             post.hashtags.length > 0 &&
                             post.hashtags.map((tag, idx) => (
-                                <span className="post-form__hashtag-tag" key={idx} onClick={() => handleDeleteTag(tag)}>
+                                <span
+                                    className="post-form__hashtags-tag"
+                                    key={idx}
+                                    onClick={() => handleDeleteTag(tag)}>
                                     # {tag}
                                 </span>
                             ))}
@@ -191,7 +195,7 @@ export default function PostForm() {
                         value={tag}
                         onChange={handleChangeTag}
                         onKeyUp={handleKeyUpTag}
-                        placeholder="해시태그 + 엔터 입력"
+                        placeholder="해시태그 + 스페이스바 입력"
                     />
                 </div>
                 <div className="post-form__submit-area">
