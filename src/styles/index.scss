@@ -196,19 +196,38 @@ body {
 // header
 .header {
     width: calc(100% - 2rem);
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 1rem;
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 1rem;
     border-bottom: 1px solid $border;
 
     button {
         @extend .button;
+        border-radius: 10rem;
+        padding: 0.2rem;
+
+        svg {
+            fill: $black;
+            width: 1.5rem;
+            height: auto;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: $bgPrimary;
+
+            svg {
+                fill: $darkPrimary;
+            }
+        }
     }
 
     &-title {
         background-color: transparent;
         font-weight: 700;
         font-size: 1.25rem;
+        margin-bottom: 0.2rem;
     }
 }
 

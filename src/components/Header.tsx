@@ -12,7 +12,7 @@ export default function Header({ title }: HeaderProps) {
     return (
         <div className="header">
             <button type="button" onClick={() => navigate(-1)}>
-                <Back className="header-btn" />
+                <Back />
             </button>
             <div className="header-title">{title}</div>
         </div>
