@@ -1,20 +1,26 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import AuthContext from 'context/AuthContext';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addDoc, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { db, storage } from 'firebaseApp';
+import { toast } from 'react-toastify';
+import { PostType } from 'pages/home';
 
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
 import { ReactComponent as Photo } from '../../assets/photo.svg';
-import { toast } from 'react-toastify';
-import AuthContext from 'context/AuthContext';
-import { getDownloadURL, ref, uploadString } from 'firebase/storage';
-import { db, storage } from 'firebaseApp';
-import { addDoc, collection } from 'firebase/firestore';
+import { ReactComponent as Reset } from '../../assets/circle_x.svg';
 
 interface PostFormType {
+    id?: string;
     content: string;
     hashtags?: string[];
     imageUrl?: string;
 }
 
 export default function PostForm() {
+    const params = useParams();
+    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [post, setPost] = useState<PostFormType>({
         content: '',
@@ -24,13 +30,14 @@ export default function PostForm() {
     const [tag, setTag] = useState<string>('');
     const [imgFile, setImgFile] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const isEdit = !!params.postId;
 
     const handleChangeTag = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTag(e.target.value);
     };
 
     const handleKeyUpTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
+        if (e.key === 'enter' && tag.trim() !== '') {
             if (post.hashtags?.includes(tag)) {
                 toast.error('같은 태그가 존재합니다.');
             } else {
@@ -38,12 +45,6 @@ export default function PostForm() {
             }
 
             setTag('');
-        }
-    };
-
-    const preventSubmit = (e: any) => {
-        if (e.detail === 0) {
-            e.preventDefault();
         }
     };
 
@@ -83,32 +84,46 @@ export default function PostForm() {
         const storageRef = ref(storage, key);
 
         try {
-            // image를 먼저 storage에 upload
-            let imgUrl = '';
-            if (imgFile) {
-                const data = await uploadString(storageRef, imgFile, 'data_url');
-                imgUrl = await getDownloadURL(data.ref);
-            }
+            if (isEdit && post.id) {
+                const postRef = doc(db, 'posts', post.id);
+                await updateDoc(postRef, {
+                    content: post.content,
+                    createdAt: new Date()?.toLocaleDateString('ko', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    }),
+                });
+                toast.success('게시글이 수정되었습니다.');
+                navigate(-1);
+            } else {
+                // image를 먼저 storage에 upload
+                let imgUrl = '';
+                if (imgFile) {
+                    const data = await uploadString(storageRef, imgFile, 'data_url');
+                    imgUrl = await getDownloadURL(data.ref);
+                }
 
-            // upload된 image download url을 포함해 post upload
-            await addDoc(collection(db, 'posts'), {
-                content: post.content,
-                hashtags: post.hashtags || [],
-                imageUrl: imgUrl || '',
-                createdAt: new Date()?.toLocaleDateString('ko', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                }),
-                uid: user?.uid,
-                email: user?.email,
-                name: user?.displayName || '사용자',
-                avatar: user?.photoURL || '',
-            });
-            toast.success('게시글을 생성했습니다.');
-            setPost(prev => ({ ...prev, content: '', hashtags: undefined, imageUrl: undefined }));
-            setImgFile(null);
-            setTag('');
+                // upload된 image download url을 포함해 post upload
+                await addDoc(collection(db, 'posts'), {
+                    content: post.content,
+                    hashtags: post.hashtags || [],
+                    imageUrl: imgUrl || '',
+                    createdAt: new Date()?.toLocaleDateString('ko', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    }),
+                    uid: user?.uid,
+                    email: user?.email,
+                    name: user?.displayName || '사용자',
+                    avatar: user?.photoURL || '',
+                });
+                toast.success('게시글을 생성했습니다.');
+                setPost(prev => ({ ...prev, content: '', hashtags: undefined, imageUrl: undefined }));
+                setImgFile(null);
+                setTag('');
+            }
         } catch (error: any) {
             console.log(error);
             toast.error('게시글 생성 중 문제가 발생하였습니다.');
@@ -116,6 +131,23 @@ export default function PostForm() {
             setIsSubmitting(false);
         }
     };
+
+    const getPost = useCallback(async () => {
+        if (params.postId) {
+            const docRef = doc(db, 'posts', params.postId);
+            // const docSnap = await getDoc(docRef);
+
+            onSnapshot(docRef, doc => {
+                setPost({ ...(doc.data() as PostType), id: doc.id });
+            });
+        }
+    }, [params.postId]);
+
+    useEffect(() => {
+        if (params.postId) {
+            getPost();
+        }
+    }, [params.postId, getPost]);
 
     return (
         <form className="post-form" onSubmit={handleSubmitPost}>
@@ -125,9 +157,9 @@ export default function PostForm() {
             <div className="post-form__form">
                 {imgFile && (
                     <div className="post-form__img-view">
-                        <img src={imgFile} alt="attachment" width={100} height={100} />
+                        <img src={imgFile} alt="attachment" />
                         <button type="button" onClick={handleDeleteImg}>
-                            x
+                            <Reset />
                         </button>
                     </div>
                 )}
@@ -173,11 +205,15 @@ export default function PostForm() {
                             id="img-input"
                             accept="image/*"
                             onChange={handleImgFileUpload}
-                            onClick={preventSubmit}
                             className="hidden"
                         />
                     </div>
-                    <input type="submit" value="게시" className="post-form__submit-btn" disabled={isSubmitting} />
+                    <input
+                        type="submit"
+                        value={isEdit ? '수정' : '게시'}
+                        className="post-form__submit-btn"
+                        disabled={isSubmitting}
+                    />
                 </div>
             </div>
         </form>
