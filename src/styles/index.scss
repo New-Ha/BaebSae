@@ -32,9 +32,13 @@ body {
     outline: none;
 }
 
-.avatar_img {
+.avatar_svg {
     width: 3.5rem;
     height: 3.5rem;
+}
+
+.avatar_img {
+    @extend .avatar_svg;
     border-radius: 9999px;
     object-fit: cover;
 }
@@ -212,7 +216,6 @@ body {
     width: 100%;
     border-bottom: 1px solid $border;
     display: flex;
-    gap: 0.5rem;
 
     &__avatar {
         padding: 1rem 0.5rem 1rem 1rem;
@@ -229,6 +232,37 @@ body {
 
     &__form {
         width: 100%;
+        padding: 0.5rem;
+    }
+
+    &__img-view {
+        position: relative;
+
+        img {
+            width: 80%;
+            height: auto;
+            border-radius: 0.25rem;
+            position: relative;
+        }
+
+        button {
+            @extend .button;
+            padding: 0.25rem 0.35rem;
+            border-radius: 10rem;
+            position: absolute;
+            right: 20;
+
+            svg {
+                width: 1.75rem;
+                height: auto;
+                fill: $darkGray;
+
+                &:hover,
+                &:focus {
+                    fill: $red;
+                }
+            }
+        }
     }
 
     &__textarea {
@@ -305,7 +339,7 @@ body {
             &:hover,
             &:focus {
                 border-radius: 10rem;
-                background-color: $lightPrimary;
+                background-color: $bgPrimary;
             }
         }
 
@@ -330,16 +364,28 @@ body {
 }
 
 .post {
-    border-bottom: 1px solid $lightGray;
+    border-bottom: 1px solid $border;
 
     &__no-posts {
         border: 1px solid $lightPrimary;
         border-radius: 0.5rem;
         padding: 1rem;
-        margin: 0.8rem 0.5rem;
+        margin: 1rem 0.5rem;
         font-size: 0.875rem;
-        color: $darkGray;
+        color: $gray;
     }
+
+    &__nav-detail {
+        @extend .button;
+        width: 100%;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            background-color: $bgPrimary;
+        }
+    }
+
     &__box {
         width: 100%;
         padding: 1rem;
@@ -350,14 +396,11 @@ body {
             padding-top: 0.5rem;
 
             img {
-                width: 3rem;
-                height: 3rem;
-                border-radius: 9999px;
+                @extend .avatar_img;
             }
 
             svg {
-                width: 3rem;
-                height: auto;
+                @extend .avatar_svg;
             }
         }
 
@@ -374,23 +417,46 @@ body {
 
                 &-name {
                     font-size: 1rem;
-                    margin-right: 0.5rem;
-                    font-weight: 500;
+                    margin-right: 0.25rem;
+                    font-weight: 600;
                 }
 
                 &-email {
+                    margin-right: 0.5rem;
                     font-size: 14px;
-                    font-weight: 300;
+                    font-weight: 400;
                     color: $darkGray;
                 }
             }
 
+            &__createdAt {
+                font-size: 12px;
+                font-weight: 300;
+                color: $gray;
+            }
+
+            &__text {
+                text-align: start;
+            }
+
             &__more-btn {
                 @extend .button;
+                padding: 0.125rem 0.25rem;
+                border-radius: 10rem;
 
                 svg {
                     width: 1.5rem;
                     height: auto;
+                    fill: $darkGray;
+                }
+
+                &:hover,
+                &:focus {
+                    background-color: $lightPrimary;
+
+                    svg {
+                        fill: $darkPrimary;
+                    }
                 }
             }
         }
@@ -399,23 +465,23 @@ body {
             width: 100px;
             position: absolute;
             right: 0;
-            top: 1.5rem;
-            border: 1.5px solid $lightGray;
+            top: 1.95rem;
+            border: 1px solid $border;
             border-radius: 0.5rem;
             display: flex;
             flex-direction: column;
             background-color: white;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
             button {
                 border: none;
                 background: none;
-                padding: 0.5rem;
+                padding: 0.5rem 1rem;
                 cursor: pointer;
                 color: gray;
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
+                justify-content: space-around;
 
                 svg {
                     width: 0.8rem;
@@ -424,14 +490,15 @@ body {
 
                 &:hover,
                 &:focus {
-                    background-color: $lightGray;
+                    background-color: $lightPrimary;
                     color: $black;
+                    font-weight: 500;
                 }
             }
         }
 
         &__footer {
-            padding: 1rem 2rem 1rem 4rem;
+            padding: 0.5rem 2rem 0.5rem 5rem;
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
 
@@ -451,16 +518,25 @@ body {
                     svg {
                         width: 1rem;
                         height: auto;
+                        fill: $darkGray;
                     }
 
                     span {
                         font-size: 0.875rem;
-                        color: $gray;
+                        color: $darkGray;
                     }
 
                     &:hover,
                     &:focus {
                         background-color: $lightPrimary;
+
+                        svg {
+                            fill: $darkPrimary;
+                        }
+
+                        span {
+                            color: $darkPrimary;
+                        }
                     }
                 }
             }
