@@ -1,27 +1,4 @@
-$font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
-
-// base color
-$white: #fefae1;
-$lightLime: #e9edc8;
-$beige: #faedcd;
-$black: #2a2522;
-$lightGray: #f4f4f4;
-$gray: #b1b1b1;
-$darkGray: #747474;
-
-// primary
-$primaryColor: #ccd5ae;
-$darkPrimary: #283618;
-
-//secondary
-$lightSecondary: #d4a373;
-$secondary: #dda15f;
-$darkSecondary: #bc6c26;
-
-//error color
-$red: #f15146;
-$darkRed: #7b463c;
+@import './utills.scss';
 
 body {
     min-height: 100vh;
@@ -112,7 +89,7 @@ body {
         &__link {
             margin-left: 0.5rem;
             text-decoration: none;
-            color: $primaryColor;
+            color: $primary;
             cursor: pointer;
 
             &:hover,
@@ -129,12 +106,12 @@ body {
             &--submit {
                 @extend .button;
                 width: 24rem;
-                background-color: $lightLime;
+                background-color: $lightPrimary;
                 margin-bottom: 1.2rem;
 
                 &:hover,
                 &:focus {
-                    background-color: $primaryColor;
+                    background-color: $primary;
                 }
             }
 
@@ -142,11 +119,11 @@ body {
             &--github {
                 @extend .button;
                 width: 24rem;
-                background-color: $beige;
+                background-color: $darkPrimary;
 
                 &:hover,
                 &:focus {
-                    background-color: $lightSecondary;
+                    background-color: $darkPrimary;
                 }
             }
         }
@@ -248,7 +225,7 @@ body {
     }
 
     &__no-posts {
-        border: 1px solid $lightLime;
+        border: 1px solid $lightPrimary;
         border-radius: 0.5rem;
         padding: 1rem;
         margin: 0.8rem 0.5rem;
@@ -322,8 +299,8 @@ body {
             padding: 2px 8px;
             margin-right: 6px;
             font-size: 14px;
-            color: $primaryColor;
-            border: 1px solid $primaryColor;
+            color: $primary;
+            border: 1px solid $primary;
             border-radius: 1rem;
             cursor: pointer;
 
@@ -365,7 +342,7 @@ body {
     &__submit-btn {
         @extend .button;
         padding: 0.5rem 1rem;
-        background-color: $primaryColor;
+        background-color: $primary;
 
         &:hover,
         &:focus {

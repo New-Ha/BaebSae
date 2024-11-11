@@ -53,14 +53,14 @@ $darkRed: #7b463c;
 
 .header {
     max-width: 18.75rem;
-    padding: 1rem 0.5rem 2rem 0.5rem;
+    padding: 1rem 0.2rem 2rem 0.2rem;
     border-right: 1px solid $lightGray;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
     &__topSection {
-        padding: 2rem 1.5rem;
+        padding: 2rem 0.5rem;
     }
 
     &__logo {
