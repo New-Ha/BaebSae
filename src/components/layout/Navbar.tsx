@@ -42,7 +42,7 @@ export default function Navbar() {
     return (
         <header className={styles.nav}>
             <div className={styles.nav__topSection}>
-                <div className={styles.nav__logo}>
+                <div className={styles.nav__logo} onClick={() => navigate(ROUTE_PATH.HOME)}>
                     <BapsaeLogo />
                 </div>
                 <nav className={styles.nav__flex}>
