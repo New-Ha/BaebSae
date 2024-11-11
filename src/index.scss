@@ -11,8 +11,7 @@ $gray: #b1b1b1;
 $darkGray: #747474;
 
 // primary
-$lightPrimary: #ccd5ae;
-$primary: #606c37;
+$primaryColor: #ccd5ae;
 $darkPrimary: #283618;
 
 //secondary
@@ -40,7 +39,7 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 999px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     border: none;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     color: $black;
@@ -48,6 +47,24 @@ body {
 
     &:disabled {
         opacity: 0.5;
+    }
+}
+
+.icon__button {
+    padding: 0.2rem 0.5rem;
+    border: none;
+    border-radius: 999px;
+    background: none;
+    cursor: pointer;
+
+    svg {
+        width: 1rem;
+        height: auto;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: $lightGray;
     }
 }
 
@@ -95,7 +112,7 @@ body {
         &__link {
             margin-left: 0.5rem;
             text-decoration: none;
-            color: $primary;
+            color: $primaryColor;
             cursor: pointer;
 
             &:hover,
@@ -112,12 +129,12 @@ body {
             &--submit {
                 @extend .button;
                 width: 24rem;
-                background-color: $lightPrimary;
+                background-color: $lightLime;
                 margin-bottom: 1.2rem;
 
                 &:hover,
                 &:focus {
-                    background-color: $primary;
+                    background-color: $primaryColor;
                 }
             }
 
@@ -205,6 +222,247 @@ body {
         &-email {
             font-size: 0.875rem;
             font-weight: 300;
+        }
+    }
+}
+
+// post
+.post {
+    &__header {
+        width: 100%;
+        display: flex;
+        gap: 0.5rem;
+        border-bottom: 1px solid $lightGray;
+
+        button {
+            @extend .icon__button;
+        }
+
+        &-title {
+            background-color: transparent;
+            width: 90%;
+            padding: 1rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+    }
+
+    &__no-posts {
+        border: 1px solid $lightLime;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 0.8rem 0.5rem;
+        font-size: 0.875rem;
+        color: $darkGray;
+    }
+}
+
+.post-form {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid $lightGray;
+
+    &__avatar {
+        padding: 1rem 0.5rem 1rem 1rem;
+
+        img {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 9999px;
+            object-fit: cover;
+        }
+
+        svg {
+            width: 3.5rem;
+            height: auto;
+        }
+    }
+
+    &__form {
+        width: 100%;
+        border-bottom: 1px solid $lightGray;
+    }
+
+    &__img-view {
+        button {
+        }
+    }
+
+    &__textarea {
+        display: block;
+        padding: 1rem;
+        width: calc(100% - 2rem);
+        min-height: 6rem;
+        font-size: 1.25rem;
+        font-family: $font;
+        border: none;
+        resize: none;
+        outline: none;
+
+        &::placeholder {
+            font-family: $font;
+            color: $darkGray;
+            font-size: 1.25rem;
+        }
+    }
+
+    &__hashtag {
+        padding: 0.5rem;
+        border-bottom: 1px solid $lightGray;
+
+        &-outputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 1px;
+            align-items: center;
+        }
+
+        &-tag {
+            padding: 2px 8px;
+            margin-right: 6px;
+            font-size: 14px;
+            color: $primaryColor;
+            border: 1px solid $primaryColor;
+            border-radius: 1rem;
+            cursor: pointer;
+
+            &:hover,
+            &:focus {
+                border: 1px solid $white;
+                color: $white;
+            }
+        }
+    }
+
+    &__input {
+        width: 100%;
+        font-family: $font;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        border: none;
+        resize: none;
+        outline: none;
+    }
+
+    &__submit-area {
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .post-form__file-input {
+            width: 2rem;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+    }
+
+    &__submit-btn {
+        @extend .button;
+        padding: 0.5rem 1rem;
+        background-color: $primaryColor;
+
+        &:hover,
+        &:focus {
+            background-color: $darkPrimary;
+            color: $white;
+        }
+    }
+}
+
+.post__box {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid $lightGray;
+
+    &__user-avatar {
+        padding-top: 0.5rem;
+
+        img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+        }
+
+        svg {
+            width: 3rem;
+            height: auto;
+        }
+    }
+
+    &__content {
+        width: calc(100% - 5.5rem);
+        position: relative;
+
+        &__user {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+
+            &-name {
+                font-size: 1rem;
+                margin-right: 0.5rem;
+                font-weight: 500;
+            }
+
+            &-email {
+                font-size: 14px;
+                font-weight: 300;
+                color: $darkGray;
+            }
+        }
+
+        &__more-btn {
+            @extend .icon__button;
+
+            svg {
+                width: 1.5rem;
+                height: auto;
+            }
+        }
+    }
+
+    &__dropdown {
+        width: 100px;
+        position: absolute;
+        right: 0;
+        top: 1.5rem;
+        border: 1.5px solid $lightGray;
+        border-radius: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+
+        button {
+            border: none;
+            background: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+
+            svg {
+                width: 0.8rem;
+                height: auto;
+            }
+
+            &:hover,
+            &:focus {
+                background-color: $lightGray;
+                color: $black;
+            }
         }
     }
 }
