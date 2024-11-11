@@ -1,11 +1,12 @@
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { db } from 'firebaseApp';
 import Header from 'components/Header';
 import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
 import PostForm from 'components/posts/PostForm';
 import AuthContext from 'context/AuthContext';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { db } from 'firebaseApp';
-import { useContext, useEffect, useState } from 'react';
 
 export interface PostType {
     id: string;
@@ -20,6 +21,7 @@ export interface PostType {
 }
 
 export default function HomePage() {
+    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [posts, setPosts] = useState<PostType[]>([]);
 
@@ -33,7 +35,6 @@ export default function HomePage() {
                     ...doc.data(),
                     id: doc.id,
                 }));
-                console.log(dataObj);
                 setPosts(dataObj as PostType[]);
             });
         }
@@ -43,8 +44,16 @@ export default function HomePage() {
         <main className="home">
             <Header title="Home" />
             <PostForm />
-            <div className="post">
-                {posts.length > 0 ? posts.map(post => <PostBox key={post.id} post={post} />) : <NoPostBox />}
+            <div className="">
+                {posts.length > 0 ? (
+                    posts.map(post => (
+                        <div key={post.id} className="post__nav-detail" onClick={() => navigate(`/posts/${post.id}`)}>
+                            <PostBox post={post} />
+                        </div>
+                    ))
+                ) : (
+                    <NoPostBox />
+                )}
             </div>
         </main>
     );
