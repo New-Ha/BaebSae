@@ -10,11 +10,11 @@ export default function Header({ title }: HeaderProps) {
     const navigate = useNavigate();
 
     return (
-        <div className="post__header">
+        <div className="header">
             <button type="button" onClick={() => navigate(-1)}>
-                <Back className="post__header-btn" />
+                <Back className="header-btn" />
             </button>
-            <div className="post__header-title">{title}</div>
+            <div className="header-title">{title}</div>
         </div>
     );
 }
