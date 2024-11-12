@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from 'firebaseApp';
+import { db, storage } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 import { ROUTE_PATH } from 'constants/route';
@@ -15,6 +15,7 @@ import { ReactComponent as Comment } from '../../assets/comment.svg';
 import { ReactComponent as Likes } from '../../assets/heart.svg';
 import { ReactComponent as Bookmark } from '../../assets/bookmark_icon.svg';
 import { ReactComponent as Share } from '../../assets/share.svg';
+import { deleteObject, ref } from 'firebase/storage';
 
 interface postBoxProps {
     post: PostType;
@@ -29,6 +30,12 @@ export default function PostBox({ post }: postBoxProps) {
         const confirm = window.confirm('해당 게시글을 삭제하시겠습니까?');
 
         if (confirm) {
+            if (post.imageUrl) {
+                const imgRef = ref(storage, post.imageUrl);
+                deleteObject(imgRef).catch(error => {
+                    toast.error('게시글 삭제 중 문제가 발생했습니다.');
+                });
+            }
             await deleteDoc(doc(db, 'posts', post.id));
             toast.success('게시글을 삭제했습니다.');
             navigate(ROUTE_PATH.HOME);
@@ -72,7 +79,7 @@ export default function PostBox({ post }: postBoxProps) {
                             </div>
                         )}
                     </div>
-                    {post.imageUrl && <img src={post.imageUrl} alt="" className='post__box__content__img' />}
+                    {post.imageUrl && <img src={post.imageUrl} alt="" className="post__box__content__img" />}
                     <div className="post__box__content__text">{post.content}</div>
                     <div className="post-form__hashtags__outputs">
                         {post.hashtags &&
