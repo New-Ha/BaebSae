@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDoc, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { addDoc, collection, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { db, storage } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
@@ -85,10 +85,22 @@ export default function PostForm() {
 
         try {
             if (isEdit && post.id) {
+                let imgRef = ref(storage, post.imageUrl);
+                await deleteObject(imgRef).catch(error => {
+                    toast.error('게시글 수정 중 이미지 업로드에 실패하였습니다.');
+                });
+
+                let imgUrl = '';
+                if (imgFile) {
+                    const data = await uploadString(storageRef, imgFile, 'data_url');
+                    imgUrl = await getDownloadURL(data.ref);
+                }
+
                 const postRef = doc(db, 'posts', post.id);
                 await updateDoc(postRef, {
                     content: post.content,
                     hashtags: post.hashtags || [],
+                    imageUrl: imgFile ? imgUrl : null,
                     createdAt: new Date()?.toLocaleDateString('ko', {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -97,6 +109,9 @@ export default function PostForm() {
                 });
                 toast.success('게시글이 수정되었습니다.');
                 navigate(-1);
+                setPost(prev => ({ ...prev, content: '', hashtags: undefined, imageUrl: undefined }));
+                setImgFile(null);
+                setTag('');
             } else {
                 // image를 먼저 storage에 upload
                 let imgUrl = '';
@@ -110,11 +125,6 @@ export default function PostForm() {
                     content: post.content,
                     hashtags: post.hashtags || [],
                     imageUrl: imgUrl || '',
-                    createdAt: new Date()?.toLocaleDateString('ko', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                    }),
                     uid: user?.uid,
                     email: user?.email,
                     name: user?.displayName || '사용자',
@@ -126,8 +136,11 @@ export default function PostForm() {
                 setTag('');
             }
         } catch (error: any) {
-            console.log(error);
-            toast.error('게시글 생성 중 문제가 발생하였습니다.');
+            if (isEdit) {
+                toast.error('게시글 수정 중 문제가 발생하였습니다.');
+            } else {
+                toast.error('게시글 생성 중 문제가 발생하였습니다.');
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -136,11 +149,10 @@ export default function PostForm() {
     const getPost = useCallback(async () => {
         if (params.postId) {
             const docRef = doc(db, 'posts', params.postId);
-            // const docSnap = await getDoc(docRef);
-
-            onSnapshot(docRef, doc => {
-                setPost({ ...(doc.data() as PostType), id: doc.id });
-            });
+            const docSnap = await getDoc(docRef);
+            setPost({ ...(docSnap.data() as PostType), id: docSnap.id });
+            setImgFile(docSnap.data()?.imageUrl);
+            setTag(docSnap.data()?.hashtags);
         }
     }, [params.postId]);
 
