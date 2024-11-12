@@ -102,11 +102,6 @@ export default function PostForm() {
                     content: post.content,
                     hashtags: post.hashtags || [],
                     imageUrl: imgFile ? imgUrl : null,
-                    createdAt: new Date()?.toLocaleDateString('ko', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                    }),
                 });
                 toast.success('게시글이 수정되었습니다.');
                 navigate(-1);
@@ -123,6 +118,11 @@ export default function PostForm() {
                     content: post.content,
                     hashtags: post.hashtags || [],
                     imageUrl: imgUrl || '',
+                    createdAt: new Date()?.toLocaleDateString('ko', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    }),
                     uid: user?.uid,
                     email: user?.email,
                     name: user?.displayName || '사용자',
