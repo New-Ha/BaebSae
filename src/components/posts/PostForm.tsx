@@ -10,6 +10,7 @@ import { PostType } from 'pages/home';
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
 import { ReactComponent as Photo } from '../../assets/photo.svg';
 import { ReactComponent as Reset } from '../../assets/circle_x.svg';
+import { ROUTE_PATH } from 'constants/route';
 
 interface PostFormType {
     id?: string;
@@ -109,9 +110,6 @@ export default function PostForm() {
                 });
                 toast.success('게시글이 수정되었습니다.');
                 navigate(-1);
-                setPost(prev => ({ ...prev, content: '', hashtags: undefined, imageUrl: undefined }));
-                setImgFile(null);
-                setTag('');
             } else {
                 // image를 먼저 storage에 upload
                 let imgUrl = '';
@@ -131,10 +129,11 @@ export default function PostForm() {
                     avatar: user?.photoURL || '',
                 });
                 toast.success('게시글을 생성했습니다.');
-                setPost(prev => ({ ...prev, content: '', hashtags: undefined, imageUrl: undefined }));
-                setImgFile(null);
-                setTag('');
+                navigate(ROUTE_PATH.HOME);
             }
+            setPost(prev => ({ ...prev, content: '', hashtags: undefined, imageUrl: undefined }));
+            setImgFile(null);
+            setTag('');
         } catch (error: any) {
             if (isEdit) {
                 toast.error('게시글 수정 중 문제가 발생하였습니다.');
