@@ -10,14 +10,16 @@ export default function MainLayout() {
     return (
         <div className={styles.layout}>
             <Navbar />
-            <main className={styles.main}>
-                <Outlet />
-            </main>
-            <aside className={styles.right}>
-                <SearchBar />
-                <RecommendBox />
-                <PopularUserBox />
-            </aside>
+            <div className={styles.main}>
+                <main className={styles.main__contents}>
+                    <Outlet />
+                </main>
+                <aside className={styles.main__right}>
+                    <SearchBar />
+                    <RecommendBox />
+                    <PopularUserBox />
+                </aside>
+            </div>
         </div>
     );
 }
