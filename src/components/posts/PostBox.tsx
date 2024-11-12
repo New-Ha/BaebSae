@@ -72,6 +72,7 @@ export default function PostBox({ post }: postBoxProps) {
                             </div>
                         )}
                     </div>
+                    {post.imageUrl && <img src={post.imageUrl} alt="" className='post__box__content__img' />}
                     <div className="post__box__content__text">{post.content}</div>
                     <div className="post-form__hashtags__outputs">
                         {post.hashtags &&

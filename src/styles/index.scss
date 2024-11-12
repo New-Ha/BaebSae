@@ -456,6 +456,12 @@ body {
                 color: $gray;
             }
 
+            &__img {
+                width: 90%;
+                height: auto;
+                border-radius: 0.625rem;
+            }
+
             &__text {
                 margin: 0.8rem 0rem;
             }
