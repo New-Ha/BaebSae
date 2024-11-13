@@ -63,8 +63,8 @@
     }
 
     &__avatar {
-        width: 3.2rem;
-        height: 3.2rem;
+        width: 3rem;
+        height: 3rem;
         border-radius: 9999px;
     }
 
@@ -111,19 +111,14 @@
         &:hover,
         &:focus {
             svg {
-                fill: white;
-                background-color: $red;
-                border-radius: 9999px;
+                fill: $red;
             }
         }
 
         svg {
             width: 1.5rem;
             height: auto;
-            fill: $darkRed;
+            fill: $darkGray;
         }
-    }
-
-    &__text {
     }
 }
