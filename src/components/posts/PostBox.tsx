@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 import { ROUTE_PATH } from 'constants/route';
 import { imageRef, postRef } from 'constants/refs';
+import BeMyFriend from 'components/posts/BeMyFriend';
 
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
 import { ReactComponent as Dots } from '../../assets/dots.svg';
@@ -84,7 +85,7 @@ export default function PostBox({ post }: postBoxProps) {
                             <span className="post__box__content__user-email">@{post.email.split('@')[0]}</span>
                             <span className="post__box__content__createdAt">{post.createdAt}</span>
                         </div>
-                        {user?.uid === post.uid && (
+                        {user?.uid === post.uid ? (
                             <button
                                 type="button"
                                 className="post__box__content__more-btn"
@@ -94,6 +95,8 @@ export default function PostBox({ post }: postBoxProps) {
                                 }}>
                                 <Dots />
                             </button>
+                        ) : (
+                            <BeMyFriend post={post} />
                         )}
                         {drop && (
                             <div className="post__box__dropdown" onClick={e => e.stopPropagation()}>
