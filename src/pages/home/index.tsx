@@ -12,12 +12,14 @@ export interface PostType {
     id: string;
     content: string;
     createdAt: string;
+    hashtags?: string[];
+    imageUrl?: string;
+    like?: string[];
+    likesCount?: number;
     uid: string;
     email: string;
     name: string;
     avatar: string;
-    hashtags?: string[];
-    imageUrl?: string;
 }
 
 export default function HomePage() {
