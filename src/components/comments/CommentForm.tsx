@@ -16,6 +16,7 @@ export interface CommentType {
     uid: string;
     name: string;
     email: string;
+    avatar: string;
     createdAt: string;
 }
 
@@ -38,6 +39,7 @@ export default function CommentForm({ post }: CommentFormProps) {
                     comment,
                     uid: user.uid,
                     name: user.displayName,
+                    avatar: user.photoURL,
                     email: user.email,
                     createdAt: new Date().toLocaleDateString('ko', {
                         hour: '2-digit',

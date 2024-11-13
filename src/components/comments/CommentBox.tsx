@@ -34,7 +34,7 @@ export default function CommentBox({ comment, post }: CommentBoxProps) {
     return (
         <div key={comment.createdAt} className={styles.comment}>
             {post.avatar ? (
-                <img src={post.avatar} alt="commenter avatar" className={styles.comment__avatar} />
+                <img src={comment.avatar} alt="commenter avatar" className={styles.comment__avatar} />
             ) : (
                 <DefaultAvatar />
             )}
