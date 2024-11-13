@@ -14,6 +14,7 @@ import { ReactComponent as Dots } from '../../assets/dots.svg';
 import { ReactComponent as Edit } from '../../assets/edit_pen.svg';
 import { ReactComponent as Delete } from '../../assets/delete_trash.svg';
 import { ReactComponent as Comment } from '../../assets/comment.svg';
+import { ReactComponent as ActiveComment } from '../../assets/comment_active.svg';
 import { ReactComponent as Likes } from '../../assets/heart.svg';
 import { ReactComponent as FillLikes } from '../../assets/active_heart.svg';
 import { ReactComponent as Bookmark } from '../../assets/bookmark_icon.svg';
@@ -61,6 +62,13 @@ export default function PostBox({ post }: postBoxProps) {
                 likesCount: post.likesCount ? post.likesCount + 1 : 1,
             });
         }
+    };
+
+    const hasUserCommented = () => {
+        if (user && post.comments) {
+            return post.comments?.some(comment => comment.uid === user?.uid);
+        }
+        return;
     };
 
     return (
@@ -116,8 +124,8 @@ export default function PostBox({ post }: postBoxProps) {
             <div className="post__box__footer">
                 <div className="post__box__footer-btn">
                     <button type="button">
-                        <Comment />
-                        <span>{0}</span>
+                        {hasUserCommented() ? <ActiveComment /> : <Comment />}
+                        <span>{post.comments?.length || 0}</span>
                     </button>
                 </div>
                 <div className="post__box__footer-btn">

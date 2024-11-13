@@ -7,6 +7,7 @@ import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
 import PostForm from 'components/posts/PostForm';
 import AuthContext from 'context/AuthContext';
+import { CommentType } from 'components/comments/CommentForm';
 
 export interface PostType {
     id: string;
@@ -16,6 +17,7 @@ export interface PostType {
     imageUrl?: string;
     like?: string[];
     likesCount?: number;
+    comments?: CommentType[];
     uid: string;
     email: string;
     name: string;
@@ -26,7 +28,7 @@ export default function HomePage() {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [posts, setPosts] = useState<PostType[]>([]);
-    console.log(user);
+
     useEffect(() => {
         // 로그인 여부 확인
         if (user) {

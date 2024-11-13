@@ -6,6 +6,9 @@ import { PostType } from 'pages/home';
 import Header from 'components/common/Header';
 import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
+import { postRef } from 'constants/refs';
+import CommentForm, { CommentType } from 'components/comments/CommentForm';
+import CommentBox from 'components/comments/CommentBox';
 
 export default function PostDetailPage() {
     const params = useParams();
@@ -13,10 +16,9 @@ export default function PostDetailPage() {
 
     const getPost = useCallback(async () => {
         if (params.postId) {
-            const docRef = doc(db, 'posts', params.postId);
-            // const docSnap = await getDoc(docRef);
+            // const docSnap = await getDoc(postRef(params.id as string));
 
-            onSnapshot(docRef, doc => {
+            onSnapshot(postRef(params.postId as string), doc => {
                 setPost({ ...(doc.data() as PostType), id: doc.id });
             });
         }
@@ -31,7 +33,21 @@ export default function PostDetailPage() {
     return (
         <>
             <Header title="" />
-            <div>{post ? <PostBox post={post} /> : <NoPostBox />}</div>
+            {post ? (
+                <div>
+                    <PostBox post={post} />
+                    <CommentForm post={post} />
+                    {post.comments &&
+                        post.comments
+                            .slice(0)
+                            .reverse()
+                            .map((comment: CommentType, index: number) => (
+                                <CommentBox key={index} comment={comment} post={post} />
+                            ))}
+                </div>
+            ) : (
+                <NoPostBox />
+            )}
         </>
     );
 }

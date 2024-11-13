@@ -1,1 +1,129 @@
 @import '../../styles/utills';
+
+.button {
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 0.5;
+    }
+}
+
+.comment_form {
+    width: 100%;
+    border-bottom: 1px solid $border;
+    display: flex;
+
+    &__textarea {
+        width: calc(100% - 2rem);
+        min-height: 3rem;
+        padding: 1rem 1rem 1rem 4.5rem;
+        display: block;
+        border: none;
+        resize: none;
+        outline: none;
+        font-size: 1rem;
+    }
+
+    &__submit {
+        &_area {
+            padding: 0.25rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &_btn {
+            @extend .button;
+            padding: 0.5rem 1rem;
+            background-color: $primary;
+            border-radius: 1rem;
+            font-weight: 600;
+            color: $black;
+
+            &:hover,
+            &:focus {
+                background-color: $darkPrimary;
+                color: $white;
+            }
+        }
+    }
+}
+
+.comment {
+    border-bottom: 1px solid $border;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 3.7rem 1fr;
+
+    svg {
+        width: 3.2rem;
+        height: auto;
+    }
+
+    &__avatar {
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 9999px;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &__userInfo {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+
+            &_name {
+                font-size: 1rem;
+                font-weight: 600;
+            }
+
+            &_email {
+                font-size: 0.875rem;
+                color: $darkGray;
+            }
+
+            &_createdAt {
+                font-size: 0.75rem;
+                color: $gray;
+            }
+        }
+    }
+
+    &__deleteBtn {
+        padding: 0.1rem 0.12rem 0rem 0.12rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: 9999px;
+
+        &:hover,
+        &:focus {
+            svg {
+                fill: white;
+                background-color: $red;
+                border-radius: 9999px;
+            }
+        }
+
+        svg {
+            width: 1.5rem;
+            height: auto;
+            fill: $darkRed;
+        }
+    }
+
+    &__text {
+    }
+}
