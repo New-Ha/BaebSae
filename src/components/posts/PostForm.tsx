@@ -11,6 +11,7 @@ import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
 import { ReactComponent as Photo } from '../../assets/photo.svg';
 import { ReactComponent as Reset } from '../../assets/circle_x.svg';
 import { ROUTE_PATH } from 'constants/route';
+import { imageRef, postRef, storageRef } from 'constants/refs';
 
 interface PostFormType {
     id?: string;
@@ -82,23 +83,22 @@ export default function PostForm() {
         setIsSubmitting(true);
 
         const key = `${user?.uid}/${crypto.randomUUID()}`;
-        const storageRef = ref(storage, key);
 
         try {
             if (isEdit && post.id) {
-                let imgRef = ref(storage, post.imageUrl);
-                await deleteObject(imgRef).catch(error => {
-                    toast.error('게시글 수정 중 이미지 업로드에 실패하였습니다.');
-                });
+                if (post.imageUrl) {
+                    await deleteObject(imageRef(post.imageUrl as string)).catch(error => {
+                        toast.error('게시글 수정 중 이미지 업로드에 실패하였습니다.');
+                    });
+                }
 
                 let imgUrl = '';
                 if (imgFile) {
-                    const data = await uploadString(storageRef, imgFile, 'data_url');
+                    const data = await uploadString(storageRef(key), imgFile, 'data_url');
                     imgUrl = await getDownloadURL(data.ref);
                 }
 
-                const postRef = doc(db, 'posts', post.id);
-                await updateDoc(postRef, {
+                await updateDoc(postRef(post.id), {
                     content: post.content,
                     hashtags: post.hashtags || [],
                     imageUrl: imgFile ? imgUrl : null,
@@ -109,7 +109,7 @@ export default function PostForm() {
                 // image를 먼저 storage에 upload
                 let imgUrl = '';
                 if (imgFile) {
-                    const data = await uploadString(storageRef, imgFile, 'data_url');
+                    const data = await uploadString(storageRef(key), imgFile, 'data_url');
                     imgUrl = await getDownloadURL(data.ref);
                 }
 
@@ -147,11 +147,9 @@ export default function PostForm() {
 
     const getPost = useCallback(async () => {
         if (params.postId) {
-            const docRef = doc(db, 'posts', params.postId);
-            const docSnap = await getDoc(docRef);
+            const docSnap = await getDoc(postRef(params.postId));
             setPost({ ...(docSnap.data() as PostType), id: docSnap.id });
             setImgFile(docSnap.data()?.imageUrl);
-            setTag(docSnap.data()?.hashtags);
         }
     }, [params.postId]);
 
