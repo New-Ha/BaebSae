@@ -1,8 +1,8 @@
-import Navbar from 'components/layout/Navbar';
+import Navbar from 'components/common/Navbar';
 import { Outlet } from 'react-router-dom';
 
 import styles from './Layout.module.scss';
-import SearchBar from 'components/sidebar/SearchBar';
+import SearchBar from 'components/SearchBar';
 import RecommendBox from 'components/sidebar/RecommendBox';
 import PopularUserBox from 'components/sidebar/PopularUserBox';
 

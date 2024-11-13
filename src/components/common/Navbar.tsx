@@ -21,7 +21,7 @@ import { ReactComponent as ActivePopular } from '../../assets/popular_active.svg
 import { ReactComponent as UserCircle } from '../../assets/user_circle.svg';
 import { ReactComponent as ActiveUserCircle } from '../../assets/user_circle_active.svg';
 import { ReactComponent as Dots } from '../../assets/dots.svg';
-import styles from './Layout.module.scss';
+import styles from './common.module.scss';
 
 export default function Navbar() {
     const navigate = useNavigate();

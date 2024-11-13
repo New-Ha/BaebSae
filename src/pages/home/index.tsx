@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from 'firebaseApp';
-import Header from 'components/Header';
+import Header from 'components/common/Header';
 import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
 import PostForm from 'components/posts/PostForm';
@@ -26,7 +26,7 @@ export default function HomePage() {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [posts, setPosts] = useState<PostType[]>([]);
-
+    console.log(user);
     useEffect(() => {
         // 로그인 여부 확인
         if (user) {

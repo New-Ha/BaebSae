@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app } from 'firebaseApp';
 import { toast } from 'react-toastify';
-
 import { ROUTE_PATH } from 'constants/route';
 import OAuthLogin from 'components/users/OAuthLogin';
+
+import styles from './sign.module.scss';
 
 interface SignupInfo {
     email: string;
@@ -76,10 +77,10 @@ export default function SignupForm() {
     };
 
     return (
-        <form className="sign__form" onSubmit={handleSubmit}>
-            <div className="sign__form__title">회원가입</div>
-            <div className="sign__form__block">
-                <div className="sign__form__block-col">
+        <form className={styles.sign__form} onSubmit={handleSubmit}>
+            <div className={styles.sign__form__title}>회원가입</div>
+            <div className={styles.sign__form__block}>
+                <div className={styles.sign__form__block_col}>
                     <label htmlFor="email">이메일</label>
                     <input
                         type="text"
@@ -91,8 +92,8 @@ export default function SignupForm() {
                     />
                 </div>
             </div>
-            <div className="sign__form__block">
-                <div className="sign__form__block-col">
+            <div className={styles.sign__form__block}>
+                <div className={styles.sign__form__block_col}>
                     <label htmlFor="password">비밀번호</label>
                     <input
                         type="password"
@@ -104,8 +105,8 @@ export default function SignupForm() {
                     />
                 </div>
             </div>
-            <div className="sign__form__block">
-                <div className="sign__form__block-col">
+            <div className={styles.sign__form__block}>
+                <div className={styles.sign__form__block_col}>
                     <label htmlFor="passwordConfirm">비밀번호 확인</label>
                     <input
                         type="password"
@@ -118,22 +119,22 @@ export default function SignupForm() {
                 </div>
             </div>
             {error && error?.length > 0 && (
-                <div className="sign__form__block">
-                    <div className="form__error">{error}</div>
+                <div className={styles.sign__form__block}>
+                    <div className={styles.sign__form__error}>{error}</div>
                 </div>
             )}
-            <div className="sign__form__block">
+            <div className={styles.sign__form__block_link}>
                 계정이 있으신가요?
-                <Link to={ROUTE_PATH.LOGIN} className="sign__form__link">
+                <Link to={ROUTE_PATH.LOGIN} className={styles.sign__form__link}>
                     로그인하러 가기
                 </Link>
             </div>
-            <div className="sign__form__block">
-                <button type="submit" className="sign__form__btn--submit">
+            <div className={styles.sign__form__block}>
+                <button type="submit" className={styles.sign__form__btn_submit}>
                     회원가입
                 </button>
             </div>
-            <div className="sign__form__block">
+            <div className={styles.sign__form__block}>
                 <OAuthLogin />
             </div>
         </form>

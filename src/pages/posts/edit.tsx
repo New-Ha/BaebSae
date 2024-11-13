@@ -1,4 +1,4 @@
-import Header from 'components/Header';
+import Header from 'components/common/Header';
 import PostForm from 'components/posts/PostForm';
 
 export default function PostEditPage() {

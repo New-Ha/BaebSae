@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider, RouteObject, Navigate } from 'reac
 
 import { ROUTE_PATH } from 'constants/route';
 import HomePage from 'pages/home';
-import PostListPage from 'pages/posts';
 import CreatePostPage from 'pages/posts/create';
 import PostEditPage from 'pages/posts/edit';
 import PostDetailPage from 'pages/posts/detail';
@@ -15,6 +14,7 @@ import NotificationsPage from 'pages/notifications';
 import LoginPage from 'pages/user/login';
 import SignupPage from 'pages/user/signup';
 import MainLayout from 'components/layout/MainLayout';
+import SignLayout from 'components/layout/SignLayout';
 
 interface RouterProps {
     isAuthenticated: boolean;
@@ -26,7 +26,6 @@ const authenticatedRoutes: RouteObject[] = [
         element: <MainLayout />,
         children: [
             { path: ROUTE_PATH.HOME, element: <HomePage /> },
-            { path: ROUTE_PATH.POST, element: <PostListPage /> },
             { path: ROUTE_PATH.POST_CREATE, element: <CreatePostPage /> },
             { path: ROUTE_PATH.POST_EDIT, element: <PostEditPage /> },
             { path: ROUTE_PATH.POST_DETAIL, element: <PostDetailPage /> },
@@ -41,8 +40,14 @@ const authenticatedRoutes: RouteObject[] = [
 ];
 
 const unauthenticatedRoutes: RouteObject[] = [
-    { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
-    { path: ROUTE_PATH.SIGNUP, element: <SignupPage /> },
+    {
+        path: '',
+        element: <SignLayout />,
+        children: [
+            { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
+            { path: ROUTE_PATH.SIGNUP, element: <SignupPage /> },
+        ],
+    },
     { path: '*', element: <Navigate replace to={ROUTE_PATH.LOGIN} /> },
 ];
 

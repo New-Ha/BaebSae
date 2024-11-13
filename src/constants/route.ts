@@ -1,6 +1,5 @@
 export const ROUTE_PATH = {
     HOME: '/',
-    POST: '/posts',
     POST_CREATE: '/posts/create',
     POST_DETAIL: '/posts/:postId',
     POST_EDIT: '/posts/edit/:postId',

@@ -1,13 +1,15 @@
-import UserBox from 'components/UserBox';
+import UserBox from './UserBox';
 import { ReactComponent as Reset } from '../../assets/init_arrow.svg';
+
+import styles from './sidebar.module.scss';
 
 export default function RecommendBox() {
     const recommendList = [0, 1, 2, 3, 4];
     return (
-        <div className="side__box">
-            <div className="side__box__header">
+        <div className={styles.side__box}>
+            <div className={styles.side__box__header}>
                 <span>You might like</span>
-                <button type="button" className="side__box__header-btn">
+                <button type="button" className={styles.side__box__header_btn}>
                     <Reset />
                 </button>
             </div>

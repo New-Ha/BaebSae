@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from 'firebaseApp';
 import { PostType } from 'pages/home';
-import Header from 'components/Header';
+import Header from 'components/common/Header';
 import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
 

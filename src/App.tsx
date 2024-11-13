@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from 'firebaseApp';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,6 +23,7 @@ function App() {
             setInit(true);
         });
     }, [auth]);
+
     return (
         <>
             <ToastContainer autoClose={1500} hideProgressBar newestOnTop />
