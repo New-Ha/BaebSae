@@ -1,20 +1,17 @@
-import { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
+
 import { ReactComponent as Bapsae } from '../../assets/bapsae.svg';
 import styles from './Layout.module.scss';
 
-interface SignLayoutProps {
-    children: ReactNode;
-}
-
-export default function SignLayout({ children }: SignLayoutProps) {
+export default function SignLayout() {
     return (
-        <div className={styles.layout}>
-            <div className={styles.sign}>
-                <div className={styles.sign__grid}>
-                    <div className={styles.sign__bapsae}>
-                        <Bapsae />
-                    </div>
-                    <div className={styles.sign__content}>{children}</div>
+        <div className={styles.sign}>
+            <div className={styles.sign__grid}>
+                <div className={styles.sign__left}>
+                    <Bapsae />
+                </div>
+                <div className={styles.sign__content}>
+                    <Outlet />
                 </div>
             </div>
         </div>

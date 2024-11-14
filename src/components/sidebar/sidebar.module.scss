@@ -1,0 +1,64 @@
+@import '../../styles/utills';
+
+.side__box {
+    width: 100%;
+    padding: 1rem;
+    background-color: $bgGray;
+    border-radius: 1.25rem;
+
+    &__header {
+        padding: 0.25rem 0.25rem 0.7rem 0.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        span {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        &_btn {
+            padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+            border: none;
+            background: none;
+            border-radius: 1.25rem;
+            cursor: pointer;
+
+            svg {
+                width: 1rem;
+                height: auto;
+            }
+
+            &:hover,
+            &:focus {
+                background-color: $lightGray;
+            }
+        }
+    }
+}
+
+// user box
+.userBox {
+	margin-bottom: 0.75rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+
+	svg {
+			width: 2.5rem;
+			height: auto;
+	}
+
+	&__profile {
+			&__name {
+					font-size: 1rem;
+					font-weight: 500;
+			}
+
+			&__email {
+					font-size: 0.875rem;
+					font-weight: 300;
+			}
+	}
+}
+

@@ -1,17 +1,64 @@
-import { getAuth, signOut } from 'firebase/auth';
-import { app } from 'firebaseApp';
-import { toast } from 'react-toastify';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { db } from 'firebaseApp';
+import Header from 'components/common/Header';
+import NoPostBox from 'components/posts/NoPostBox';
+import PostBox from 'components/posts/PostBox';
+import PostForm from 'components/posts/PostForm';
+import AuthContext from 'context/AuthContext';
+import { CommentType } from 'components/comments/CommentForm';
+
+export interface PostType {
+    id: string;
+    content: string;
+    createdAt: string;
+    hashtags?: string[];
+    imageUrl?: string;
+    like?: string[];
+    likesCount?: number;
+    comments?: CommentType[];
+    uid: string;
+    email: string;
+    name: string;
+    avatar: string;
+}
 
 export default function HomePage() {
-    const onClickLogout = async () => {
-        const auth = getAuth(app);
-        await signOut(auth);
-        toast.success('로그아웃 되었습니다.');
-    };
+    const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+    const [posts, setPosts] = useState<PostType[]>([]);
+
+    useEffect(() => {
+        // 로그인 여부 확인
+        if (user) {
+            let postsRef = collection(db, 'posts');
+            const postsQuery = query(postsRef, orderBy('createdAt', 'desc'));
+            onSnapshot(postsQuery, snapshot => {
+                let dataObj = snapshot.docs.map(doc => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                setPosts(dataObj as PostType[]);
+            });
+        }
+    }, [user]);
 
     return (
-        <div>
-            <button onClick={onClickLogout}>logout</button>
-        </div>
+        <main className="home">
+            <Header title="Home" />
+            <PostForm />
+            <div className="">
+                {posts.length > 0 ? (
+                    posts.map(post => (
+                        <div key={post.id} className="post__nav-detail" onClick={() => navigate(`/posts/${post.id}`)}>
+                            <PostBox post={post} />
+                        </div>
+                    ))
+                ) : (
+                    <NoPostBox />
+                )}
+            </div>
+        </main>
     );
 }
