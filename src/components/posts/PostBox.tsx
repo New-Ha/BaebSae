@@ -76,6 +76,19 @@ export default function PostBox({ post }: postBoxProps) {
         return;
     };
 
+    const handleSharePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+
+        const postUrl = `${window.location.origin}/posts/${post.id}`;
+        try {
+            await navigator.clipboard.writeText(postUrl);
+            toast.success('링크를 클립보드에 저장하였습니다.');
+        } catch (error) {
+            console.log(error);
+            toast.error('링크 복사에 실패했습니다. 다시 시도해주세요.');
+        }
+    };
+
     const handleBookmark = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
 
@@ -197,7 +210,7 @@ export default function PostBox({ post }: postBoxProps) {
                     </button>
                 </div>
                 <div className="post__box__footer-btn">
-                    <button type="button">
+                    <button type="button" onClick={handleSharePost}>
                         <Share />
                     </button>
                 </div>
