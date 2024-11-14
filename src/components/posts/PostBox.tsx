@@ -1,13 +1,13 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { deleteObject } from 'firebase/storage';
 import { db } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 import { ROUTE_PATH } from 'constants/route';
-import { imageRef, postRef } from 'constants/refs';
+import { bookmarksRef, imageRef, postRef } from 'constants/refs';
 import BeMyFriend from 'components/posts/BeMyFriend';
 
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
@@ -19,16 +19,20 @@ import { ReactComponent as ActiveComment } from '../../assets/comment_active.svg
 import { ReactComponent as Likes } from '../../assets/heart.svg';
 import { ReactComponent as FillLikes } from '../../assets/active_heart.svg';
 import { ReactComponent as Bookmark } from '../../assets/bookmark_icon.svg';
+import { ReactComponent as ActiveBookmark } from '../../assets/bookmark_icon_active.svg';
 import { ReactComponent as Share } from '../../assets/share.svg';
 
 interface postBoxProps {
     post: PostType;
 }
 
+// bookmarks : id:string ,bookmarks: PostType[];
+
 export default function PostBox({ post }: postBoxProps) {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [drop, setDrop] = useState(false);
+    const [bookmarks, setBookmarks] = useState<string[]>([]);
 
     const handleDeletePost = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         const confirm = window.confirm('해당 게시글을 삭제하시겠습니까?');
@@ -71,6 +75,56 @@ export default function PostBox({ post }: postBoxProps) {
         }
         return;
     };
+
+    const handleBookmark = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+
+        try {
+            if (user?.uid) {
+                const bookmarkDocSnap = await getDoc(bookmarksRef(user.uid));
+
+                if (bookmarkDocSnap.exists()) {
+                    const userData = bookmarkDocSnap.data();
+
+                    if (userData.posts) {
+                        if (userData.posts.includes(post.id)) {
+                            await updateDoc(bookmarksRef(user.uid), {
+                                posts: arrayRemove(post.id),
+                            });
+                            toast.success('북마크에서 삭제되었습니다.');
+                        } else {
+                            await updateDoc(bookmarksRef(user.uid), {
+                                posts: arrayUnion(post.id),
+                            });
+                            toast.success('북마크에 추가되었습니다.');
+                        }
+                    }
+                } else {
+                    await setDoc(bookmarksRef(user.uid), {
+                        posts: [post.id],
+                    });
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('북마크 처리 중 오류가 발생했습니다.');
+        }
+    };
+
+    useEffect(() => {
+        if (!user?.uid) return;
+
+        const unsubscribe = onSnapshot(bookmarksRef(user.uid), doc => {
+            const posts = doc.data()?.posts;
+            if (posts.length > 0) {
+                setBookmarks(posts);
+            } else {
+                setBookmarks([]);
+            }
+        });
+
+        return () => unsubscribe();
+    }, [user?.uid]);
 
     return (
         <div className="post">
@@ -138,8 +192,8 @@ export default function PostBox({ post }: postBoxProps) {
                     </button>
                 </div>
                 <div className="post__box__footer-btn">
-                    <button type="button">
-                        <Bookmark />
+                    <button type="button" onClick={handleBookmark}>
+                        {bookmarks.some((id: string) => id === post.id) ? <ActiveBookmark /> : <Bookmark />}
                     </button>
                 </div>
                 <div className="post__box__footer-btn">
