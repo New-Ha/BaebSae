@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
@@ -7,7 +7,7 @@ import { db } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 import { ROUTE_PATH } from 'constants/route';
-import { bookmarksRef, imageRef, postRef } from 'constants/refs';
+import { bookmarksDocumentRef, postDocumentRef, storageRef } from 'constants/refs';
 import BeMyFriend from 'components/posts/BeMyFriend';
 
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
@@ -40,7 +40,7 @@ export default function PostBox({ post }: postBoxProps) {
         if (confirm) {
             // 이미지가 있는 게시글이라면, 삭제시 storage 내의 이미지도 삭제
             if (post.imageUrl) {
-                deleteObject(imageRef(post.imageUrl)).catch(error => {
+                deleteObject(storageRef(post.imageUrl)).catch(error => {
                     toast.error('게시글 삭제 중 문제가 발생했습니다.');
                     console.log(error);
                 });
@@ -56,13 +56,13 @@ export default function PostBox({ post }: postBoxProps) {
         e.stopPropagation();
         if (user?.uid && post.like?.includes(user?.uid)) {
             // 사용자가 좋아요한 게시글이라면 좋아요를 취소하는 arrayRemove() 사용
-            await updateDoc(postRef(post.id), {
+            await updateDoc(postDocumentRef(post.id), {
                 like: arrayRemove(user.uid),
                 likesCount: post.likesCount ? post.likesCount - 1 : 0,
             });
         } else {
             // 사용자가 좋아요한 게시글이 아니면 좋아요에 추가하는 arrayUnion() 사용
-            await updateDoc(postRef(post.id), {
+            await updateDoc(postDocumentRef(post.id), {
                 like: arrayUnion(user?.uid),
                 likesCount: post.likesCount ? post.likesCount + 1 : 1,
             });
@@ -94,26 +94,26 @@ export default function PostBox({ post }: postBoxProps) {
 
         try {
             if (user?.uid) {
-                const bookmarkDocSnap = await getDoc(bookmarksRef(user.uid));
+                const bookmarkDocSnap = await getDoc(bookmarksDocumentRef(user.uid));
 
                 if (bookmarkDocSnap.exists()) {
                     const userData = bookmarkDocSnap.data();
 
                     if (userData.posts) {
                         if (userData.posts.includes(post.id)) {
-                            await updateDoc(bookmarksRef(user.uid), {
+                            await updateDoc(bookmarksDocumentRef(user.uid), {
                                 posts: arrayRemove(post.id),
                             });
                             toast.success('북마크에서 삭제되었습니다.');
                         } else {
-                            await updateDoc(bookmarksRef(user.uid), {
+                            await updateDoc(bookmarksDocumentRef(user.uid), {
                                 posts: arrayUnion(post.id),
                             });
                             toast.success('북마크에 추가되었습니다.');
                         }
                     }
                 } else {
-                    await setDoc(bookmarksRef(user.uid), {
+                    await setDoc(bookmarksDocumentRef(user.uid), {
                         posts: [post.id],
                     });
                 }
@@ -127,7 +127,7 @@ export default function PostBox({ post }: postBoxProps) {
     useEffect(() => {
         if (!user?.uid) return;
 
-        const unsubscribe = onSnapshot(bookmarksRef(user.uid), doc => {
+        const unsubscribe = onSnapshot(bookmarksDocumentRef(user.uid), doc => {
             const posts = doc.data()?.posts;
             if (posts?.length > 0) {
                 setBookmarks(posts);

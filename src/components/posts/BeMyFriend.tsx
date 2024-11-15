@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { arrayRemove, arrayUnion, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
-import { fiendRef, partnerRef } from 'constants/refs';
+import { friendDocumentRef, partnerDocumentRef } from 'constants/refs';
 import { PostType } from 'pages/home';
 import { toast } from 'react-toastify';
 
@@ -27,14 +27,14 @@ export default function BeMyFriend({ post }: FollowingProps) {
         try {
             if (user?.uid) {
                 await setDoc(
-                    fiendRef(user.uid),
+                    friendDocumentRef(user.uid),
                     {
                         users: arrayUnion({ id: post.uid }),
                     },
                     { merge: true },
                 );
 
-                await setDoc(partnerRef(post.uid), {
+                await setDoc(partnerDocumentRef(post.uid), {
                     users: arrayUnion({ id: user.uid }, { merge: true }),
                 });
             }
@@ -50,11 +50,11 @@ export default function BeMyFriend({ post }: FollowingProps) {
 
         try {
             if (user?.uid) {
-                await updateDoc(fiendRef(user.uid), {
+                await updateDoc(friendDocumentRef(user.uid), {
                     users: arrayRemove({ id: post.uid }),
                 });
 
-                await updateDoc(partnerRef(post.uid), {
+                await updateDoc(partnerDocumentRef(post.uid), {
                     users: arrayRemove({ id: user.uid }),
                 });
             }
@@ -66,7 +66,7 @@ export default function BeMyFriend({ post }: FollowingProps) {
 
     const getFriends = useCallback(async () => {
         if (post.uid) {
-            onSnapshot(partnerRef(post.uid), doc => {
+            onSnapshot(partnerDocumentRef(post.uid), doc => {
                 setPostPartners([]);
                 doc.data()?.users.map((user: UserType) => setPostPartners((prev: string[]) => [...prev, user.id]));
             });

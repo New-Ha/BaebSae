@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from 'firebaseApp';
+import { onSnapshot } from 'firebase/firestore';
 import { PostType } from 'pages/home';
 import Header from 'components/common/Header';
 import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
-import { postRef } from 'constants/refs';
+import { postDocumentRef } from 'constants/refs';
 import CommentForm, { CommentType } from 'components/comments/CommentForm';
 import CommentBox from 'components/comments/CommentBox';
 
@@ -16,9 +15,9 @@ export default function PostDetailPage() {
 
     const getPost = useCallback(async () => {
         if (params.postId) {
-            // const docSnap = await getDoc(postRef(params.id as string));
+            // const docSnap = await getDoc(postDocumentRef(params.id as string));
 
-            onSnapshot(postRef(params.postId as string), doc => {
+            onSnapshot(postDocumentRef(params.postId as string), doc => {
                 setPost({ ...(doc.data() as PostType), id: doc.id });
             });
         }

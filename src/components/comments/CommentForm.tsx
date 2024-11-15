@@ -3,7 +3,7 @@ import { PostType } from 'pages/home';
 import { arrayUnion, updateDoc } from 'firebase/firestore';
 import AuthContext from 'context/AuthContext';
 import { toast } from 'react-toastify';
-import { postRef } from 'constants/refs';
+import { postDocumentRef } from 'constants/refs';
 
 import styles from './comment.module.scss';
 
@@ -48,7 +48,7 @@ export default function CommentForm({ post }: CommentFormProps) {
                     }),
                 };
 
-                await updateDoc(postRef(post.id), {
+                await updateDoc(postDocumentRef(post.id), {
                     // arrayUnion : 새 요소(객체)를 배열에 추가해 줌
                     comments: arrayUnion(commentObj),
                 });

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import AuthContext from 'context/AuthContext';
 import { arrayRemove, updateDoc } from 'firebase/firestore';
-import { postRef } from 'constants/refs';
+import { postDocumentRef } from 'constants/refs';
 import { PostType } from 'pages/home';
 import { CommentType } from 'components/comments/CommentForm';
 import { toast } from 'react-toastify';
@@ -21,7 +21,7 @@ export default function CommentBox({ comment, post }: CommentBoxProps) {
     const handleDeleteComment = async () => {
         if (post && user) {
             try {
-                await updateDoc(postRef(post.id), {
+                await updateDoc(postDocumentRef(post.id), {
                     comments: arrayRemove(comment),
                 });
                 toast.success('댓글을 삭제했습니다.');
