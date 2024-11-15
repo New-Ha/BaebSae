@@ -7,15 +7,15 @@ import { PostType } from 'pages/home';
 import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
 
-export default function MyPostBox() {
+export default function MyPostPage() {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [myPosts, setMyPosts] = useState<PostType[]>([]);
 
     useEffect(() => {
-        if (user) {
+        if (user?.uid) {
             const myPostsQuery = query(
-                postListCollectionRef(),
+                postListCollectionRef,
                 where('uid', '==', user.uid),
                 orderBy('createdAt', 'desc'),
             );
@@ -28,7 +28,7 @@ export default function MyPostBox() {
                 setMyPosts(postsObj as PostType[]);
             });
         }
-    }, [user]);
+    }, [user?.uid]);
 
     return (
         <>

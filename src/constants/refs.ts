@@ -2,8 +2,6 @@ import { collection, doc } from 'firebase/firestore';
 import { ref } from 'firebase/storage';
 import { db, storage } from 'firebaseApp';
 
-export const postListDocumentRef = () => doc(db, 'posts');
-
 export const postDocumentRef = (postID: string) => doc(db, 'posts', postID);
 
 export const storageRef = (key: string) => ref(storage, key);
@@ -14,4 +12,4 @@ export const partnerDocumentRef = (userId: string) => doc(db, 'partner', userId)
 
 export const bookmarksDocumentRef = (userId: string) => doc(db, 'bookmarks', userId);
 
-export const postListCollectionRef = () => collection(db, 'posts');
+export const postListCollectionRef = collection(db, 'posts');

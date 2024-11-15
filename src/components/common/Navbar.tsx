@@ -86,9 +86,11 @@ export default function Navbar() {
                     </button>
                     <button
                         type="button"
-                        onClick={() => handleClickNav(ROUTE_PATH.PROFILE)}
-                        className={active === ROUTE_PATH.PROFILE ? styles.nav__flex__btnActive : styles.nav__flex__btn}>
-                        {active === ROUTE_PATH.PROFILE ? <ActiveUserCircle /> : <UserCircle />}
+                        onClick={() => handleClickNav(`${ROUTE_PATH.PROFILE}/${ROUTE_PATH.PROFILE_MY_POST}`)}
+                        className={
+                            active.includes(ROUTE_PATH.PROFILE) ? styles.nav__flex__btnActive : styles.nav__flex__btn
+                        }>
+                        {active.includes(ROUTE_PATH.PROFILE) ? <ActiveUserCircle /> : <UserCircle />}
                         <span className="nav__grid--text">Profile</span>
                     </button>
                 </nav>
