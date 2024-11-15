@@ -20,12 +20,19 @@ export default function ProfilePage() {
         <div className="profile">
             <Header title={`${user?.displayName || '사용자'} Profile`} />
             <ProfileSetForm />
-            <div className="profile__tabs">
-                {tabs.map(tab => (
-                    <button key={tab.label} type="button" onClick={() => setCurTab(tab.label)}>
-                        {tab.label}
-                    </button>
-                ))}
+            <div className="profile__content">
+                <div className="profile__tabs">
+                    {tabs.map(tab => (
+                        <button
+                            key={tab.label}
+                            type="button"
+                            onClick={() => setCurTab(tab.label)}
+                            className={`${curTab === tab.label ? 'profile__tabs-tab-active' : 'profile__tabs-tab'}`}
+                            disabled={curTab === tab.label}>
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
                 {tabs.map(tab => curTab === tab.label && <div key={tab.label}>{tab.component}</div>)}
             </div>
         </div>
