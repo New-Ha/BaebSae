@@ -129,7 +129,7 @@ export default function PostBox({ post }: postBoxProps) {
 
         const unsubscribe = onSnapshot(bookmarksRef(user.uid), doc => {
             const posts = doc.data()?.posts;
-            if (posts.length > 0) {
+            if (posts?.length > 0) {
                 setBookmarks(posts);
             } else {
                 setBookmarks([]);
