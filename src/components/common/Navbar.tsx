@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import AuthContext from 'context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from 'firebaseApp';
 import { toast } from 'react-toastify';
@@ -25,8 +25,9 @@ import styles from './common.module.scss';
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const path = useLocation();
     const { user } = useContext(AuthContext);
-    const [active, setActive] = useState<string>(ROUTE_PATH.HOME);
+    const [active, setActive] = useState<string>(path.pathname);
 
     const handleClickNav = (path: string) => {
         setActive(path);
