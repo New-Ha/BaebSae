@@ -1,13 +1,26 @@
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import {
+    arrayRemove,
+    arrayUnion,
+    deleteDoc,
+    doc,
+    getCountFromServer,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    query,
+    setDoc,
+    updateDoc,
+    where,
+} from 'firebase/firestore';
 import { deleteObject } from 'firebase/storage';
 import { db } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 import { ROUTE_PATH } from 'constants/route';
-import { bookmarksDocumentRef, postDocumentRef, storageRef } from 'constants/refs';
+import { bookmarksDocumentRef, commentCollectionRef, postDocumentRef, storageRef } from 'constants/refs';
 import BeMyFriend from 'components/posts/BeMyFriend';
 
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
@@ -26,13 +39,13 @@ interface postBoxProps {
     post: PostType;
 }
 
-// bookmarks : id:string ,bookmarks: PostType[];
-
 export default function PostBox({ post }: postBoxProps) {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [drop, setDrop] = useState(false);
     const [bookmarks, setBookmarks] = useState<string[]>([]);
+    const [commentsCount, setCommentsCount] = useState<number>(0);
+    const [hasUserCommented, setHasUserCommented] = useState<boolean>(false);
 
     const handleDeletePost = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         const confirm = window.confirm('해당 게시글을 삭제하시겠습니까?');
@@ -67,13 +80,6 @@ export default function PostBox({ post }: postBoxProps) {
                 likesCount: post.likesCount ? post.likesCount + 1 : 1,
             });
         }
-    };
-
-    const hasUserCommented = () => {
-        if (user && post.comments) {
-            return post.comments?.some(comment => comment.uid === user?.uid);
-        }
-        return;
     };
 
     const handleSharePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -127,7 +133,7 @@ export default function PostBox({ post }: postBoxProps) {
     useEffect(() => {
         if (!user?.uid) return;
 
-        const unsubscribe = onSnapshot(bookmarksDocumentRef(user.uid), doc => {
+        onSnapshot(bookmarksDocumentRef(user.uid), doc => {
             const posts = doc.data()?.posts;
             if (posts?.length > 0) {
                 setBookmarks(posts);
@@ -135,9 +141,22 @@ export default function PostBox({ post }: postBoxProps) {
                 setBookmarks([]);
             }
         });
-
-        return () => unsubscribe();
     }, [user?.uid]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const countSnapshot = await getCountFromServer(query(commentCollectionRef(post.id)));
+                setCommentsCount(countSnapshot.data().count);
+
+                const uidQuery = query(commentCollectionRef(post.id), where('uid', '==', user?.uid));
+                const uidSnapshot = await getDocs(uidQuery);
+                setHasUserCommented(!uidSnapshot.empty);
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }, [post.id, user?.uid]);
 
     return (
         <div className="post">
@@ -194,8 +213,8 @@ export default function PostBox({ post }: postBoxProps) {
             <div className="post__box__footer">
                 <div className="post__box__footer-btn">
                     <button type="button">
-                        {hasUserCommented() ? <ActiveComment /> : <Comment />}
-                        <span>{post.comments?.length || 0}</span>
+                        {hasUserCommented ? <ActiveComment /> : <Comment />}
+                        <span>{commentsCount || 0}</span>
                     </button>
                 </div>
                 <div className="post__box__footer-btn">
