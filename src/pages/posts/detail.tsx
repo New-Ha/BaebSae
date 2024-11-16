@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, orderBy, query } from 'firebase/firestore';
 import { PostType } from 'pages/home';
 import Header from 'components/common/Header';
 import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
-import { postDocumentRef } from 'constants/refs';
+import { commentCollectionRef, postDocumentRef } from 'constants/refs';
 import CommentForm, { CommentType } from 'components/comments/CommentForm';
 import CommentBox from 'components/comments/CommentBox';
 
 export default function PostDetailPage() {
     const params = useParams();
     const [post, setPost] = useState<PostType | null>(null);
+    const [comments, setComments] = useState<CommentType[]>([]);
 
     const getPost = useCallback(async () => {
         if (params.postId) {
@@ -29,6 +30,17 @@ export default function PostDetailPage() {
         }
     }, [params.postId, getPost]);
 
+    useEffect(() => {
+        const commentsQuery = query(commentCollectionRef(params.postId as string), orderBy('createdAt', 'desc'));
+        onSnapshot(commentsQuery, snapshot => {
+            let commentObj = snapshot.docs.map(doc => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            setComments(commentObj as CommentType[]);
+        });
+    }, [params.postId]);
+
     return (
         <>
             <Header title="" />
@@ -36,13 +48,10 @@ export default function PostDetailPage() {
                 <div>
                     <PostBox post={post} />
                     <CommentForm post={post} />
-                    {post.comments &&
-                        post.comments
-                            .slice(0)
-                            .reverse()
-                            .map((comment: CommentType, index: number) => (
-                                <CommentBox key={index} comment={comment} post={post} />
-                            ))}
+                    {comments.length > 0 &&
+                        comments.map((comment: CommentType) => (
+                            <CommentBox key={comment.id} comment={comment} post={post} />
+                        ))}
                 </div>
             ) : (
                 <NoPostBox />

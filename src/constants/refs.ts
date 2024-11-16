@@ -13,3 +13,5 @@ export const partnerDocumentRef = (userId: string) => doc(db, 'partner', userId)
 export const bookmarksDocumentRef = (userId: string) => doc(db, 'bookmarks', userId);
 
 export const postListCollectionRef = collection(db, 'posts');
+
+export const commentCollectionRef = (postId: string) => collection(postDocumentRef(postId), 'comments');

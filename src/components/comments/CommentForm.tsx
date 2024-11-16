@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
 import { PostType } from 'pages/home';
-import { arrayUnion, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, updateDoc } from 'firebase/firestore';
 import AuthContext from 'context/AuthContext';
 import { toast } from 'react-toastify';
-import { postDocumentRef } from 'constants/refs';
+import { commentCollectionRef, postDocumentRef } from 'constants/refs';
 
 import styles from './comment.module.scss';
 
@@ -12,6 +12,7 @@ export interface CommentFormProps {
 }
 
 export interface CommentType {
+    id: string;
     comment: string;
     uid: string;
     name: string;
@@ -33,6 +34,7 @@ export default function CommentForm({ post }: CommentFormProps) {
 
     const onsubmitComment = async (e: any) => {
         e.preventDefault();
+
         if (post && user) {
             try {
                 const commentObj = {
@@ -48,10 +50,7 @@ export default function CommentForm({ post }: CommentFormProps) {
                     }),
                 };
 
-                await updateDoc(postDocumentRef(post.id), {
-                    // arrayUnion : 새 요소(객체)를 배열에 추가해 줌
-                    comments: arrayUnion(commentObj),
-                });
+                await addDoc(commentCollectionRef(post.id), commentObj);
 
                 setComment('');
                 toast.success('댓글이 등록되었습니다.');
