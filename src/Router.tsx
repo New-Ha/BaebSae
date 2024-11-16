@@ -18,6 +18,7 @@ import MyPostPage from 'pages/profile/post';
 import MyFriendPage from 'pages/profile/friend';
 import MyLikesPage from 'pages/profile/activity/likes';
 import MyRepliesPage from 'pages/profile/activity/replies';
+import MyActivityPage from 'pages/profile/activity';
 
 interface RouterProps {
     isAuthenticated: boolean;
@@ -50,6 +51,7 @@ const authenticatedRoutes: RouteObject[] = [
                     },
                     {
                         path: ROUTE_PATH.PROFILE_ACTIVITY,
+                        element: <MyActivityPage />,
                         children: [
                             { path: ROUTE_PATH.PROFILE_ACTIVITY_LIKES, element: <MyLikesPage /> },
                             { path: ROUTE_PATH.PROFILE_ACTIVITY_REPLIES, element: <MyRepliesPage /> },
