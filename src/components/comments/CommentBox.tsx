@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 import AuthContext from 'context/AuthContext';
-import { arrayRemove, updateDoc } from 'firebase/firestore';
-import { postDocumentRef } from 'constants/refs';
-import { PostType } from 'pages/home';
+import { deleteDoc } from 'firebase/firestore';
+import { commentDocumentRef } from 'constants/refs';
 import { CommentType } from 'components/comments/CommentForm';
 import { toast } from 'react-toastify';
 
@@ -12,18 +11,16 @@ import styles from './comment.module.scss';
 
 interface CommentBoxProps {
     comment: CommentType;
-    post: PostType;
+    postId?: string;
 }
 
-export default function CommentBox({ comment, post }: CommentBoxProps) {
+export default function CommentBox({ comment, postId }: CommentBoxProps) {
     const { user } = useContext(AuthContext);
 
     const handleDeleteComment = async () => {
-        if (post && user) {
+        if (postId && user && comment) {
             try {
-                await updateDoc(postDocumentRef(post.id), {
-                    comments: arrayRemove(comment),
-                });
+                await deleteDoc(commentDocumentRef({ postId, commentId: comment.id }));
                 toast.success('댓글을 삭제했습니다.');
             } catch (error) {
                 toast.error('댓글 삭제 중 문제가 발생하였습니다.');
@@ -33,7 +30,7 @@ export default function CommentBox({ comment, post }: CommentBoxProps) {
 
     return (
         <div key={comment.createdAt} className={styles.comment}>
-            {post.avatar ? (
+            {comment.avatar ? (
                 <img src={comment.avatar} alt="commenter avatar" className={styles.comment__avatar} />
             ) : (
                 <DefaultAvatar />
@@ -45,7 +42,7 @@ export default function CommentBox({ comment, post }: CommentBoxProps) {
                         <div className={styles.comment__top__userInfo_email}>@{comment.email.split('@')[0]}</div>
                         <div className={styles.comment__top__userInfo_createdAt}>{comment.createdAt}</div>
                     </div>
-                    {comment.uid === user?.uid && (
+                    {postId && comment.uid === user?.uid && (
                         <button type="button" className={styles.comment__deleteBtn} onClick={handleDeleteComment}>
                             <Delete />
                         </button>

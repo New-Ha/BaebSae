@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
-import { PostType } from 'pages/home';
-import { addDoc, arrayUnion, collection, updateDoc } from 'firebase/firestore';
 import AuthContext from 'context/AuthContext';
+import { addDoc } from 'firebase/firestore';
+import { commentCollectionRef } from 'constants/refs';
 import { toast } from 'react-toastify';
-import { commentCollectionRef, postDocumentRef } from 'constants/refs';
+import { PostType } from 'pages/home';
 
 import styles from './comment.module.scss';
 

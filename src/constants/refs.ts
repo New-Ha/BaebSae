@@ -1,4 +1,4 @@
-import { collection, doc } from 'firebase/firestore';
+import { collection, collectionGroup, doc } from 'firebase/firestore';
 import { ref } from 'firebase/storage';
 import { db, storage } from 'firebaseApp';
 
@@ -15,3 +15,8 @@ export const bookmarksDocumentRef = (userId: string) => doc(db, 'bookmarks', use
 export const postListCollectionRef = collection(db, 'posts');
 
 export const commentCollectionRef = (postId: string) => collection(postDocumentRef(postId), 'comments');
+
+export const commentsCollectionGroupRef = collectionGroup(db, 'comments');
+
+export const commentDocumentRef = ({ postId, commentId }: { postId: string; commentId: string }) =>
+    doc(db, `posts/${postId}/comments/${commentId}`);

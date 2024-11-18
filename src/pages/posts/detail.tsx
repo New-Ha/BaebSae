@@ -50,7 +50,7 @@ export default function PostDetailPage() {
                     <CommentForm post={post} />
                     {comments.length > 0 &&
                         comments.map((comment: CommentType) => (
-                            <CommentBox key={comment.id} comment={comment} post={post} />
+                            <CommentBox key={comment.id} comment={comment} postId={params.postId as string} />
                         ))}
                 </div>
             ) : (
