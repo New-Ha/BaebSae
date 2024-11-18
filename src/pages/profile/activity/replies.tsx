@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
-import { getDocs, orderBy, query, where } from 'firebase/firestore';
-import { CommentType } from 'components/comments/CommentForm';
-import { commentsCollectionGroupRef } from 'constants/refs';
-import CommentBox from 'components/comments/CommentBox';
-import NoPostBox from 'components/posts/NoPostBox';
 import { useNavigate } from 'react-router-dom';
+import { getDocs, orderBy, query, where } from 'firebase/firestore';
+import { commentsCollectionGroupRef } from 'constants/refs';
+import { CommentType } from 'components/comments/CommentForm';
+import CommentBox from 'components/comments/CommentBox';
+import NoContentBox from 'components/posts/NoContentBox';
 
 export default function MyRepliesPage() {
     const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function MyRepliesPage() {
                     </div>
                 ))
             ) : (
-                <NoPostBox />
+                <NoContentBox text="등록한 댓글이 없습니다." />
             )}
         </div>
     );

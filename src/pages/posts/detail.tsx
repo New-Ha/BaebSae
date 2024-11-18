@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
+import { commentCollectionRef, postDocumentRef } from 'constants/refs';
 import { PostType } from 'pages/home';
 import Header from 'components/common/Header';
-import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
-import { commentCollectionRef, postDocumentRef } from 'constants/refs';
-import CommentForm, { CommentType } from 'components/comments/CommentForm';
+import NoContentBox from 'components/posts/NoContentBox';
 import CommentBox from 'components/comments/CommentBox';
+import CommentForm, { CommentType } from 'components/comments/CommentForm';
 
 export default function PostDetailPage() {
     const params = useParams();
@@ -54,7 +54,7 @@ export default function PostDetailPage() {
                         ))}
                 </div>
             ) : (
-                <NoPostBox />
+                <NoContentBox text="해당 게시글에 댓글이 존재하지 않습니다." />
             )}
         </>
     );

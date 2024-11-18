@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
+import AuthContext from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from 'firebaseApp';
 import Header from 'components/common/Header';
-import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
 import PostForm from 'components/posts/PostForm';
-import AuthContext from 'context/AuthContext';
+import NoContentBox from 'components/posts/NoContentBox';
 
 export interface PostType {
     id: string;
@@ -51,7 +51,7 @@ export default function HomePage() {
                         </div>
                     ))
                 ) : (
-                    <NoPostBox />
+                    <NoContentBox text="게시글이 존재하지 않습니다." />
                 )}
             </div>
         </main>

@@ -3,7 +3,7 @@ import AuthContext from 'context/AuthContext';
 import { onSnapshot } from 'firebase/firestore';
 import { friendDocumentRef } from 'constants/refs';
 import UserBox from 'components/sidebar/UserBox';
-import NoPostBox from 'components/posts/NoPostBox';
+import NoContentBox from 'components/posts/NoContentBox';
 
 export default function MyFriendPage() {
     const { user } = useContext(AuthContext);
@@ -32,7 +32,7 @@ export default function MyFriendPage() {
                     </div>
                 ))
             ) : (
-                <NoPostBox />
+                <NoContentBox text="추가한 친구가 없습니다." />
             )}
         </div>
     );

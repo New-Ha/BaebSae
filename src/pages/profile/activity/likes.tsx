@@ -3,8 +3,8 @@ import AuthContext from 'context/AuthContext';
 import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { postListCollectionRef } from 'constants/refs';
 import { PostType } from 'pages/home';
-import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
+import NoContentBox from 'components/posts/NoContentBox';
 
 export default function MyLikesPage() {
     const { user } = useContext(AuthContext);
@@ -30,7 +30,11 @@ export default function MyLikesPage() {
 
     return (
         <div>
-            {likePosts?.length > 0 ? likePosts.map(post => <PostBox key={post.id} post={post} />) : <NoPostBox />}
+            {likePosts?.length > 0 ? (
+                likePosts.map(post => <PostBox key={post.id} post={post} />)
+            ) : (
+                <NoContentBox text="좋아요를 한 게시글이 없습니다." />
+            )}
         </div>
     );
 }

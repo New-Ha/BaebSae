@@ -13,11 +13,11 @@ export default function PopularUserBox() {
                     <Setting />
                 </button>
             </div>
-            {popularList.map(pop => (
+            {/* {popularList.map(pop => (
                 <div key={pop}>
                     <UserBox />
                 </div>
-            ))}
+            ))} */}
         </div>
     );
 }

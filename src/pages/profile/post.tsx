@@ -4,8 +4,8 @@ import AuthContext from 'context/AuthContext';
 import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { postListCollectionRef } from 'constants/refs';
 import { PostType } from 'pages/home';
-import NoPostBox from 'components/posts/NoPostBox';
 import PostBox from 'components/posts/PostBox';
+import NoContentBox from 'components/posts/NoContentBox';
 
 export default function MyPostPage() {
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ export default function MyPostPage() {
                     </div>
                 ))
             ) : (
-                <NoPostBox />
+                <NoContentBox text="등록한 게시글이 없습니다." />
             )}
         </>
     );
