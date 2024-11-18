@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { deleteObject, getDownloadURL, uploadString } from 'firebase/storage';
 import { updateProfile } from 'firebase/auth';
-import { storageRef } from 'constants/refs';
+import { storageRef, userDocumentRef } from 'constants/refs';
 import { toast } from 'react-toastify';
 
 import styles from './profile.module.scss';
@@ -10,6 +10,7 @@ import { ReactComponent as DefaultAvatar } from '../../assets/bapsae_icon.svg';
 import { ReactComponent as Setting } from '../../assets/setting.svg';
 import { ReactComponent as Photo } from '../../assets/photo_fill.svg';
 import { ReactComponent as Delete } from '../../assets/circle_x.svg';
+import { updateDoc } from 'firebase/firestore';
 
 export default function ProfileSetForm() {
     const STORAGE_DOWNLOAD_URL_STR = 'https://firebasestorage.googleapis.com';
@@ -61,21 +62,21 @@ export default function ProfileSetForm() {
                 await updateProfile(user, {
                     displayName,
                     photoURL: newImgUrl,
-                })
-                    .then(() => {
-                        toast.success('프로필이 변경되었습니다.');
-                        setIsEdit(false);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        toast.error('프로필 수정 중 문제가 발생했습니다.');
-                    });
+                });
+
+                await updateDoc(userDocumentRef(user.uid), {
+                    displayName,
+                    photoURL: newImgUrl,
+                });
+
+                toast.success('프로필이 변경되었습니다.');
+                setIsEdit(false);
             }
         } catch (error) {
             console.log(error);
             toast.error('프로필 수정 중 문제가 발생했습니다.');
         } finally {
-            setIsSubmitting(true);
+            setIsSubmitting(false);
         }
     };
 
