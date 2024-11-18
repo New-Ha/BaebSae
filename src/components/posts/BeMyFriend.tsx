@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { arrayRemove, arrayUnion, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
-import { friendDocumentRef, partnerDocumentRef } from 'constants/refs';
+import { friendDocumentRef } from 'constants/refs';
 import { PostType } from 'pages/home';
 import { toast } from 'react-toastify';
 
@@ -14,7 +14,7 @@ interface FollowingProps {
 
 export default function BeMyFriend({ post }: FollowingProps) {
     const { user } = useContext(AuthContext);
-    const [postPartners, setPostPartners] = useState<string[]>([]);
+    const [friendList, setFriendList] = useState<string[]>([]);
 
     const handleAddFriend = async (e: any) => {
         e.preventDefault();
@@ -29,14 +29,10 @@ export default function BeMyFriend({ post }: FollowingProps) {
                     },
                     { merge: true },
                 );
-
-                await setDoc(partnerDocumentRef(post.uid), {
-                    users: arrayUnion({ id: user.uid }, { merge: true }),
-                });
             }
             toast.success('친구로 추가하였습니다.');
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            toast.error('친구 추가 중 오류가 발생했습니다.', error.code);
         }
     };
 
@@ -49,21 +45,29 @@ export default function BeMyFriend({ post }: FollowingProps) {
                 await updateDoc(friendDocumentRef(user.uid), {
                     users: arrayRemove({ id: post.uid }),
                 });
-
-                await updateDoc(partnerDocumentRef(post.uid), {
-                    users: arrayRemove({ id: user.uid }),
-                });
             }
             toast.success('친구목록에서 삭제되었습니다.');
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            toast.error('친구목록에서 삭제 중 오류가 발생했습니다.', error.code);
         }
     };
+
+    const getFriends = useCallback(async () => {
+        if (user?.uid) {
+            onSnapshot(friendDocumentRef(user.uid), snapshot => {
+                snapshot.data()?.users.map((friend: { id: string }) => setFriendList(prev => [...prev, friend.id]));
+            });
+        }
+    }, [user?.uid]);
+
+    useEffect(() => {
+        if (user?.uid && post.uid) getFriends();
+    }, [user?.uid, post.uid, getFriends]);
 
     return (
         <>
             {user?.uid !== post.uid &&
-                (postPartners.includes(user?.uid as string) ? (
+                (friendList.includes(post.uid as string) ? (
                     <button type="button" className="post__remove_friend" onClick={handleDeleteFriend}>
                         <MyFriend />
                         <span>내 친구</span>

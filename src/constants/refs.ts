@@ -8,8 +8,6 @@ export const storageRef = (key: string) => ref(storage, key);
 
 export const friendDocumentRef = (userId: string) => doc(db, 'friend', userId);
 
-export const partnerDocumentRef = (userId: string) => doc(db, 'partner', userId);
-
 export const bookmarksDocumentRef = (userId: string) => doc(db, 'bookmarks', userId);
 
 export const postListCollectionRef = collection(db, 'posts');
