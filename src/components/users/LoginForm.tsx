@@ -104,7 +104,7 @@ export default function LoginForm() {
                 </Link>
             </div>
             <div className={styles.sign__form__block}>
-                <button type="submit" className={styles.sign__form__btn_submit}>
+                <button type="submit" className={styles.sign__form__btn_submit} disabled={!!error}>
                     로그인
                 </button>
             </div>

@@ -7,6 +7,9 @@ import { ROUTE_PATH } from 'constants/route';
 import OAuthLogin from 'components/users/OAuthLogin';
 
 import styles from './sign.module.scss';
+import { userDocumentRef } from 'constants/refs';
+import { setDoc } from 'firebase/firestore';
+import { errorToast } from 'constants/errorToast';
 
 interface SignupInfo {
     email: string;
@@ -68,11 +71,20 @@ export default function SignupForm() {
         e.preventDefault();
         try {
             const auth = getAuth(app);
-            await createUserWithEmailAndPassword(auth, signupInfo.email, signupInfo.password);
+            const userCredential = await createUserWithEmailAndPassword(auth, signupInfo.email, signupInfo.password);
+            const user = userCredential.user;
+
+            await setDoc(userDocumentRef(user.uid), {
+                email: user.email,
+                displayName: user.displayName || '사용자',
+                photoURL: user.photoURL || '',
+                createdAt: new Date().toISOString(),
+            });
+
             navigate(ROUTE_PATH.HOME);
             toast.success('성공적으로 회원가입이 되었습니다.');
         } catch (error: any) {
-            toast.error(error.code);
+            errorToast(error.code);
         }
     };
 
@@ -130,7 +142,7 @@ export default function SignupForm() {
                 </Link>
             </div>
             <div className={styles.sign__form__block}>
-                <button type="submit" className={styles.sign__form__btn_submit}>
+                <button type="submit" className={styles.sign__form__btn_submit} disabled={!!error}>
                     회원가입
                 </button>
             </div>

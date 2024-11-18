@@ -1,13 +1,32 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import AuthContext from 'context/AuthContext';
+import { useContext, useEffect, useState } from 'react';
+import AuthContext, { UserType } from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import {
+    arrayRemove,
+    arrayUnion,
+    deleteDoc,
+    doc,
+    getCountFromServer,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    query,
+    setDoc,
+    updateDoc,
+    where,
+} from 'firebase/firestore';
 import { deleteObject } from 'firebase/storage';
 import { db } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 import { ROUTE_PATH } from 'constants/route';
-import { bookmarksRef, imageRef, postRef } from 'constants/refs';
+import {
+    bookmarksDocumentRef,
+    commentCollectionRef,
+    postDocumentRef,
+    storageRef,
+    userDocumentRef,
+} from 'constants/refs';
 import BeMyFriend from 'components/posts/BeMyFriend';
 
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
@@ -26,13 +45,14 @@ interface postBoxProps {
     post: PostType;
 }
 
-// bookmarks : id:string ,bookmarks: PostType[];
-
 export default function PostBox({ post }: postBoxProps) {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [drop, setDrop] = useState(false);
     const [bookmarks, setBookmarks] = useState<string[]>([]);
+    const [commentsCount, setCommentsCount] = useState<number>(0);
+    const [hasUserCommented, setHasUserCommented] = useState<boolean>(false);
+    const [author, setAuthor] = useState<UserType | null>(null);
 
     const handleDeletePost = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         const confirm = window.confirm('해당 게시글을 삭제하시겠습니까?');
@@ -40,7 +60,7 @@ export default function PostBox({ post }: postBoxProps) {
         if (confirm) {
             // 이미지가 있는 게시글이라면, 삭제시 storage 내의 이미지도 삭제
             if (post.imageUrl) {
-                deleteObject(imageRef(post.imageUrl)).catch(error => {
+                deleteObject(storageRef(post.imageUrl)).catch(error => {
                     toast.error('게시글 삭제 중 문제가 발생했습니다.');
                     console.log(error);
                 });
@@ -56,24 +76,17 @@ export default function PostBox({ post }: postBoxProps) {
         e.stopPropagation();
         if (user?.uid && post.like?.includes(user?.uid)) {
             // 사용자가 좋아요한 게시글이라면 좋아요를 취소하는 arrayRemove() 사용
-            await updateDoc(postRef(post.id), {
+            await updateDoc(postDocumentRef(post.id), {
                 like: arrayRemove(user.uid),
                 likesCount: post.likesCount ? post.likesCount - 1 : 0,
             });
         } else {
             // 사용자가 좋아요한 게시글이 아니면 좋아요에 추가하는 arrayUnion() 사용
-            await updateDoc(postRef(post.id), {
+            await updateDoc(postDocumentRef(post.id), {
                 like: arrayUnion(user?.uid),
                 likesCount: post.likesCount ? post.likesCount + 1 : 1,
             });
         }
-    };
-
-    const hasUserCommented = () => {
-        if (user && post.comments) {
-            return post.comments?.some(comment => comment.uid === user?.uid);
-        }
-        return;
     };
 
     const handleSharePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -94,26 +107,26 @@ export default function PostBox({ post }: postBoxProps) {
 
         try {
             if (user?.uid) {
-                const bookmarkDocSnap = await getDoc(bookmarksRef(user.uid));
+                const bookmarkDocSnap = await getDoc(bookmarksDocumentRef(user.uid));
 
                 if (bookmarkDocSnap.exists()) {
                     const userData = bookmarkDocSnap.data();
 
                     if (userData.posts) {
                         if (userData.posts.includes(post.id)) {
-                            await updateDoc(bookmarksRef(user.uid), {
+                            await updateDoc(bookmarksDocumentRef(user.uid), {
                                 posts: arrayRemove(post.id),
                             });
                             toast.success('북마크에서 삭제되었습니다.');
                         } else {
-                            await updateDoc(bookmarksRef(user.uid), {
+                            await updateDoc(bookmarksDocumentRef(user.uid), {
                                 posts: arrayUnion(post.id),
                             });
                             toast.success('북마크에 추가되었습니다.');
                         }
                     }
                 } else {
-                    await setDoc(bookmarksRef(user.uid), {
+                    await setDoc(bookmarksDocumentRef(user.uid), {
                         posts: [post.id],
                     });
                 }
@@ -124,32 +137,56 @@ export default function PostBox({ post }: postBoxProps) {
         }
     };
 
+    // author 가져오기
+    useEffect(() => {
+        (async () => {
+            await getDoc(userDocumentRef(post.uid)).then(authorSnapshot => {
+                if (authorSnapshot.exists()) setAuthor(authorSnapshot.data() as UserType);
+            });
+        })();
+    }, [post.uid]);
+
+    // bookmark
     useEffect(() => {
         if (!user?.uid) return;
 
-        const unsubscribe = onSnapshot(bookmarksRef(user.uid), doc => {
+        onSnapshot(bookmarksDocumentRef(user.uid), doc => {
             const posts = doc.data()?.posts;
-            if (posts.length > 0) {
+            if (posts?.length > 0) {
                 setBookmarks(posts);
             } else {
                 setBookmarks([]);
             }
         });
-
-        return () => unsubscribe();
     }, [user?.uid]);
+
+    // comment의 수와 사용자가 쓴 comment가 있는지 확인
+    useEffect(() => {
+        (async () => {
+            try {
+                const countSnapshot = await getCountFromServer(query(commentCollectionRef(post.id)));
+                setCommentsCount(countSnapshot.data().count);
+
+                const uidQuery = query(commentCollectionRef(post.id), where('uid', '==', user?.uid));
+                const uidSnapshot = await getDocs(uidQuery);
+                setHasUserCommented(!uidSnapshot.empty);
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }, [post.id, user?.uid]);
 
     return (
         <div className="post">
             <div className="post__box">
                 <div className="post__box__user-avatar">
-                    {post?.avatar ? <img src={post.avatar} alt="user avatar" /> : <DefaultAvatar />}
+                    {author?.photoURL ? <img src={author.photoURL} alt="user avatar" /> : <DefaultAvatar />}
                 </div>
                 <div className="post__box__content">
                     <div className="post__box__content__user">
                         <div className="post__box__content__user-box">
-                            <span className="post__box__content__user-name">{post.name}</span>
-                            <span className="post__box__content__user-email">@{post.email.split('@')[0]}</span>
+                            <span className="post__box__content__user-name">{author?.displayName}</span>
+                            <span className="post__box__content__user-email">@{author?.email.split('@')[0]}</span>
                             <span className="post__box__content__createdAt">{post.createdAt}</span>
                         </div>
                         {user?.uid === post.uid ? (
@@ -163,7 +200,7 @@ export default function PostBox({ post }: postBoxProps) {
                                 <Dots />
                             </button>
                         ) : (
-                            <BeMyFriend post={post} />
+                            <BeMyFriend beFriendUid={post.uid} />
                         )}
                         {drop && (
                             <div className="post__box__dropdown" onClick={e => e.stopPropagation()}>
@@ -194,8 +231,8 @@ export default function PostBox({ post }: postBoxProps) {
             <div className="post__box__footer">
                 <div className="post__box__footer-btn">
                     <button type="button">
-                        {hasUserCommented() ? <ActiveComment /> : <Comment />}
-                        <span>{post.comments?.length || 0}</span>
+                        {hasUserCommented ? <ActiveComment /> : <Comment />}
+                        <span>{commentsCount || 0}</span>
                     </button>
                 </div>
                 <div className="post__box__footer-btn">

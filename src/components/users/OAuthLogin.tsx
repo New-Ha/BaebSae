@@ -5,34 +5,40 @@ import { ROUTE_PATH } from 'constants/route';
 import { toast } from 'react-toastify';
 
 import styles from './sign.module.scss';
+import { userDocumentRef } from 'constants/refs';
+import { getDoc, setDoc } from 'firebase/firestore';
+import { errorToast } from 'constants/errorToast';
 
 export default function OAuthLogin() {
     const navigate = useNavigate();
 
-    const onClickOAuthLogin = async (e: any) => {
-        const {
-            target: { name },
-        } = e;
-
-        let provider;
+    const handleOAuthLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        const { name } = e.currentTarget;
         const auth = getAuth(app);
 
-        if (name === 'google') {
-            provider = new GoogleAuthProvider();
-        }
-        if (name === 'github') {
-            provider = new GithubAuthProvider();
-        }
+        const providerMap: Record<string, GoogleAuthProvider | GithubAuthProvider> = {
+            google: new GoogleAuthProvider(),
+            github: new GithubAuthProvider(),
+        };
+        const provider = providerMap[name];
 
-        await signInWithPopup(auth, provider as GoogleAuthProvider | GithubAuthProvider)
-            .then(result => {
-                toast.success('로그인 되었습니다.');
-                navigate(ROUTE_PATH.HOME);
-            })
-            .catch(error => {
-                toast.error(error.message);
+        try {
+            const result = await signInWithPopup(auth, provider as GoogleAuthProvider | GithubAuthProvider);
+            const user = result.user;
+
+            await setDoc(userDocumentRef(user.uid), {
+                email: user.email,
+                displayName: user.displayName || '사용자',
+                photoURL: user.photoURL || '',
+                createdAt: new Date().toISOString(),
             });
+            toast.success('로그인 되었습니다.');
+            navigate(ROUTE_PATH.HOME);
+        } catch (error: any) {
+            errorToast(error.code);
+        }
     };
+
     return (
         <div className={styles.sign__form__oauth}>
             <div className={styles.sign__form__block}>
@@ -40,7 +46,7 @@ export default function OAuthLogin() {
                     type="button"
                     name="google"
                     className={styles.sign__form__oauth_google}
-                    onClick={onClickOAuthLogin}>
+                    onClick={handleOAuthLogin}>
                     Google로 로그인하기
                 </button>
             </div>
@@ -49,7 +55,7 @@ export default function OAuthLogin() {
                     type="button"
                     name="github"
                     className={styles.sign__form__oauth_github}
-                    onClick={onClickOAuthLogin}>
+                    onClick={handleOAuthLogin}>
                     Github으로 로그인하기
                 </button>
             </div>

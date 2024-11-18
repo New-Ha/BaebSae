@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import AuthContext from 'context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from 'firebaseApp';
 import { toast } from 'react-toastify';
@@ -25,8 +25,9 @@ import styles from './common.module.scss';
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const path = useLocation();
     const { user } = useContext(AuthContext);
-    const [active, setActive] = useState<string>(ROUTE_PATH.HOME);
+    const [active, setActive] = useState<string>(path.pathname);
 
     const handleClickNav = (path: string) => {
         setActive(path);
@@ -85,9 +86,11 @@ export default function Navbar() {
                     </button>
                     <button
                         type="button"
-                        onClick={() => handleClickNav(ROUTE_PATH.PROFILE)}
-                        className={active === ROUTE_PATH.PROFILE ? styles.nav__flex__btnActive : styles.nav__flex__btn}>
-                        {active === ROUTE_PATH.PROFILE ? <ActiveUserCircle /> : <UserCircle />}
+                        onClick={() => handleClickNav(`${ROUTE_PATH.PROFILE}/${ROUTE_PATH.PROFILE_MY_POST}`)}
+                        className={
+                            active.includes(ROUTE_PATH.PROFILE) ? styles.nav__flex__btnActive : styles.nav__flex__btn
+                        }>
+                        {active.includes(ROUTE_PATH.PROFILE) ? <ActiveUserCircle /> : <UserCircle />}
                         <span className="nav__grid--text">Profile</span>
                     </button>
                 </nav>

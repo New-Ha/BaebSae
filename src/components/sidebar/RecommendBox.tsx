@@ -13,11 +13,11 @@ export default function RecommendBox() {
                     <Reset />
                 </button>
             </div>
-            {recommendList.map(recommendUser => (
+            {/* {recommendList.map(recommendUser => (
                 <div key={recommendUser}>
                     <UserBox />
                 </div>
-            ))}
+            ))} */}
         </div>
     );
 }

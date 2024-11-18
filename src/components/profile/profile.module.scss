@@ -1,0 +1,203 @@
+@import '../../styles/utills';
+
+.profile_btn {
+    position: absolute;
+    right: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+// profile
+.profile__settings {
+    padding: 1rem 1.2rem 1.5rem 1.2rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid $border;
+
+    &__submit {
+        @extend .profile_btn;
+        background-color: $lightSecondary;
+        border-radius: 9999px;
+        padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+
+        &:hover,
+        &:focus {
+            background-color: $secondary;
+            color: white;
+        }
+    }
+
+    &_btn {
+        @extend .profile_btn;
+
+        svg {
+            width: 1.5rem;
+            height: auto;
+            fill: $darkGray;
+        }
+
+        &:hover,
+        &:focus {
+            svg {
+                fill: $darkSecondary;
+            }
+        }
+    }
+}
+
+.profile__user_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    &__avatar {
+        width: 8.75rem;
+        height: 8.75rem;
+        border-radius: 9999px;
+        border: 1px solid $lightPrimary;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            object-fit: cover;
+            width: 8.75rem;
+            height: 8.75rem;
+            border-radius: 9999px;
+        }
+
+        svg {
+            width: 7.5rem;
+            height: auto;
+        }
+
+        &_input {
+            position: absolute;
+            top: 0;
+
+            &_reset {
+                padding: 0.2rem 0.3rem;
+                position: absolute;
+                top: 0.1rem;
+                right: -1.1rem;
+                z-index: 10;
+                border: none;
+                background: none;
+                border-radius: 9999px;
+                cursor: pointer;
+
+                svg {
+                    width: 1.8rem;
+                    height: auto;
+                    fill: $primary;
+                    border: none;
+                }
+
+                &:hover,
+                &:focus {
+                    svg {
+                        fill: $red;
+                    }
+                }
+            }
+
+            label {
+                width: 8.75rem;
+                height: 8.75rem;
+                border-radius: 9999px;
+                background-color: $bgPrimary;
+                opacity: 0.7;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg {
+                    width: 1.8rem;
+                    height: auto;
+                    fill: $darkPrimary;
+                    border: none;
+                    opacity: 0.8;
+                }
+
+                &:hover,
+                &:focus {
+                    background-color: $darkPrimary;
+                    opacity: 0.7;
+
+                    svg {
+                        fill: white;
+                    }
+                }
+            }
+        }
+    }
+
+    &__edit {
+        input {
+            margin: 8px 0px 2px 0px;
+            padding-bottom: 1px;
+            border: none;
+            border-bottom: 1px solid $border;
+            outline: none;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 4px;
+            color: $darkSecondary;
+
+            &::placeholder {
+                font-weight: 300;
+                color: $gray;
+            }
+        }
+    }
+
+    &__name {
+        margin: 8px 0px 2px 0px;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    &__email {
+        font-size: 0.875rem;
+        color: $darkGray;
+    }
+}
+
+// my activity
+.profile_activity {
+    &__tabs {
+        width: 100%;
+        height: 2.3rem;
+        border-bottom: 1px solid $border;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        button {
+            border: none;
+            background: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        &_tab {
+            &:hover,
+            &:focus {
+                border-bottom: 2px solid $lightSecondary;
+            }
+        }
+
+        &_active {
+            border-bottom: 2px solid $secondary !important;
+            font-weight: 600 !important;
+        }
+    }
+}

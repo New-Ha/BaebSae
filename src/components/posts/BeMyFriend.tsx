@@ -1,24 +1,15 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { arrayRemove, arrayUnion, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
-import { fiendRef, partnerRef } from 'constants/refs';
-import { PostType } from 'pages/home';
+import { friendDocumentRef } from 'constants/refs';
 import { toast } from 'react-toastify';
 
 import { ReactComponent as BeFriend } from '../../assets/beFriend.svg';
 import { ReactComponent as MyFriend } from '../../assets/myFriend.svg';
 
-interface FollowingProps {
-    post: PostType;
-}
-
-export interface UserType {
-    id: string;
-}
-
-export default function BeMyFriend({ post }: FollowingProps) {
+export default function BeMyFriend({ beFriendUid }: { beFriendUid: string }) {
     const { user } = useContext(AuthContext);
-    const [postPartners, setPostPartners] = useState<string[]>([]);
+    const [friendList, setFriendList] = useState<string[]>([]);
 
     const handleAddFriend = async (e: any) => {
         e.preventDefault();
@@ -27,20 +18,16 @@ export default function BeMyFriend({ post }: FollowingProps) {
         try {
             if (user?.uid) {
                 await setDoc(
-                    fiendRef(user.uid),
+                    friendDocumentRef(user.uid),
                     {
-                        users: arrayUnion({ id: post.uid }),
+                        users: arrayUnion({ id: beFriendUid }),
                     },
                     { merge: true },
                 );
-
-                await setDoc(partnerRef(post.uid), {
-                    users: arrayUnion({ id: user.uid }, { merge: true }),
-                });
             }
             toast.success('친구로 추가하였습니다.');
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            toast.error('친구 추가 중 오류가 발생했습니다.', error.code);
         }
     };
 
@@ -50,37 +37,32 @@ export default function BeMyFriend({ post }: FollowingProps) {
 
         try {
             if (user?.uid) {
-                await updateDoc(fiendRef(user.uid), {
-                    users: arrayRemove({ id: post.uid }),
-                });
-
-                await updateDoc(partnerRef(post.uid), {
-                    users: arrayRemove({ id: user.uid }),
+                await updateDoc(friendDocumentRef(user.uid), {
+                    users: arrayRemove({ id: beFriendUid }),
                 });
             }
             toast.success('친구목록에서 삭제되었습니다.');
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            toast.error('친구목록에서 삭제 중 오류가 발생했습니다.', error.code);
         }
     };
 
     const getFriends = useCallback(async () => {
-        if (post.uid) {
-            onSnapshot(partnerRef(post.uid), doc => {
-                setPostPartners([]);
-                doc.data()?.users.map((user: UserType) => setPostPartners((prev: string[]) => [...prev, user.id]));
+        if (user?.uid) {
+            onSnapshot(friendDocumentRef(user.uid), snapshot => {
+                snapshot.data()?.users.map((friend: { id: string }) => setFriendList(prev => [...prev, friend.id]));
             });
         }
-    }, [post.uid]);
+    }, [user?.uid]);
 
     useEffect(() => {
-        if (post.uid) getFriends();
-    }, [post.uid, getFriends]);
+        if (user?.uid && beFriendUid) getFriends();
+    }, [user?.uid, beFriendUid, getFriends]);
 
     return (
         <>
-            {user?.uid !== post.uid &&
-                (postPartners.includes(user?.uid as string) ? (
+            {user?.uid !== beFriendUid &&
+                (friendList.includes(beFriendUid as string) ? (
                     <button type="button" className="post__remove_friend" onClick={handleDeleteFriend}>
                         <MyFriend />
                         <span>내 친구</span>

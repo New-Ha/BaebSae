@@ -1,9 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDoc, collection, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
-import { db, storage } from 'firebaseApp';
+import { addDoc, collection, getDoc, updateDoc } from 'firebase/firestore';
+import { deleteObject, getDownloadURL, uploadString } from 'firebase/storage';
+import { db } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 
@@ -11,7 +11,7 @@ import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
 import { ReactComponent as Photo } from '../../assets/photo.svg';
 import { ReactComponent as Reset } from '../../assets/circle_x.svg';
 import { ROUTE_PATH } from 'constants/route';
-import { imageRef, postRef, storageRef } from 'constants/refs';
+import { postDocumentRef, storageRef } from 'constants/refs';
 
 interface PostFormType {
     id?: string;
@@ -87,7 +87,7 @@ export default function PostForm() {
         try {
             if (isEdit && post.id) {
                 if (post.imageUrl) {
-                    await deleteObject(imageRef(post.imageUrl as string)).catch(error => {
+                    await deleteObject(storageRef(post.imageUrl as string)).catch(error => {
                         toast.error('게시글 수정 중 이미지 업로드에 실패하였습니다.');
                     });
                 }
@@ -98,7 +98,7 @@ export default function PostForm() {
                     imgUrl = await getDownloadURL(data.ref);
                 }
 
-                await updateDoc(postRef(post.id), {
+                await updateDoc(postDocumentRef(post.id), {
                     content: post.content,
                     hashtags: post.hashtags || [],
                     imageUrl: imgFile ? imgUrl : null,
@@ -124,9 +124,6 @@ export default function PostForm() {
                         second: '2-digit',
                     }),
                     uid: user?.uid,
-                    email: user?.email,
-                    name: user?.displayName || '사용자',
-                    avatar: user?.photoURL || '',
                 });
                 toast.success('게시글을 생성했습니다.');
                 navigate(ROUTE_PATH.HOME);
@@ -135,6 +132,7 @@ export default function PostForm() {
             setImgFile(null);
             setTag('');
         } catch (error: any) {
+            console.log(error);
             if (isEdit) {
                 toast.error('게시글 수정 중 문제가 발생하였습니다.');
             } else {
@@ -147,7 +145,7 @@ export default function PostForm() {
 
     const getPost = useCallback(async () => {
         if (params.postId) {
-            const docSnap = await getDoc(postRef(params.postId));
+            const docSnap = await getDoc(postDocumentRef(params.postId));
             setPost({ ...(docSnap.data() as PostType), id: docSnap.id });
             setImgFile(docSnap.data()?.imageUrl);
         }

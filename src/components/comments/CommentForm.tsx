@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
-import { PostType } from 'pages/home';
-import { arrayUnion, updateDoc } from 'firebase/firestore';
 import AuthContext from 'context/AuthContext';
+import { addDoc } from 'firebase/firestore';
+import { commentCollectionRef } from 'constants/refs';
 import { toast } from 'react-toastify';
-import { postRef } from 'constants/refs';
+import { PostType } from 'pages/home';
 
 import styles from './comment.module.scss';
 
@@ -12,12 +12,11 @@ export interface CommentFormProps {
 }
 
 export interface CommentType {
+    id: string;
     comment: string;
     uid: string;
-    name: string;
-    email: string;
-    avatar: string;
     createdAt: string;
+    postId: string;
 }
 
 export default function CommentForm({ post }: CommentFormProps) {
@@ -33,29 +32,26 @@ export default function CommentForm({ post }: CommentFormProps) {
 
     const onsubmitComment = async (e: any) => {
         e.preventDefault();
+
         if (post && user) {
             try {
                 const commentObj = {
                     comment,
                     uid: user.uid,
-                    name: user.displayName,
-                    avatar: user.photoURL,
-                    email: user.email,
                     createdAt: new Date().toLocaleDateString('ko', {
                         hour: '2-digit',
                         minute: '2-digit',
                         second: '2-digit',
                     }),
+                    postId: post.id,
                 };
 
-                await updateDoc(postRef(post.id), {
-                    // arrayUnion : 새 요소(객체)를 배열에 추가해 줌
-                    comments: arrayUnion(commentObj),
-                });
+                await addDoc(commentCollectionRef(post.id), commentObj);
 
                 setComment('');
                 toast.success('댓글이 등록되었습니다.');
-            } catch (error) {
+            } catch (error: any) {
+                toast.error('댓글을 등록하는데 실패했습니다.');
                 console.log(error);
             }
         }
