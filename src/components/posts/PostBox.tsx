@@ -200,7 +200,7 @@ export default function PostBox({ post }: postBoxProps) {
                                 <Dots />
                             </button>
                         ) : (
-                            <BeMyFriend post={post} />
+                            <BeMyFriend beFriendUid={post.uid} />
                         )}
                         {drop && (
                             <div className="post__box__dropdown" onClick={e => e.stopPropagation()}>

@@ -39,26 +39,41 @@
 
 // user box
 .userBox {
-	margin-bottom: 0.75rem;
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
+    padding: 1rem;
+    border-bottom: 1px solid $border;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-	svg {
-			width: 2.5rem;
-			height: auto;
-	}
+    &__userinfo {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
 
-	&__profile {
-			&__name {
-					font-size: 1rem;
-					font-weight: 500;
-			}
+        img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+        }
 
-			&__email {
-					font-size: 0.875rem;
-					font-weight: 300;
-			}
-	}
+        svg {
+            width: 3rem;
+            height: auto;
+            border-radius: 9999px;
+        }
+    }
+
+    &__profile {
+        &__name {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        &__email {
+            font-size: 0.875rem;
+            font-weight: 300;
+            color: $darkGray;
+        }
+    }
 }
-

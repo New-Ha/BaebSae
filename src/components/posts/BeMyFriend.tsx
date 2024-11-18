@@ -2,17 +2,12 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { arrayRemove, arrayUnion, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { friendDocumentRef } from 'constants/refs';
-import { PostType } from 'pages/home';
 import { toast } from 'react-toastify';
 
 import { ReactComponent as BeFriend } from '../../assets/beFriend.svg';
 import { ReactComponent as MyFriend } from '../../assets/myFriend.svg';
 
-interface FollowingProps {
-    post: PostType;
-}
-
-export default function BeMyFriend({ post }: FollowingProps) {
+export default function BeMyFriend({ beFriendUid }: { beFriendUid: string }) {
     const { user } = useContext(AuthContext);
     const [friendList, setFriendList] = useState<string[]>([]);
 
@@ -25,7 +20,7 @@ export default function BeMyFriend({ post }: FollowingProps) {
                 await setDoc(
                     friendDocumentRef(user.uid),
                     {
-                        users: arrayUnion({ id: post.uid }),
+                        users: arrayUnion({ id: beFriendUid }),
                     },
                     { merge: true },
                 );
@@ -43,7 +38,7 @@ export default function BeMyFriend({ post }: FollowingProps) {
         try {
             if (user?.uid) {
                 await updateDoc(friendDocumentRef(user.uid), {
-                    users: arrayRemove({ id: post.uid }),
+                    users: arrayRemove({ id: beFriendUid }),
                 });
             }
             toast.success('친구목록에서 삭제되었습니다.');
@@ -61,13 +56,13 @@ export default function BeMyFriend({ post }: FollowingProps) {
     }, [user?.uid]);
 
     useEffect(() => {
-        if (user?.uid && post.uid) getFriends();
-    }, [user?.uid, post.uid, getFriends]);
+        if (user?.uid && beFriendUid) getFriends();
+    }, [user?.uid, beFriendUid, getFriends]);
 
     return (
         <>
-            {user?.uid !== post.uid &&
-                (friendList.includes(post.uid as string) ? (
+            {user?.uid !== beFriendUid &&
+                (friendList.includes(beFriendUid as string) ? (
                     <button type="button" className="post__remove_friend" onClick={handleDeleteFriend}>
                         <MyFriend />
                         <span>내 친구</span>
