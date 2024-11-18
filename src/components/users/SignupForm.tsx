@@ -9,6 +9,7 @@ import OAuthLogin from 'components/users/OAuthLogin';
 import styles from './sign.module.scss';
 import { userDocumentRef } from 'constants/refs';
 import { setDoc } from 'firebase/firestore';
+import { errorToast } from 'constants/errorToast';
 
 interface SignupInfo {
     email: string;
@@ -83,7 +84,7 @@ export default function SignupForm() {
             navigate(ROUTE_PATH.HOME);
             toast.success('성공적으로 회원가입이 되었습니다.');
         } catch (error: any) {
-            toast.error(error.code);
+            errorToast(error.code);
         }
     };
 
@@ -141,7 +142,7 @@ export default function SignupForm() {
                 </Link>
             </div>
             <div className={styles.sign__form__block}>
-                <button type="submit" className={styles.sign__form__btn_submit}>
+                <button type="submit" className={styles.sign__form__btn_submit} disabled={!!error}>
                     회원가입
                 </button>
             </div>
