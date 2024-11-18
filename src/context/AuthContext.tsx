@@ -40,7 +40,11 @@ export const AuthContextProvider = ({ children }: AuthProps) => {
     useEffect(() => {
         if (authUser) {
             onSnapshot(userDocumentRef(authUser.uid), snapshot => {
-                setUser((snapshot.data() as UserType) || null);
+                if (snapshot.exists()) {
+                    setUser({ ...(snapshot.data() as UserType), uid: snapshot.id });
+                } else {
+                    setUser(null);
+                }
             });
         }
     }, [authUser]);

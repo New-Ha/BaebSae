@@ -43,7 +43,6 @@ export default function ProfileSetForm() {
     const handleProfileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
-        const key = `${user?.uid}/${crypto.randomUUID()}`;
         let newImgUrl = null;
 
         try {
@@ -55,14 +54,10 @@ export default function ProfileSetForm() {
                 }
 
                 if (imgUrl) {
+                    const key = `${user?.uid}/${crypto.randomUUID()}`;
                     const data = await uploadString(storageRef(key), imgUrl, 'data_url');
                     newImgUrl = await getDownloadURL(data?.ref);
                 }
-
-                await updateProfile(user, {
-                    displayName,
-                    photoURL: newImgUrl,
-                });
 
                 await updateDoc(userDocumentRef(user.uid), {
                     displayName,

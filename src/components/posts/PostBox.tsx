@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import AuthContext from 'context/AuthContext';
+import AuthContext, { UserType } from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
     arrayRemove,
@@ -20,7 +20,13 @@ import { db } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 import { ROUTE_PATH } from 'constants/route';
-import { bookmarksDocumentRef, commentCollectionRef, postDocumentRef, storageRef } from 'constants/refs';
+import {
+    bookmarksDocumentRef,
+    commentCollectionRef,
+    postDocumentRef,
+    storageRef,
+    userDocumentRef,
+} from 'constants/refs';
 import BeMyFriend from 'components/posts/BeMyFriend';
 
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
@@ -46,6 +52,7 @@ export default function PostBox({ post }: postBoxProps) {
     const [bookmarks, setBookmarks] = useState<string[]>([]);
     const [commentsCount, setCommentsCount] = useState<number>(0);
     const [hasUserCommented, setHasUserCommented] = useState<boolean>(false);
+    const [author, setAuthor] = useState<UserType | null>(null);
 
     const handleDeletePost = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         const confirm = window.confirm('해당 게시글을 삭제하시겠습니까?');
@@ -130,6 +137,16 @@ export default function PostBox({ post }: postBoxProps) {
         }
     };
 
+    // author 가져오기
+    useEffect(() => {
+        (async () => {
+            await getDoc(userDocumentRef(post.uid)).then(authorSnapshot => {
+                if (authorSnapshot.exists()) setAuthor(authorSnapshot.data() as UserType);
+            });
+        })();
+    }, [post.uid]);
+
+    // bookmark
     useEffect(() => {
         if (!user?.uid) return;
 
@@ -143,6 +160,7 @@ export default function PostBox({ post }: postBoxProps) {
         });
     }, [user?.uid]);
 
+    // comment의 수와 사용자가 쓴 comment가 있는지 확인
     useEffect(() => {
         (async () => {
             try {
@@ -162,13 +180,13 @@ export default function PostBox({ post }: postBoxProps) {
         <div className="post">
             <div className="post__box">
                 <div className="post__box__user-avatar">
-                    {post?.avatar ? <img src={post.avatar} alt="user avatar" /> : <DefaultAvatar />}
+                    {author?.photoURL ? <img src={author.photoURL} alt="user avatar" /> : <DefaultAvatar />}
                 </div>
                 <div className="post__box__content">
                     <div className="post__box__content__user">
                         <div className="post__box__content__user-box">
-                            <span className="post__box__content__user-name">{post.name}</span>
-                            <span className="post__box__content__user-email">@{post.email.split('@')[0]}</span>
+                            <span className="post__box__content__user-name">{author?.displayName}</span>
+                            <span className="post__box__content__user-email">@{author?.email.split('@')[0]}</span>
                             <span className="post__box__content__createdAt">{post.createdAt}</span>
                         </div>
                         {user?.uid === post.uid ? (

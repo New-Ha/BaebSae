@@ -15,10 +15,8 @@ export interface CommentType {
     id: string;
     comment: string;
     uid: string;
-    name: string;
-    email: string;
-    avatar: string;
     createdAt: string;
+    postId: string;
 }
 
 export default function CommentForm({ post }: CommentFormProps) {
@@ -40,21 +38,20 @@ export default function CommentForm({ post }: CommentFormProps) {
                 const commentObj = {
                     comment,
                     uid: user.uid,
-                    name: user.displayName,
-                    avatar: user.photoURL,
-                    email: user.email,
                     createdAt: new Date().toLocaleDateString('ko', {
                         hour: '2-digit',
                         minute: '2-digit',
                         second: '2-digit',
                     }),
+                    postId: post.id,
                 };
 
                 await addDoc(commentCollectionRef(post.id), commentObj);
 
                 setComment('');
                 toast.success('댓글이 등록되었습니다.');
-            } catch (error) {
+            } catch (error: any) {
+                toast.error('댓글을 등록하는데 실패했습니다.');
                 console.log(error);
             }
         }

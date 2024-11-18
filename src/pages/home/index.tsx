@@ -17,9 +17,6 @@ export interface PostType {
     like?: string[];
     likesCount?: number;
     uid: string;
-    email: string;
-    name: string;
-    avatar: string;
 }
 
 export default function HomePage() {

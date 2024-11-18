@@ -124,9 +124,6 @@ export default function PostForm() {
                         second: '2-digit',
                     }),
                     uid: user?.uid,
-                    email: user?.email,
-                    name: user?.displayName || '사용자',
-                    avatar: user?.photoURL || '',
                 });
                 toast.success('게시글을 생성했습니다.');
                 navigate(ROUTE_PATH.HOME);
@@ -135,6 +132,7 @@ export default function PostForm() {
             setImgFile(null);
             setTag('');
         } catch (error: any) {
+            console.log(error);
             if (isEdit) {
                 toast.error('게시글 수정 중 문제가 발생하였습니다.');
             } else {

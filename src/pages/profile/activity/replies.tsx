@@ -1,14 +1,14 @@
-import CommentBox from 'components/comments/CommentBox';
-import { CommentType } from 'components/comments/CommentForm';
-import NoPostBox from 'components/posts/NoPostBox';
-import PostBox from 'components/posts/PostBox';
-import { commentsCollectionGroupRef } from 'constants/refs';
+import { useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { getDocs, orderBy, query, where } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { CommentType } from 'components/comments/CommentForm';
+import { commentsCollectionGroupRef } from 'constants/refs';
+import CommentBox from 'components/comments/CommentBox';
+import NoPostBox from 'components/posts/NoPostBox';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyRepliesPage() {
+    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [comments, setComments] = useState<CommentType[]>([]);
 
@@ -35,7 +35,11 @@ export default function MyRepliesPage() {
     return (
         <div>
             {comments?.length > 0 ? (
-                comments.map(comment => <CommentBox key={comment.id} comment={comment} />)
+                comments.map(comment => (
+                    <div key={comment.id} className="comment__box" onClick={() => navigate(`/posts/${comment.postId}`)}>
+                        <CommentBox comment={comment} />
+                    </div>
+                ))
             ) : (
                 <NoPostBox />
             )}

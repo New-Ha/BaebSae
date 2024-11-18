@@ -441,4 +441,11 @@ body {
     }
 }
 
-
+//replies
+.comment__box {
+    cursor: pointer;
+    &:hover,
+    &:focus {
+        background-color: $bgPrimary;
+    }
+}

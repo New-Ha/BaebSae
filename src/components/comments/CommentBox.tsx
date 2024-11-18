@@ -1,7 +1,7 @@
-import { useContext } from 'react';
-import AuthContext from 'context/AuthContext';
-import { deleteDoc } from 'firebase/firestore';
-import { commentDocumentRef } from 'constants/refs';
+import { useContext, useEffect, useState } from 'react';
+import AuthContext, { UserType } from 'context/AuthContext';
+import { deleteDoc, getDoc } from 'firebase/firestore';
+import { commentDocumentRef, userDocumentRef } from 'constants/refs';
 import { CommentType } from 'components/comments/CommentForm';
 import { toast } from 'react-toastify';
 
@@ -16,6 +16,7 @@ interface CommentBoxProps {
 
 export default function CommentBox({ comment, postId }: CommentBoxProps) {
     const { user } = useContext(AuthContext);
+    const [author, setAuthor] = useState<UserType | null>(null);
 
     const handleDeleteComment = async () => {
         if (postId && user && comment) {
@@ -28,18 +29,27 @@ export default function CommentBox({ comment, postId }: CommentBoxProps) {
         }
     };
 
+    // author 가져오기
+    useEffect(() => {
+        (async () => {
+            await getDoc(userDocumentRef(comment.uid)).then(authorSnapshot => {
+                if (authorSnapshot.exists()) setAuthor(authorSnapshot.data() as UserType);
+            });
+        })();
+    }, [comment.uid]);
+
     return (
         <div key={comment.createdAt} className={styles.comment}>
-            {comment.avatar ? (
-                <img src={comment.avatar} alt="commenter avatar" className={styles.comment__avatar} />
+            {author?.photoURL ? (
+                <img src={author?.photoURL} alt="commenter avatar" className={styles.comment__avatar} />
             ) : (
                 <DefaultAvatar />
             )}
             <div className={styles.comment__content}>
                 <div className={styles.comment__top}>
                     <div className={styles.comment__top__userInfo}>
-                        <div className={styles.comment__top__userInfo_name}>{comment.name}</div>
-                        <div className={styles.comment__top__userInfo_email}>@{comment.email.split('@')[0]}</div>
+                        <div className={styles.comment__top__userInfo_name}>{author?.displayName}</div>
+                        <div className={styles.comment__top__userInfo_email}>@{author?.email.split('@')[0]}</div>
                         <div className={styles.comment__top__userInfo_createdAt}>{comment.createdAt}</div>
                     </div>
                     {postId && comment.uid === user?.uid && (

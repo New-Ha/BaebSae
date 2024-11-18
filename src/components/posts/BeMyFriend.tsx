@@ -12,10 +12,6 @@ interface FollowingProps {
     post: PostType;
 }
 
-export interface UserType {
-    id: string;
-}
-
 export default function BeMyFriend({ post }: FollowingProps) {
     const { user } = useContext(AuthContext);
     const [postPartners, setPostPartners] = useState<string[]>([]);
@@ -63,19 +59,6 @@ export default function BeMyFriend({ post }: FollowingProps) {
             console.log(error);
         }
     };
-
-    const getFriends = useCallback(async () => {
-        if (post.uid) {
-            onSnapshot(partnerDocumentRef(post.uid), doc => {
-                setPostPartners([]);
-                doc.data()?.users.map((user: UserType) => setPostPartners((prev: string[]) => [...prev, user.id]));
-            });
-        }
-    }, [post.uid]);
-
-    useEffect(() => {
-        if (post.uid) getFriends();
-    }, [post.uid, getFriends]);
 
     return (
         <>
