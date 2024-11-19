@@ -20,3 +20,5 @@ export const commentDocumentRef = ({ postId, commentId }: { postId: string; comm
     doc(db, `posts/${postId}/comments/${commentId}`);
 
 export const userDocumentRef = (userId: string) => doc(db, 'users', userId);
+
+export const userCollectionRef = collection(db, 'users');
