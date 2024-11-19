@@ -6,7 +6,7 @@ import { app } from 'firebaseApp';
 import { toast } from 'react-toastify';
 import { ROUTE_PATH } from 'constants/route';
 
-import { ReactComponent as BapsaeLogo } from '../../assets/bapsae_icon.svg';
+import { ReactComponent as BapsaeLogo } from '../../assets/bapsae.svg';
 import { ReactComponent as DefaultAvatar } from '../../assets/bapsae.svg';
 import { ReactComponent as Home } from '../../assets/home.svg';
 import { ReactComponent as ActiveHome } from '../../assets/home_active.svg';
