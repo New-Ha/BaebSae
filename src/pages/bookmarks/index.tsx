@@ -23,7 +23,7 @@ export default function BookmarksPage() {
     useEffect(() => {
         if (postIds.length === 0) return;
 
-        postIds.forEach(id => {
+        postIds.reverse().forEach(id => {
             onSnapshot(postDocumentRef(id), doc => {
                 if (doc.exists()) {
                     setPosts(prev => {
