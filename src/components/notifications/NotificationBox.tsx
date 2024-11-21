@@ -14,7 +14,7 @@ export default function NotificationBox({ notification }: NotificationProps) {
 
     const handleClickNoti = async () => {
         await updateDoc(notiDocumentRef(notification.id), {
-            idRead: true,
+            isRead: true,
         });
 
         navigate(notification.url);
