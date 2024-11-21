@@ -3,6 +3,7 @@
 .notification_box {
     padding: 0.8rem;
     border-bottom: 1px solid $border;
+    cursor: pointer;
 
     &__flex {
         display: flex;
