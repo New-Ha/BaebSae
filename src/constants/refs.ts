@@ -22,3 +22,7 @@ export const commentDocumentRef = ({ postId, commentId }: { postId: string; comm
 export const userDocumentRef = (userId: string) => doc(db, 'users', userId);
 
 export const userCollectionRef = collection(db, 'users');
+
+export const notiCollectionRef = collection(db, 'notifications');
+
+export const notiDocumentRef = (notificationId: string) => doc(db, 'notifications', notificationId);

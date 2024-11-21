@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import AuthContext from 'context/AuthContext';
 import { addDoc } from 'firebase/firestore';
-import { commentCollectionRef } from 'constants/refs';
+import { commentCollectionRef, notiCollectionRef } from 'constants/refs';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 
@@ -23,14 +23,18 @@ export default function CommentForm({ post }: CommentFormProps) {
     const { user } = useContext(AuthContext);
     const [comment, setComment] = useState<string>('');
 
-    const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const {
             target: { value },
         } = e;
         setComment(value);
     };
 
-    const onsubmitComment = async (e: any) => {
+    const truncate = (content: string) => {
+        return content.length > 10 ? content.substring(0, 10) + '...' : content;
+    };
+
+    const handleSubmitComment = async (e: any) => {
         e.preventDefault();
 
         if (post && user) {
@@ -48,8 +52,23 @@ export default function CommentForm({ post }: CommentFormProps) {
 
                 await addDoc(commentCollectionRef(post.id), commentObj);
 
-                setComment('');
+                // 본인이 작성한 댓글이 아니라면 알림을 생성
+                if (user.uid !== post.uid) {
+                    await addDoc(notiCollectionRef, {
+                        uid: post.uid,
+                        url: `/posts/${post.id}`,
+                        content: `"${truncate(post.content)}" 글에 댓글이 작성되었습니다.👀`,
+                        isRead: false,
+                        createdAt: new Date()?.toLocaleDateString('ko', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                        }),
+                    });
+                }
+
                 toast.success('댓글이 등록되었습니다.');
+                setComment('');
             } catch (error: any) {
                 toast.error('댓글을 등록하는데 실패했습니다.');
                 console.log(error);
@@ -58,14 +77,14 @@ export default function CommentForm({ post }: CommentFormProps) {
     };
 
     return (
-        <form className={styles.comment_form} onSubmit={onsubmitComment}>
+        <form className={styles.comment_form} onSubmit={handleSubmitComment}>
             <textarea
                 className={styles.comment_form__textarea}
                 name="comment"
                 id="comment"
                 value={comment}
                 placeholder="댓글을 입력해주세요."
-                onChange={onChangeComment}
+                onChange={handleChangeComment}
                 required
             />
             <div className={styles.comment_form__submit_area}>

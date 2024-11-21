@@ -1,0 +1,29 @@
+@import '../../styles/utills';
+
+.notification_box {
+    padding: 0.8rem;
+    border-bottom: 1px solid $border;
+
+    &__flex {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__createdAt {
+        font-size: 0.875rem;
+        color: $darkGray;
+    }
+
+    &__unread {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 9999px;
+        background-color: $secondary;
+    }
+
+    &__content {
+        margin-top: 0.2rem;
+        color: $black;
+        font-size: 1rem;
+    }
+}

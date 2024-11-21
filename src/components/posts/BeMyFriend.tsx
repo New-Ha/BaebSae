@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
-import { arrayRemove, arrayUnion, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
-import { friendDocumentRef } from 'constants/refs';
+import { addDoc, arrayRemove, arrayUnion, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { friendDocumentRef, notiCollectionRef } from 'constants/refs';
 import { toast } from 'react-toastify';
 
 import { ReactComponent as BeFriend } from '../../assets/beFriend.svg';
@@ -24,6 +24,19 @@ export default function BeMyFriend({ beFriendUid }: { beFriendUid: string }) {
                     },
                     { merge: true },
                 );
+
+                // 친구에 추가된 사람에게 알려주는 notification
+                await addDoc(notiCollectionRef, {
+                    uid: beFriendUid,
+                    url: '#',
+                    content: `"${user.displayName}"의 친구로 추가됐습니다.💚`,
+                    isRead: false,
+                    createdAt: new Date()?.toLocaleDateString('ko', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    }),
+                });
             }
             toast.success('친구로 추가하였습니다.');
         } catch (error: any) {
