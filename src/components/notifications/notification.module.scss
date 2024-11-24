@@ -5,6 +5,11 @@
     border-bottom: 1px solid $border;
     cursor: pointer;
 
+    &:hover,
+    &:focus {
+        background-color: $bgPrimary;
+    }
+
     &__flex {
         display: flex;
         justify-content: space-between;
