@@ -3,6 +3,7 @@
 body {
     max-width: 100vw;
     min-height: 100dvh;
+    background-color: $background;
     margin: 0;
     font-family: $font;
     -webkit-font-smoothing: antialiased;
@@ -197,6 +198,7 @@ body {
     width: calc(100% - 1.5rem);
     padding: 1rem 0.5rem 0.25rem 1rem;
     border-bottom: 1px solid $border;
+    background-color: $white;
 
     &__no-posts {
         border: 1px solid $lightPrimary;

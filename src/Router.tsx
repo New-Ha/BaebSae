@@ -19,6 +19,7 @@ import MyFriendPage from 'pages/profile/friend';
 import MyLikesPage from 'pages/profile/activity/likes';
 import MyRepliesPage from 'pages/profile/activity/replies';
 import MyActivityPage from 'pages/profile/activity';
+import FriendsPostPage from 'pages/friends';
 
 interface RouterProps {
     isAuthenticated: boolean;
@@ -34,6 +35,7 @@ const authenticatedRoutes: RouteObject[] = [
             { path: ROUTE_PATH.POST_EDIT, element: <PostEditPage /> },
             { path: ROUTE_PATH.POST_DETAIL, element: <PostDetailPage /> },
             { path: ROUTE_PATH.SEARCH, element: <SearchPage /> },
+            { path: ROUTE_PATH.FRIENDS, element: <FriendsPostPage /> },
             { path: ROUTE_PATH.BOOKMARKS, element: <BookmarksPage /> },
             { path: ROUTE_PATH.POPULAR, element: <PopularPage /> },
             { path: ROUTE_PATH.NOTI, element: <NotificationsPage /> },

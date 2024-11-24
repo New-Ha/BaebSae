@@ -4,6 +4,7 @@ export const ROUTE_PATH = {
     POST_DETAIL: '/posts/:postId',
     POST_EDIT: '/posts/edit/:postId',
     SEARCH: '/search',
+    FRIENDS: '/friends',
     BOOKMARKS: '/bookmarks',
     POPULAR: '/popular',
     PROFILE: '/profile',
