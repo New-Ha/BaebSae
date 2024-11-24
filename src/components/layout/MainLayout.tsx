@@ -8,20 +8,18 @@ import MainHeader from 'components/common/MainHeader';
 
 export default function MainLayout() {
     return (
-        <>
+        <div className={styles.layout}>
             <MainHeader />
-            <div className={styles.layout}>
-                <div className={styles.main}>
-                    <main className={styles.main__contents}>
-                        <Outlet />
-                    </main>
-                    <aside className={styles.main__right}>
-                        <SearchBar />
-                        <RecommendBox />
-                        <PopularUserBox />
-                    </aside>
-                </div>
+            <div className={styles.main}>
+                <main className={styles.main__contents}>
+                    <Outlet />
+                </main>
+                <aside className={styles.main__right}>
+                    <SearchBar />
+                    <RecommendBox />
+                    <PopularUserBox />
+                </aside>
             </div>
-        </>
+        </div>
     );
 }
