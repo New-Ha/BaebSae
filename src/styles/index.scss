@@ -493,3 +493,12 @@ body {
         background-color: $bgPrimary;
     }
 }
+
+.box__hover {
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        background-color: $bgPrimary;
+    }
+}
