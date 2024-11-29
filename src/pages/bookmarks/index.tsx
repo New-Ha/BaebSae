@@ -37,7 +37,7 @@ export default function BookmarksPage() {
     }, [postIds]);
 
     return (
-        <>
+        <div className="home__post_list">
             {posts.length !== 0 ? (
                 posts.map(post => (
                     <div className="box__hover" onClick={() => navigate(`/posts/${post.id}`)}>
@@ -47,6 +47,6 @@ export default function BookmarksPage() {
             ) : (
                 <NoContentBox text="북마크한 게시글이 없습니다." />
             )}
-        </>
+        </div>
     );
 }

@@ -44,6 +44,7 @@ body {
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
+        padding: 0px 0.125rem;
     }
 }
 
@@ -203,6 +204,12 @@ body {
     width: calc(100% - 1.5rem);
     padding: 1rem 0.5rem 0.25rem 1rem;
 
+    &:hover,
+    &:focus {
+        background-color: $lightPrimary;
+        border: 1px solid $primary;
+    }
+
     &__no-posts {
         border: 1px solid $lightPrimary;
         border-radius: 0.5rem;
@@ -213,14 +220,8 @@ body {
     }
 
     &__nav-detail {
-        @extend .button;
         width: 100%;
         cursor: pointer;
-
-        &:hover,
-        &:focus {
-            background-color: $bgPrimary;
-        }
     }
 
     &__box {
