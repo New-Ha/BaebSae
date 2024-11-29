@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
 import { commentCollectionRef, postDocumentRef } from 'constants/refs';
 import { PostType } from 'pages/home';
-import Header from 'components/common/Header';
 import PostBox from 'components/posts/PostBox';
 import NoContentBox from 'components/posts/NoContentBox';
 import CommentBox from 'components/comments/CommentBox';
@@ -43,7 +42,6 @@ export default function PostDetailPage() {
 
     return (
         <>
-            <Header title="" />
             {post ? (
                 <div>
                     <PostBox post={post} />

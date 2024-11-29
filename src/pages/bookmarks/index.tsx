@@ -3,7 +3,6 @@ import AuthContext from 'context/AuthContext';
 import { onSnapshot } from 'firebase/firestore';
 import { bookmarksDocumentRef, postDocumentRef } from 'constants/refs';
 import { PostType } from 'pages/home';
-import Header from 'components/common/Header';
 import PostBox from 'components/posts/PostBox';
 import NoContentBox from 'components/posts/NoContentBox';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +38,6 @@ export default function BookmarksPage() {
 
     return (
         <>
-            <Header title="Bookmarks" />
             {posts.length !== 0 ? (
                 posts.map(post => (
                     <div className="box__hover" onClick={() => navigate(`/posts/${post.id}`)}>

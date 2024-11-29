@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/AuthContext';
-import Header from 'components/common/Header';
 import NotificationBox from 'components/notifications/NotificationBox';
 import NoContentBox from 'components/posts/NoContentBox';
 import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
@@ -39,7 +38,6 @@ export default function NotificationsPage() {
 
     return (
         <>
-            <Header title="Notifications" />
             {notifications.length > 0 ? (
                 <>
                     {notifications.map(noti => (

@@ -3,7 +3,6 @@ import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { postListCollectionRef, userCollectionRef } from 'constants/refs';
 import { UserType } from 'context/AuthContext';
 import { PostType } from 'pages/home';
-import Header from 'components/common/Header';
 import NoContentBox from 'components/posts/NoContentBox';
 import PostBox from 'components/posts/PostBox';
 import UserBox from 'components/sidebar/UserBox';
@@ -89,7 +88,6 @@ export default function SearchPage() {
 
     return (
         <div className="search">
-            <Header title="Search" />
             <div className="search__input">
                 <input
                     type="text"

@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import AuthContext from 'context/AuthContext';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from 'constants/route';
-import Header from 'components/common/Header';
 import ProfileSetForm from 'components/profile/ProfileSetForm';
 
 import styles from './Layout.module.scss';
@@ -20,11 +19,9 @@ const tabs = [
 export default function ProfileLayout() {
     const navigate = useNavigate();
     const path = useLocation();
-    const { user } = useContext(AuthContext);
 
     return (
         <div className={styles.profile}>
-            <Header title={`${user?.displayName || '사용자'} Profile`} />
             <ProfileSetForm />
             <div className={styles.profile__content}>
                 <div className={styles.profile__tabs}>

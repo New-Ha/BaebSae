@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { PostType } from 'pages/home';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
 import { postListCollectionRef } from 'constants/refs';
-import Header from 'components/common/Header';
 import PostBox from 'components/posts/PostBox';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +22,6 @@ export default function PopularPage() {
 
     return (
         <>
-            <Header title="Popular" />
             {posts.map(post => (
                 <div className="box__hover" onClick={() => navigate(`/posts/${post.id}`)}>
                     <PostBox key={post.id} post={post} />

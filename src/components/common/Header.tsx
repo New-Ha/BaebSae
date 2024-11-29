@@ -14,7 +14,7 @@ import { ReactComponent as ActiveBookmark } from '../../assets/bookmark_active.s
 import { ReactComponent as Friend } from '../../assets/user.svg';
 import { ReactComponent as ActiveFriend } from '../../assets/user_active.svg';
 
-export default function MainHeader() {
+export default function Header() {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const { pathname } = useLocation();
@@ -52,27 +52,29 @@ export default function MainHeader() {
 
     return (
         <div className={styles.main_header}>
-            <div className={styles.main_header__left}>
-                <div className={styles.nav__logo} onClick={() => navigate(ROUTE_PATH.HOME)}>
-                    <BapsaeLogo />
-                </div>
-                <input type="text" />
-            </div>
-            <div className={styles.main_header__left}>
-                <nav className={styles.main_header__left_btns}>
-                    {renderNavButton(ROUTE_PATH.HOME, <ActiveHome />, <Home />, 'Home')}
-                    {renderNavButton(ROUTE_PATH.FRIENDS, <ActiveFriend />, <Friend />, 'Friends')}
-                    {renderNavButton(ROUTE_PATH.BOOKMARKS, <ActiveBookmark />, <Bookmark />, 'Bookmarks')}
-                    {renderNavButton(ROUTE_PATH.NOTI, <ActiveBell />, <Bell />, 'Notifications')}
-                </nav>
-                <div className={styles.main_header__user} onClick={() => navigate(ROUTE_PATH.PROFILE)}>
-                    {user?.photoURL ? (
-                        <img src={user.photoURL} alt="user avatar" className={styles.main_header__user_avatar} />
-                    ) : (
+            <div className={styles.main_header__content}>
+                <div className={styles.main_header__left}>
+                    <div className={styles.nav__logo} onClick={() => navigate(ROUTE_PATH.HOME)}>
                         <BapsaeLogo />
-                    )}
-                    <div>{user?.displayName ? user.displayName : '뱁새친구'}</div>
-                    <button>👇🏻</button>
+                    </div>
+                    <input type="text" />
+                </div>
+                <div className={styles.main_header__left}>
+                    <nav className={styles.main_header__left_btns}>
+                        {renderNavButton(ROUTE_PATH.HOME, <ActiveHome />, <Home />, 'Home')}
+                        {renderNavButton(ROUTE_PATH.FRIENDS, <ActiveFriend />, <Friend />, 'Friends')}
+                        {renderNavButton(ROUTE_PATH.BOOKMARKS, <ActiveBookmark />, <Bookmark />, 'Bookmarks')}
+                        {renderNavButton(ROUTE_PATH.NOTI, <ActiveBell />, <Bell />, 'Notifications')}
+                    </nav>
+                    <div className={styles.main_header__user} onClick={() => navigate(ROUTE_PATH.PROFILE)}>
+                        {user?.photoURL ? (
+                            <img src={user.photoURL} alt="user avatar" className={styles.main_header__user_avatar} />
+                        ) : (
+                            <BapsaeLogo />
+                        )}
+                        <div>{user?.displayName ? user.displayName : '뱁새친구'}</div>
+                        <button>👇🏻</button>
+                    </div>
                 </div>
             </div>
         </div>

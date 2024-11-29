@@ -3,7 +3,6 @@ import AuthContext from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from 'firebaseApp';
-import Header from 'components/common/Header';
 import PostBox from 'components/posts/PostBox';
 import PostForm from 'components/posts/PostForm';
 import NoContentBox from 'components/posts/NoContentBox';
@@ -41,7 +40,6 @@ export default function HomePage() {
 
     return (
         <main className="home">
-            <Header title="Home" />
             <PostForm />
             <div className="">
                 {posts.length > 0 ? (
