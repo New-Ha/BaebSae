@@ -17,21 +17,49 @@
     flex: 1;
     display: grid;
     grid-template-columns: 16rem 1fr;
+    @media (max-width: $tablet) {
+        grid-template-columns: 1fr;
+    }
     gap: 1.2rem;
-    max-width: 64rem;
     width: 100%;
     height: 100%;
     margin: 0 auto;
     padding: 1.5rem;
 
+    max-width: $mobile;
+    @media (min-width: $tablet) {
+        max-width: $tablet;
+    }
+    @media (min-width: $laptop) {
+        max-width: $laptop;
+    }
+    @media (min-width: $desktop) {
+        max-width: $desktop;
+    }
+    @media (min-width: $monitor) {
+        max-width: $monitor;
+    }
+
+    @media (max-width: $tablet) {
+        max-width: calc(100% - 2rem);
+    }
+
     &__left {
         position: sticky;
         top: 0;
         overflow: hidden;
+
+        @media (max-width: $tablet) {
+            display: none;
+        }
     }
 
     &__content {
         overflow-y: auto;
+
+        @media (max-width: $tablet) {
+            max-width: 100%;
+        }
     }
 }
 

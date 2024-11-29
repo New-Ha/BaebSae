@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import styles from './Layout.module.scss';
 import ProfileBox from 'components/common/ProfileBox';
-import Header from 'components/common/\bHeader';
+import Header from 'components/common/Header';
 
 export default function MainLayout() {
     return (

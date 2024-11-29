@@ -1,199 +1,37 @@
 @import '../../styles/utills';
 
-.button {
-    border: none;
-    background: none;
-    cursor: pointer;
-
-    &:disabled {
-        opacity: 0.5;
-    }
-}
-
-// navbar
-// .navBtn {
-//     padding: 0.5rem 1rem;
-//     display: flex;
-//     align-items: center;
-//     gap: 0.8rem;
-//     border: none;
-//     border-radius: 2rem;
-//     background: none;
-//     cursor: pointer;
-
-//     svg {
-//         width: 1.5rem;
-//         height: auto;
-//         background-color: transparent;
-//     }
-
-//     span {
-//         font-size: 1rem;
-//         background-color: transparent;
-//     }
-
-//     &:hover,
-//     &:focus {
-//         background-color: $bgPrimary;
-//         border-radius: 20px;
-//     }
-// }
-
-// .nav {
-//     max-width: 15.625rem;
-//     height: 100vh;
-//     border-right: 1px solid $border;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-between;
-
-//     &__topSection {
-//         margin: 3rem 1rem 0rem 1rem;
-//     }
-
-//     &__logo {
-//         margin-bottom: 2.25rem;
-//         cursor: pointer;
-
-//         svg {
-//             width: 5rem;
-//             height: auto;
-//             margin-bottom: 1rem;
-//         }
-//     }
-
-//     &__flex {
-//         display: flex;
-//         flex-direction: column;
-//         gap: 1rem;
-
-//         &__btn {
-//             @extend .navBtn;
-//         }
-
-//         &__btnActive {
-//             @extend .navBtn;
-
-//             background-color: $bgPrimary;
-
-//             svg {
-//                 fill: $darkPrimary;
-//             }
-
-//             span {
-//                 color: $darkPrimary;
-//                 font-weight: 600;
-//             }
-//         }
-//     }
-
-//     &__footer {
-//         margin: 0rem 1rem 2rem 1rem;
-//         padding: 0.8rem;
-//         display: flex;
-//         justify-content: space-between;
-//         align-items: center;
-//         border: none;
-//         background: none;
-//         cursor: pointer;
-
-//         &__flex {
-//             display: flex;
-//             gap: 1.5rem;
-
-//             svg {
-//                 width: 1.7rem;
-//                 fill: $darkPrimary;
-//             }
-//         }
-
-//         &__userInfo {
-//             display: flex;
-//             align-items: center;
-//             justify-content: flex-start;
-//             gap: 0.8rem;
-
-//             svg {
-//                 width: 2.5rem;
-//                 height: auto;
-//             }
-//         }
-
-//         &__profile {
-//             display: flex;
-//             flex-direction: column;
-//             align-items: flex-start;
-
-//             &__img {
-//                 width: 2.5rem;
-//                 height: 2.5rem;
-//                 border-radius: 9999px;
-//             }
-
-//             &__name {
-//                 font-size: 1rem;
-//                 font-weight: 600;
-//             }
-
-//             &__email {
-//                 font-size: 12px;
-//                 color: $darkPrimary;
-//             }
-//         }
-
-//         &:hover,
-//         &:focus {
-//             background-color: $bgPrimary;
-//             border-radius: 999px;
-//         }
-//     }
-// }
-
 // header
 .header {
-    width: calc(100% - 2rem);
-    padding: 0.7rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border-bottom: 1px solid $border;
-
-    button {
-        @extend .button;
-        border-radius: 10rem;
-        padding: 0.2rem;
-
-        svg {
-            fill: $black;
-            width: 1.5rem;
-            height: auto;
-        }
-
-        &:hover,
-        &:focus {
-            background-color: $bgPrimary;
-
-            svg {
-                fill: $darkPrimary;
-            }
-        }
-    }
-
-    &__title {
-        background-color: transparent;
-        font-weight: 700;
-        font-size: 1.25rem;
-        margin-bottom: 0.2rem;
-    }
-}
-
-// main header
-.main_header {
-    width: 100%;
+    max-width: 100%;
     background-color: $white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.04);
+    height: 4rem;
+
+    &__content {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 auto;
+
+        max-width: $mobile;
+        @media (min-width: $tablet) {
+            max-width: $tablet;
+        }
+        @media (min-width: $laptop) {
+            max-width: $laptop;
+        }
+        @media (min-width: $desktop) {
+            max-width: $desktop;
+        }
+        @media (min-width: $monitor) {
+            max-width: $monitor;
+        }
+
+        @media (max-width: $tablet) {
+            max-width: 100%;
+        }
+    }
 
     &__left {
         display: flex;
@@ -201,7 +39,7 @@
         gap: 1.5rem;
 
         svg {
-            width: 4.5rem;
+            width: 4rem;
             height: auto;
             cursor: pointer;
         }
@@ -213,28 +51,37 @@
             background: none;
             background-color: $background;
             border-radius: 9999px;
-            font-size: 1rem;
+            font-size: 0.875rem;
+
+            &::placeholder {
+                color: $gray;
+            }
+
+            @media (max-width: $laptop) {
+                display: none;
+            }
         }
     }
 
-    &__left {
+    &__nav {
+        height: 100%;
         display: flex;
         align-items: center;
 
         &_btns {
             display: flex;
             gap: 0.4rem;
+            margin-right: 1rem;
         }
 
         &_btn {
             @extend .button;
-            padding: 0.9rem 0.4rem;
+            padding: 1.17rem 0.4rem;
             font-size: 1rem;
-            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 0.4rem;
-            border-bottom: 2px solid $white;
+            border-bottom: 3px solid $white;
 
             svg {
                 width: 1.5rem;
@@ -244,14 +91,25 @@
 
             span {
                 color: $darkGray;
+
+                @media (max-width: $laptop) {
+                    display: none;
+                }
             }
 
             &:hover,
             &:focus {
-                border-bottom: 2px solid $primary;
+                border-bottom: 3px solid $primary;
+
+                svg {
+                    fill: $primary;
+                }
 
                 span {
-                    font-weight: 600;
+                    color: $black;
+                    @media (max-width: $laptop) {
+                        display: none;
+                    }
                 }
             }
         }
@@ -259,14 +117,13 @@
         &_active {
             @extend .button;
             font-size: 1rem;
-            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 0.4rem;
-            border-bottom: 2px solid $primary;
+            border-bottom: 3px solid $primary;
 
             svg {
-                width: 1.6rem;
+                width: 1.5rem;
                 height: auto;
                 fill: $primary;
             }
@@ -299,6 +156,83 @@
 
         button {
             @extend .button;
+
+            svg {
+                width: 1.1rem;
+                height: auto;
+            }
         }
+    }
+}
+
+// profile box
+.profile_box {
+    @extend .box;
+    width: 100%;
+
+    &__top {
+        padding: 1.5rem 1rem;
+        position: relative;
+    }
+
+    &__user {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.2rem;
+
+        &_avatar {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            margin-bottom: 0.2rem;
+        }
+
+        svg {
+            width: 4rem;
+            height: auto;
+            border-radius: 9999px;
+        }
+
+        &_name {
+            font-weight: 500;
+        }
+
+        &_email {
+            color: $darkGray;
+        }
+    }
+
+    &__btns {
+        background-color: $white;
+        width: 100%;
+        display: flex;
+        border-top: 1px solid $border;
+        border-radius: 0px 0px 0.5rem 0.5rem;
+    }
+
+    .profile_box_btn {
+        @extend .button;
+        width: 50%;
+        padding: 1rem 0.4rem;
+        font-size: 1rem;
+
+        &:hover,
+        &:focus {
+            font-weight: 600;
+            background-color: $primary;
+            color: $white;
+        }
+    }
+
+    &__left_btn {
+        @extend .profile_box_btn;
+        border-right: 1px solid $border !important;
+        border-radius: 0px 0px 0px 0.5rem;
+    }
+
+    &__right_btn {
+        @extend .profile_box_btn;
+        border-radius: 0px 0px 0.5rem 0px;
     }
 }

@@ -25,6 +25,24 @@ $red: #f15146;
 $darkRed: #7b463c;
 
 // Breakpoints
-$mobile: 360px;
-$tablet: 600px;
-$desktop: 1024px;
+$mobile: 26.875rem;
+$tablet: 48rem;
+$laptop: 64rem;
+$desktop: 90rem;
+$monitor: 120rem;
+
+.button {
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 0.5;
+    }
+}
+
+.box {
+    background-color: $white;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 10px;
+}

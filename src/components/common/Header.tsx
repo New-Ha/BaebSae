@@ -13,6 +13,7 @@ import { ReactComponent as Bookmark } from '../../assets/bookmark.svg';
 import { ReactComponent as ActiveBookmark } from '../../assets/bookmark_active.svg';
 import { ReactComponent as Friend } from '../../assets/user.svg';
 import { ReactComponent as ActiveFriend } from '../../assets/user_active.svg';
+import { ReactComponent as Down } from '../../assets/down_arrow.svg';
 
 export default function Header() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function Header() {
     const [activeTab, setActiveTab] = useState<string>(ROUTE_PATH.HOME);
 
     const handleClickNav = (path: string) => {
-        setActiveTab(path); // 활성화된 탭 갱신
+        setActiveTab(path);
         navigate(path);
     };
 
@@ -30,7 +31,7 @@ export default function Header() {
             return pathname === '/' || (pathname.startsWith('/posts') && activeTab === ROUTE_PATH.HOME);
         }
         if (path === ROUTE_PATH.FRIENDS) {
-            return pathname.startsWith('/posts') && activeTab === ROUTE_PATH.FRIENDS;
+            return pathname.startsWith('/friends') && activeTab === ROUTE_PATH.FRIENDS;
         }
         return pathname === path;
     };
@@ -44,36 +45,38 @@ export default function Header() {
         <button
             type="button"
             onClick={() => handleClickNav(path)}
-            className={isActive(path) ? styles.main_header__left_active : styles.main_header__left_btn}>
+            className={isActive(path) ? styles.header__nav_active : styles.header__nav_btn}>
             {isActive(path) ? ActiveIcon : DefaultIcon}
             <span>{label}</span>
         </button>
     );
 
     return (
-        <div className={styles.main_header}>
-            <div className={styles.main_header__content}>
-                <div className={styles.main_header__left}>
+        <div className={styles.header}>
+            <div className={styles.header__content}>
+                <div className={styles.header__left}>
                     <div className={styles.nav__logo} onClick={() => navigate(ROUTE_PATH.HOME)}>
                         <BapsaeLogo />
                     </div>
-                    <input type="text" />
+                    <input type="text" placeholder="검색어를 입력하세요." />
                 </div>
-                <div className={styles.main_header__left}>
-                    <nav className={styles.main_header__left_btns}>
+                <div className={styles.header__nav}>
+                    <nav className={styles.header__nav_btns}>
                         {renderNavButton(ROUTE_PATH.HOME, <ActiveHome />, <Home />, 'Home')}
                         {renderNavButton(ROUTE_PATH.FRIENDS, <ActiveFriend />, <Friend />, 'Friends')}
                         {renderNavButton(ROUTE_PATH.BOOKMARKS, <ActiveBookmark />, <Bookmark />, 'Bookmarks')}
                         {renderNavButton(ROUTE_PATH.NOTI, <ActiveBell />, <Bell />, 'Notifications')}
                     </nav>
-                    <div className={styles.main_header__user} onClick={() => navigate(ROUTE_PATH.PROFILE)}>
+                    <div className={styles.header__user} onClick={() => navigate(ROUTE_PATH.PROFILE)}>
                         {user?.photoURL ? (
-                            <img src={user.photoURL} alt="user avatar" className={styles.main_header__user_avatar} />
+                            <img src={user.photoURL} alt="user avatar" className={styles.header__user_avatar} />
                         ) : (
                             <BapsaeLogo />
                         )}
-                        <div>{user?.displayName ? user.displayName : '뱁새친구'}</div>
-                        <button>👇🏻</button>
+                        <div>{user?.displayName ? user.displayName : '뱁새친구'} 님</div>
+                        <button>
+                            <Down />
+                        </button>
                     </div>
                 </div>
             </div>
