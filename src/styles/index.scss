@@ -506,6 +506,14 @@ body {
     }
 }
 
+// notification
+.notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.5rem;
+}
+
 //replies
 .comment__box {
     cursor: pointer;

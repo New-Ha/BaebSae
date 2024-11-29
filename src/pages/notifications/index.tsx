@@ -37,7 +37,7 @@ export default function NotificationsPage() {
     }, [user]);
 
     return (
-        <>
+        <div className="notifications">
             {notifications.length > 0 ? (
                 <>
                     {notifications.map(noti => (
@@ -47,6 +47,6 @@ export default function NotificationsPage() {
             ) : (
                 <NoContentBox text="새로운 알림이 없습니다." />
             )}
-        </>
+        </div>
     );
 }

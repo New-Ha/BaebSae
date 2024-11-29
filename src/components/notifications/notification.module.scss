@@ -1,13 +1,14 @@
 @import '../../styles/utills';
 
 .notification_box {
+    @extend .box;
     padding: 0.8rem;
-    border-bottom: 1px solid $border;
     cursor: pointer;
 
     &:hover,
     &:focus {
-        background-color: $bgPrimary;
+        background-color: $lightPrimary;
+        transform: scale(1.02);
     }
 
     &__flex {
@@ -21,10 +22,10 @@
     }
 
     &__unread {
-        width: 0.5rem;
-        height: 0.5rem;
+        width: 0.6rem;
+        height: 0.6rem;
         border-radius: 9999px;
-        background-color: $secondary;
+        background-color: $primary;
     }
 
     &__content {
