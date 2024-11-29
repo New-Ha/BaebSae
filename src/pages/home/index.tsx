@@ -41,7 +41,7 @@ export default function HomePage() {
     return (
         <main className="home">
             <PostForm />
-            <div className="">
+            <div className="home__post_list">
                 {posts.length > 0 ? (
                     posts.map(post => (
                         <div key={post.id} className="post__nav-detail" onClick={() => navigate(`/posts/${post.id}`)}>

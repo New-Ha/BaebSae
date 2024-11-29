@@ -39,6 +39,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+
+    &__post_list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
 }
 
 .post-form {
@@ -193,10 +199,9 @@ body {
 }
 
 .post {
+    @extend .box;
     width: calc(100% - 1.5rem);
     padding: 1rem 0.5rem 0.25rem 1rem;
-    border-bottom: 1px solid $border;
-    background-color: $white;
 
     &__no-posts {
         border: 1px solid $lightPrimary;
@@ -381,44 +386,60 @@ body {
     }
 
     &__add_friend {
-        @extend .button;
-        padding: 0.4rem 0.8rem 0.3rem 0.8rem;
+        @extend .friend_btn;
         background-color: $lightSecondary;
-        border-radius: 9999px;
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
-
-        svg {
-            width: 1.2rem;
-            height: auto;
-        }
 
         &:hover,
         &:focus {
             background-color: $secondary;
-            color: white;
+
+            svg {
+                fill: $white;
+            }
+
+            span {
+                color: $white;
+            }
         }
     }
 
     &__remove_friend {
-        @extend .button;
-        padding: 0.4rem 0.8rem 0.3rem 0.8rem;
-        background-color: $primary;
-        border-radius: 9999px;
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
-
-        svg {
-            width: 1.2rem;
-            height: auto;
-        }
+        @extend .friend_btn;
+        border: 1px solid $primary;
 
         &:hover,
         &:focus {
             background-color: $darkPrimary;
             color: white;
+
+            svg {
+                fill: $white;
+            }
+
+            span {
+                color: $white;
+            }
+        }
+    }
+}
+
+.friend_btn {
+    @extend .button;
+    padding: 0.4rem 0.8rem 0.3rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    border-radius: 9999px;
+
+    svg {
+        width: 1.2rem;
+        height: auto;
+        fill: $black;
+    }
+
+    span {
+        @media (max-width: $laptop) {
+            display: none;
         }
     }
 }
