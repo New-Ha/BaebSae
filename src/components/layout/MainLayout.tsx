@@ -1,24 +1,22 @@
 import { Outlet } from 'react-router-dom';
 
 import styles from './Layout.module.scss';
-import SearchBar from 'components/SearchBar';
-import RecommendBox from 'components/sidebar/RecommendBox';
-import PopularUserBox from 'components/sidebar/PopularUserBox';
-import MainHeader from 'components/common/MainHeader';
+import ProfileBox from 'components/common/ProfileBox';
+import Header from 'components/common/\bHeader';
 
 export default function MainLayout() {
     return (
         <div className={styles.layout}>
-            <MainHeader />
+            <div className={styles.header}>
+                <Header />
+            </div>
             <div className={styles.main}>
-                <main className={styles.main__contents}>
+                <aside className={styles.main__left}>
+                    <ProfileBox />
+                </aside>
+                <main className={styles.main__content}>
                     <Outlet />
                 </main>
-                <aside className={styles.main__right}>
-                    <SearchBar />
-                    <RecommendBox />
-                    <PopularUserBox />
-                </aside>
             </div>
         </div>
     );
