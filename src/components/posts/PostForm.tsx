@@ -39,7 +39,7 @@ export default function PostForm() {
         setTag(e.target.value.trim());
     };
 
-    const handleKeyUpTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDownTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 32 && tag.trim() !== '') {
             if (post.hashtags?.includes(tag)) {
                 toast.error('같은 태그가 존재합니다.');
@@ -177,7 +177,7 @@ export default function PostForm() {
                     id="content"
                     value={post.content}
                     onChange={handleChangeTextarea}
-                    placeholder="무슨 일이 있었나요?!"
+                    placeholder="What's happening?!"
                     required
                 />
 
@@ -201,8 +201,8 @@ export default function PostForm() {
                         id="hashtag"
                         value={tag}
                         onChange={handleChangeTag}
-                        onKeyUp={handleKeyUpTag}
-                        placeholder="해시태그 + 스페이스바 입력"
+                        onKeyDown={handleKeyDownTag}
+                        placeholder="hashtag + space bar"
                     />
                 </div>
                 <div className="post-form__submit-area">
@@ -221,7 +221,7 @@ export default function PostForm() {
                     </div>
                     <input
                         type="submit"
-                        value={isEdit ? '수정' : '게시'}
+                        value={isEdit ? 'Edit' : 'Post'}
                         className="post-form__submit-btn"
                         disabled={isSubmitting}
                     />
