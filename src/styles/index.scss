@@ -212,12 +212,11 @@ body {
     }
 
     &__no-posts {
-        border: 1px solid $lightPrimary;
+        @extend .box;
         border-radius: 0.5rem;
         padding: 1rem;
-        margin: 1rem 0.5rem;
         font-size: 0.875rem;
-        color: $gray;
+        color: $darkGray;
     }
 
     &__nav-detail {
