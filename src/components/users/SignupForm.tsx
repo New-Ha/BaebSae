@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app } from 'firebaseApp';
+import { setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { ROUTE_PATH } from 'constants/route';
 import OAuthLogin from 'components/users/OAuthLogin';
+import { userDocumentRef } from 'constants/refs';
+import { errorToast } from 'constants/errorToast';
 
 import styles from './sign.module.scss';
-import { userDocumentRef } from 'constants/refs';
-import { setDoc } from 'firebase/firestore';
-import { errorToast } from 'constants/errorToast';
+import { ReactComponent as Logo } from '../../assets/bapsae_icon.svg';
 
 interface SignupInfo {
     email: string;
@@ -90,6 +91,9 @@ export default function SignupForm() {
 
     return (
         <form className={styles.sign__form} onSubmit={handleSubmit}>
+            <div className={styles.sign__form__logo}>
+                <Logo />
+            </div>
             <div className={styles.sign__form__title}>회원가입</div>
             <div className={styles.sign__form__block}>
                 <div className={styles.sign__form__block_col}>

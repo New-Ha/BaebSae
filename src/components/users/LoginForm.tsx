@@ -7,6 +7,7 @@ import OAuthLogin from 'components/users/OAuthLogin';
 import { ROUTE_PATH } from 'constants/route';
 
 import styles from './sign.module.scss';
+import { ReactComponent as Logo } from '../../assets/bapsae_icon.svg';
 
 interface LoginInfo {
     email: string;
@@ -65,6 +66,9 @@ export default function LoginForm() {
 
     return (
         <form className={styles.sign__form} onSubmit={handleSubmit}>
+            <div className={styles.sign__form__logo}>
+                <Logo />
+            </div>
             <div className={styles.sign__form__title}>로그인</div>
             <div className={styles.sign__form__block}>
                 <div className={styles.sign__form__block_col}>

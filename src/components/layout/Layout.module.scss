@@ -58,10 +58,6 @@
     &__content {
         padding: 0rem 0.5rem;
         overflow-y: auto;
-
-        @media (max-width: $tablet) {
-            max-width: 100%;
-        }
     }
 }
 
@@ -78,10 +74,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        @media (max-width: $tablet) {
+            display: none;
+        }
     }
 
     &__content {
         max-width: 25rem;
+        @media (max-width: $tablet) {
+            width: 100%;
+            margin: 0 auto;
+        }
     }
 }
 
