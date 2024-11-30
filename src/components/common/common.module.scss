@@ -220,7 +220,6 @@
         &:hover,
         &:focus {
             font-weight: 600;
-            background-color: $primary;
             color: $white;
         }
     }
@@ -229,10 +228,20 @@
         @extend .profile_box_btn;
         border-right: 1px solid $border !important;
         border-radius: 0px 0px 0px 0.5rem;
+
+        &:hover,
+        &:focus {
+            background-color: $primary;
+        }
     }
 
     &__right_btn {
         @extend .profile_box_btn;
         border-radius: 0px 0px 0.5rem 0px;
+
+        &:hover,
+        &:focus {
+            background-color: $point;
+        }
     }
 }

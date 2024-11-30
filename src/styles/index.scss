@@ -187,13 +187,14 @@ body {
     &__submit-btn {
         @extend .button;
         padding: 0.5rem 1.2rem;
-        background-color: $primary;
+        background-color: $point;
         border-radius: 9999px;
         font-size: 1rem;
+        color: $white;
 
         &:hover,
         &:focus {
-            background-color: $darkPrimary;
+            background-color: $darkPoint;
             color: $white;
         }
     }
@@ -206,7 +207,7 @@ body {
 
     &:hover,
     &:focus {
-        background-color: $lightPrimary;
+        background-color: $bgSecondary;
         border: 1px solid $primary;
     }
 
@@ -388,11 +389,15 @@ body {
 
     &__add_friend {
         @extend .friend_btn;
-        background-color: $lightSecondary;
+        background-color: $primary;
+
+        svg {
+            fill: $white !important;
+        }
 
         &:hover,
         &:focus {
-            background-color: $secondary;
+            background-color: $darkPrimary;
 
             svg {
                 fill: $white;
@@ -406,11 +411,11 @@ body {
 
     &__remove_friend {
         @extend .friend_btn;
-        border: 1px solid $primary;
+        background-color: $lightPrimary;
 
         &:hover,
         &:focus {
-            background-color: $darkPrimary;
+            background-color: $primary;
             color: white;
 
             svg {
@@ -442,6 +447,28 @@ body {
         @media (max-width: $laptop) {
             display: none;
         }
+    }
+}
+
+// post detail
+.post__detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    .post {
+        &:hover,
+        &:focus {
+            border: none;
+            background-color: $white;
+        }
+    }
+
+    &__comments {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        overflow-y: auto;
     }
 }
 

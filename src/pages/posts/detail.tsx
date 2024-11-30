@@ -43,13 +43,15 @@ export default function PostDetailPage() {
     return (
         <>
             {post ? (
-                <div>
+                <div className="post__detail">
                     <PostBox post={post} />
                     <CommentForm post={post} />
-                    {comments.length > 0 &&
-                        comments.map((comment: CommentType) => (
-                            <CommentBox key={comment.id} comment={comment} postId={params.postId as string} />
-                        ))}
+                    <div className="post__detail__comments">
+                        {comments.length > 0 &&
+                            comments.map((comment: CommentType) => (
+                                <CommentBox key={comment.id} comment={comment} postId={params.postId as string} />
+                            ))}
+                    </div>
                 </div>
             ) : (
                 <NoContentBox text="해당 게시글에 댓글이 존재하지 않습니다." />

@@ -1,29 +1,21 @@
 @import '../../styles/utills';
 
-.button {
-    border: none;
-    background: none;
-    cursor: pointer;
-
-    &:disabled {
-        opacity: 0.5;
-    }
-}
-
 .comment_form {
+    @extend .box;
     width: 100%;
-    border-bottom: 1px solid $border;
     display: flex;
+    align-items: center;
 
     &__textarea {
         width: calc(100% - 2rem);
         min-height: 3rem;
-        padding: 1rem 1rem 1rem 4.5rem;
+        padding: 1.2rem 1rem 1rem 2.5rem;
         display: block;
         border: none;
         resize: none;
         outline: none;
         font-size: 1rem;
+        border-radius: 0.5rem;
     }
 
     &__submit {
@@ -37,25 +29,31 @@
         &_btn {
             @extend .button;
             padding: 0.5rem 1rem;
-            background-color: $primary;
+            background-color: $point;
             border-radius: 1rem;
             font-weight: 600;
-            color: $black;
+            color: $white;
 
             &:hover,
             &:focus {
-                background-color: $darkPrimary;
-                color: $white;
+                opacity: 1;
             }
         }
     }
 }
 
 .comment {
-    border-bottom: 1px solid $border;
     padding: 1rem;
     display: grid;
     grid-template-columns: 3.7rem 1fr;
+    background-color: $white;
+    border: 1px solid $border;
+    border-radius: 0.5rem;
+
+    &:hover,
+    &:focus {
+        background-color: $lightPrimary;
+    }
 
     svg {
         width: 3.2rem;
