@@ -23,7 +23,7 @@ export default function FriendsPostPage() {
     }, [user?.uid]);
 
     useEffect(() => {
-        if (friendIds.length !== 0) {
+        if (friendIds?.length !== 0) {
             (async () => {
                 const postsQuery = query(
                     postListCollectionRef,
@@ -51,7 +51,7 @@ export default function FriendsPostPage() {
                         <PostBox post={post} />
                     </div>
                 ))
-            ) : friendIds.length !== 0 ? (
+            ) : friendIds?.length !== 0 ? (
                 <NoContentBox text="친구들이 작성한 게시글이 없습니다." />
             ) : (
                 <NoContentBox text="등록한 친구가 없습니다." />
