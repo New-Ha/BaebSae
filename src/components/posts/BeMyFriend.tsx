@@ -63,7 +63,9 @@ export default function BeMyFriend({ beFriendUid }: { beFriendUid: string }) {
     const getFriends = useCallback(async () => {
         if (user?.uid) {
             onSnapshot(friendDocumentRef(user.uid), snapshot => {
-                snapshot.data()?.users.map((friend: { id: string }) => setFriendList(prev => [...prev, friend.id]));
+                const users = snapshot.data()?.users || [];
+                const friendIds = users.map((friend: { id: string }) => friend.id);
+                setFriendList(friendIds);
             });
         }
     }, [user?.uid]);
