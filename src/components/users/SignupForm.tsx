@@ -26,6 +26,7 @@ export default function SignupForm() {
         passwordConfirm: '',
     });
     const [error, setError] = useState<string>('');
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {
@@ -70,6 +71,8 @@ export default function SignupForm() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        setIsSubmitting(true);
+
         try {
             const auth = getAuth(app);
             const userCredential = await createUserWithEmailAndPassword(auth, signupInfo.email, signupInfo.password);
@@ -86,6 +89,8 @@ export default function SignupForm() {
             toast.success('성공적으로 회원가입이 되었습니다.');
         } catch (error: any) {
             errorToast(error.code);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -146,7 +151,7 @@ export default function SignupForm() {
                 </Link>
             </div>
             <div className={styles.sign__form__block}>
-                <button type="submit" className={styles.sign__form__btn_submit} disabled={!!error}>
+                <button type="submit" className={styles.sign__form__btn_submit} disabled={!!error || isSubmitting}>
                     회원가입
                 </button>
             </div>

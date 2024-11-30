@@ -8,11 +8,15 @@ import styles from './sign.module.scss';
 import { userDocumentRef } from 'constants/refs';
 import { getDoc, setDoc } from 'firebase/firestore';
 import { errorToast } from 'constants/errorToast';
+import { useState } from 'react';
 
 export default function OAuthLogin() {
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const handleOAuthLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        setIsSubmitting(true);
+
         const { name } = e.currentTarget;
         const auth = getAuth(app);
 
@@ -36,6 +40,8 @@ export default function OAuthLogin() {
             navigate(ROUTE_PATH.HOME);
         } catch (error: any) {
             errorToast(error.code);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -46,7 +52,8 @@ export default function OAuthLogin() {
                     type="button"
                     name="google"
                     className={styles.sign__form__oauth_google}
-                    onClick={handleOAuthLogin}>
+                    onClick={handleOAuthLogin}
+                    disabled={isSubmitting}>
                     Google로 로그인하기
                 </button>
             </div>
@@ -55,7 +62,8 @@ export default function OAuthLogin() {
                     type="button"
                     name="github"
                     className={styles.sign__form__oauth_github}
-                    onClick={handleOAuthLogin}>
+                    onClick={handleOAuthLogin}
+                    disabled={isSubmitting}>
                     Github으로 로그인하기
                 </button>
             </div>
