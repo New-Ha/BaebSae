@@ -18,7 +18,10 @@
 .main {
     flex: 1;
     display: grid;
-    grid-template-columns: 16rem 1fr;
+    grid-template-columns: 16rem 1fr 16rem;
+    @media (max-width: $laptop) {
+        grid-template-columns: 16rem 1fr;
+    }
     @media (max-width: $tablet) {
         grid-template-columns: 1fr;
     }
@@ -38,9 +41,6 @@
     @media (min-width: $desktop) {
         max-width: $desktop;
     }
-    @media (min-width: $monitor) {
-        max-width: $monitor;
-    }
 
     @media (max-width: $tablet) {
         max-width: calc(100% - 2rem);
@@ -51,7 +51,7 @@
         top: 0;
         overflow: hidden;
         display: grid;
-        grid-template-rows: 13rem 25rem;
+        grid-template-rows: 13rem 28rem;
         gap: 1.5rem;
         padding: 0rem 0.5rem 0rem;
 
@@ -63,6 +63,20 @@
     &__content {
         padding: 0rem 0.5rem 1rem;
         overflow-y: auto;
+    }
+
+    &__right {
+        position: sticky;
+        top: 0;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: 23rem 20rem;
+        gap: 1.5rem;
+        padding: 0rem 0.5rem 0rem;
+
+        @media (max-width: $laptop) {
+            display: none;
+        }
     }
 }
 

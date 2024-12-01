@@ -9,7 +9,7 @@ import styles from './sidebar.module.scss';
 import SidePostBox from 'components/sidebar/SidePostBox';
 import { ROUTE_PATH } from 'constants/route';
 
-export default function PopularPost() {
+export default function TopLikes() {
     const navigate = useNavigate();
     const [posts, setPosts] = useState<PostType[]>([]);
 
@@ -27,7 +27,7 @@ export default function PopularPost() {
 
     return (
         <div className={styles.side__popular}>
-            <div className={styles.side__popular__title}>Popular Posts</div>
+            <div className={styles.side__popular__title}>Top Likes</div>
             <div className={styles.side__popular__posts}>
                 {posts.slice(0, 4).map(post => (
                     <div key={post.id} className="box__hover" onClick={() => navigate(`/posts/${post.id}`)}>
