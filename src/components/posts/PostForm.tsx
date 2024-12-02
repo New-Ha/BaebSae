@@ -33,6 +33,7 @@ export default function PostForm() {
     const [tag, setTag] = useState<string>('');
     const [imgFile, setImgFile] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isComposing, setIsComposing] = useState<boolean>(false);
     const isEdit = !!params.postId;
 
     const handleChangeTag = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,13 +41,19 @@ export default function PostForm() {
     };
 
     const handleKeyDownTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.keyCode === 32 && tag.trim() !== '') {
-            if (post.hashtags?.includes(tag)) {
-                toast.error('같은 태그가 존재합니다.');
-            } else {
-                setPost(prev => ({ ...prev, hashtags: [...(prev.hashtags ?? []), tag] }));
+        if (isComposing) return;
+
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            if (tag.trim() !== '') {
+                if (post.hashtags?.includes(tag.trim())) {
+                    toast.error('같은 태그가 존재합니다.');
+                } else {
+                    setPost(prev => ({ ...prev, hashtags: [...(prev.hashtags ?? []), tag] }));
+                }
+                setTag('');
             }
-            setTag('');
         }
     };
 
@@ -202,7 +209,9 @@ export default function PostForm() {
                         value={tag}
                         onChange={handleChangeTag}
                         onKeyDown={handleKeyDownTag}
-                        placeholder="hashtag + space bar"
+                        onCompositionStart={() => setIsComposing(true)}
+                        onCompositionEnd={() => setIsComposing(false)}
+                        placeholder="hashtag + Enter"
                     />
                 </div>
                 <div className="post-form__submit-area">
