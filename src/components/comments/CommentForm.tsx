@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import AuthContext from 'context/AuthContext';
-import { addDoc } from 'firebase/firestore';
-import { commentCollectionRef, notiCollectionRef } from 'constants/refs';
+import { addDoc, increment, updateDoc } from 'firebase/firestore';
+import { commentCollectionRef, notiCollectionRef, postDocumentRef } from 'constants/refs';
 import { toast } from 'react-toastify';
 import { PostType } from 'pages/home';
 
@@ -51,6 +51,9 @@ export default function CommentForm({ post }: CommentFormProps) {
                 };
 
                 await addDoc(commentCollectionRef(post.id), commentObj);
+                await updateDoc(postDocumentRef(post.id), {
+                    commentsCount: increment(1),
+                });
 
                 // 본인이 작성한 댓글이 아니라면 알림을 생성
                 if (user.uid !== post.uid) {

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import AuthContext, { UserType } from 'context/AuthContext';
-import { deleteDoc, getDoc } from 'firebase/firestore';
-import { commentDocumentRef, userDocumentRef } from 'constants/refs';
+import { deleteDoc, getDoc, increment, updateDoc } from 'firebase/firestore';
+import { commentDocumentRef, postDocumentRef, userDocumentRef } from 'constants/refs';
 import { CommentType } from 'components/comments/CommentForm';
 import { toast } from 'react-toastify';
 
@@ -22,6 +22,9 @@ export default function CommentBox({ comment, postId }: CommentBoxProps) {
         if (postId && user && comment) {
             try {
                 await deleteDoc(commentDocumentRef({ postId, commentId: comment.id }));
+                await updateDoc(postDocumentRef(postId), {
+                    commentsCount: increment(-1),
+                });
                 toast.success('댓글을 삭제했습니다.');
             } catch (error) {
                 toast.error('댓글 삭제 중 문제가 발생하였습니다.');

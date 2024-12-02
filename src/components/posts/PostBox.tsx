@@ -50,7 +50,6 @@ export default function PostBox({ post }: postBoxProps) {
     const { user } = useContext(AuthContext);
     const [drop, setDrop] = useState(false);
     const [bookmarks, setBookmarks] = useState<string[]>([]);
-    const [commentsCount, setCommentsCount] = useState<number>(0);
     const [hasUserCommented, setHasUserCommented] = useState<boolean>(false);
     const [author, setAuthor] = useState<UserType | null>(null);
 
@@ -160,13 +159,10 @@ export default function PostBox({ post }: postBoxProps) {
         });
     }, [user?.uid]);
 
-    // comment의 수와 사용자가 쓴 comment가 있는지 확인
+    // 사용자가 쓴 comment가 있는지 확인
     useEffect(() => {
         (async () => {
             try {
-                const countSnapshot = await getCountFromServer(query(commentCollectionRef(post.id)));
-                setCommentsCount(countSnapshot.data().count);
-
                 const uidQuery = query(commentCollectionRef(post.id), where('uid', '==', user?.uid));
                 const uidSnapshot = await getDocs(uidQuery);
                 setHasUserCommented(!uidSnapshot.empty);
@@ -232,7 +228,7 @@ export default function PostBox({ post }: postBoxProps) {
                 <div className="post__box__footer-btn">
                     <button type="button">
                         {hasUserCommented ? <ActiveComment /> : <Comment />}
-                        <span>{commentsCount || 0}</span>
+                        <span>{post.commentsCount || 0}</span>
                     </button>
                 </div>
                 <div className="post__box__footer-btn">
