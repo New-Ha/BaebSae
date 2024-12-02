@@ -15,6 +15,7 @@ export interface PostType {
     imageUrl?: string;
     like?: string[];
     likesCount?: number;
+    commentsCount?: number;
     uid: string;
 }
 

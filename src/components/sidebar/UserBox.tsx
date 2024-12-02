@@ -3,9 +3,9 @@ import { ReactComponent as UserAvatar } from '../../assets/user_circle.svg';
 import { UserType } from 'context/AuthContext';
 import { getDoc } from 'firebase/firestore';
 import { userDocumentRef } from 'constants/refs';
+import BeMyFriend from 'components/posts/BeMyFriend';
 
 import styles from './sidebar.module.scss';
-import BeMyFriend from 'components/posts/BeMyFriend';
 
 export default function UserBox({ userUid }: { userUid: string }) {
     const [user, setUser] = useState<UserType>({

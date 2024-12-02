@@ -45,7 +45,7 @@ export default function TopLikes() {
                     </div>
                 ))}
             </div>
-            <div className={styles.side__more_btn} onClick={() => navigate(ROUTE_PATH.POPULAR)}>
+            <div className={styles.side__more_btn} onClick={() => navigate(ROUTE_PATH.LIKES)}>
                 Read More..
             </div>
         </div>

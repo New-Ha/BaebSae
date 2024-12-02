@@ -6,7 +6,7 @@ export const ROUTE_PATH = {
     SEARCH: '/search',
     FRIENDS: '/friends',
     BOOKMARKS: '/bookmarks',
-    POPULAR: '/popular',
+    LIKES: '/likes',
     PROFILE: '/profile',
     PROFILE_MY_POST: 'post',
     PROFILE_MY_FRIEND: 'friend',

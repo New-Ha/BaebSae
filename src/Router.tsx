@@ -7,7 +7,7 @@ import PostEditPage from 'pages/posts/edit';
 import PostDetailPage from 'pages/posts/detail';
 import SearchPage from 'pages/search';
 import BookmarksPage from 'pages/bookmarks';
-import PopularPage from 'pages/popular';
+import PopularPage from 'pages/likes';
 import NotificationsPage from 'pages/notifications';
 import LoginPage from 'pages/user/login';
 import SignupPage from 'pages/user/signup';
@@ -20,6 +20,7 @@ import MyLikesPage from 'pages/profile/activity/likes';
 import MyRepliesPage from 'pages/profile/activity/replies';
 import MyActivityPage from 'pages/profile/activity';
 import FriendsPostPage from 'pages/friends';
+import LikeRankPage from 'pages/likes';
 
 interface RouterProps {
     isAuthenticated: boolean;
@@ -37,7 +38,7 @@ const authenticatedRoutes: RouteObject[] = [
             { path: ROUTE_PATH.SEARCH, element: <SearchPage /> },
             { path: ROUTE_PATH.FRIENDS, element: <FriendsPostPage /> },
             { path: ROUTE_PATH.BOOKMARKS, element: <BookmarksPage /> },
-            { path: ROUTE_PATH.POPULAR, element: <PopularPage /> },
+            { path: ROUTE_PATH.LIKES, element: <LikeRankPage /> },
             { path: ROUTE_PATH.NOTI, element: <NotificationsPage /> },
             {
                 path: ROUTE_PATH.PROFILE,

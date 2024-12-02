@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
-
-import styles from './Layout.module.scss';
 import ProfileBox from 'components/common/ProfileBox';
 import Header from 'components/common/Header';
 import TopLikes from 'components/sidebar/TopLikes';
 import HotTopics from 'components/sidebar/HotTopics';
+
+import styles from './Layout.module.scss';
 
 export default function MainLayout() {
     return (

@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-import AuthContext from 'context/AuthContext';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from 'constants/route';
 import ProfileSetForm from 'components/profile/ProfileSetForm';
