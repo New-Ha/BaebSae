@@ -552,6 +552,9 @@ body {
 
 .box__hover {
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
     &:hover,
     &:focus {

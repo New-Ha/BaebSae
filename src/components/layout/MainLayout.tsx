@@ -20,8 +20,8 @@ export default function MainLayout() {
                     <Outlet />
                 </main>
                 <aside className={styles.main__right}>
-                    <TopLikes />
                     <HotTopics />
+                    <TopLikes />
                 </aside>
             </div>
         </div>

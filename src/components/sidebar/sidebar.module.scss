@@ -10,82 +10,24 @@
     }
 }
 
-// side popular post
-.side__popular {
-    @extend .box;
-    padding: 1rem;
+.side {
+    &__box {
+        @extend .box;
+        padding: 0.8rem 1rem;
+    }
 
     &__title {
-        font-size: 1.125rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 600;
         color: $darkPrimary;
-        margin-bottom: 1rem;
+        margin-bottom: 0.875rem;
+        letter-spacing: 0.5px;
     }
 
     &__posts {
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
-    }
-
-    &__post {
-        border: 1px solid $primary;
-        border-radius: 0.5rem;
-        padding: 0.425rem;
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
-
-        &__avatar {
-            img {
-                width: 2.5rem;
-                height: 2.5rem;
-                border-radius: 9999px;
-            }
-
-            svg {
-                width: 2.5rem;
-                height: auto;
-                border-radius: 9999px;
-            }
-        }
-
-        &__box {
-            width: 100%;
-        }
-
-        &__top {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            border-bottom: 1px solid $border;
-            padding: 0.2rem;
-
-            &_likes {
-                display: flex;
-                align-items: center;
-                gap: 0.4rem;
-                color: $darkRed;
-                font-size: 0.875rem;
-                font-weight: 500;
-
-                svg {
-                    width: 1.1rem;
-                    height: auto;
-                }
-            }
-
-            &_createdAt {
-                font-size: 0.75rem;
-                color: $primary;
-            }
-        }
-
-        &__content {
-            padding: 0.2rem;
-            font-size: 0.875rem;
-            color: $darkPrimary;
-        }
+        gap: 1rem;
     }
 
     &__more_btn {
@@ -99,6 +41,102 @@
         &:focus {
             color: $point;
         }
+    }
+}
+
+.side__post {
+    border: 1px solid $primary;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    position: relative;
+
+    &__rank {
+        position: absolute;
+        top: -0.8125rem;
+        right: 0.75rem;
+        background-color: $lightPrimary;
+        border: 1px solid $primary;
+        border-radius: 9999px;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.9375rem;
+        font-weight: 500;
+    }
+
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__author {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &_avatar {
+            img {
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 9999px;
+            }
+
+            svg {
+                width: 1.5rem;
+                height: auto;
+                border-radius: 9999px;
+            }
+        }
+
+        &_name {
+            color: $darkPrimary;
+            font-weight: 500;
+            font-size: 0.9375rem;
+        }
+    }
+
+    &__createdAt {
+        color: $primary;
+        font-size: 0.75rem;
+    }
+
+    &__count {
+        &_like {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+
+            svg {
+                fill: $red;
+                width: 1.1rem;
+                height: auto;
+            }
+        }
+
+        &_comment {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+
+            svg {
+                fill: $darkSecondary;
+                width: 1.1rem;
+                height: auto;
+            }
+        }
+
+        &_text {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: $darkPrimary;
+        }
+    }
+
+    &__content {
+        border-top: 1px solid $border;
+        padding-top: 0.5rem;
+        padding-left: 0.2rem;
+        font-size: 0.9375rem;
+        color: $darkPrimary;
     }
 }
 
